@@ -10,7 +10,7 @@ class ArticleCategory(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('article_category', args=[str(self.name)])
+        return reverse('wiki:article_category', args=[str(self.name)])
     
 
 class Article(models.Model):
@@ -23,7 +23,7 @@ class Article(models.Model):
     updated_on = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.name
+        return self.title
 
     def get_absolute_url(self):
-        return reverse('ledger:recipe_detail', args=[str(self.pk)])
+        return reverse('wiki:article_detail', args=[str(self.pk)])
