@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<title>{% block title %} Product {{object.name}}{% endblock %}</title>
+
+{% block content %}
+
+    <h1>
+        {{ product.name }}
+    </h1>
+
+    <p style="text-align: left; width:49%; display: inline-block;"> {{ product.name }}</p>
+    <p style="text-align: right; width:50%;  display: inline-block;">({{object.price}})</p>
+    <!-- the above code snippet above is from 
+     https://stackoverflow.com/questions/12438339/how-may-i-align-text-to-the-left-and-text-to-the-right-in-the-same-line-->
+
+    <br>
+    Price: {{object.price}}
+    <br>
+    Product Type: {{object.productType}}
+
+    <br> <br>
+    ----- DESCRIPTION -----
+    <br>
+    {{object.description}}
+
+{% endblock %}

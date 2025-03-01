@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+<title>{% block title %}Product List{% endblock %}</title>
+
+{% block content %}
+
+    YOU ARE SEEING THE PRODUCT LIST PAGE
+    REMOVE THIS AFTER TESTING
+
+    <ul>
+        {% for item in object_list %}
+            <li>
+                <a href="{{item.get_absolute_url}}">{{item.name}}</a>
+            </li>
+
+            <p style="text-align: left; width:49%; display: inline-block;"> {{ product.name }}</p>
+            <p style="text-align: right; width:50%;  display: inline-block;">({{object.price}})</p>
+        {% endfor %}
+    </ul>
+{% endblock %}
