@@ -6,22 +6,35 @@
 {% block content %}
 
     <h1>
-        {{ product.name }}
+        {{ object.name }}
     </h1>
 
-    <p style="text-align: left; width:49%; display: inline-block;"> {{ product.name }}</p>
-    <p style="text-align: right; width:50%;  display: inline-block;">({{object.price}})</p>
-    <!-- the above code snippet above is from 
-     https://stackoverflow.com/questions/12438339/how-may-i-align-text-to-the-left-and-text-to-the-right-in-the-same-line-->
+    <span style="text-align: left; width:49%;  display: inline-block;">
+        Price:
+    </span>
+    <span style="text-align: left; width:50%;  display: inline-block;">
+        {{object.price}}
+    </span>
 
-    <br>
-    Price: {{object.price}}
-    <br>
-    Product Type: {{object.productType}}
+    <span style="text-align: left; width:49%;  display: inline-block;">
+        Product Type:
+    </span>
+    <span style="text-align: left; width:50%;  display: inline-block;">
+        {{object.productType}}
+    </span>
 
-    <br> <br>
-    ----- DESCRIPTION -----
-    <br>
-    {{object.description}}
+    <span style="text-align: left; width:49%;  display: inline-block;">
+        Description:
+    </span>
+    <span style="text-align: left; width:50%;  display: inline-block;">
+        {{object.description}}
+    </span>
+
+    <!--
+        The above code snippet makes use of
+        https://stackoverflow.com/questions/12438339/how-may-i-align-text-to-the-left-and-text-to-the-right-in-the-same-line
+    -->
+
+    <br><br> <a href="{% url 'merchandise_store:product-list' %}">{{"<--- Back to full item list"}}</a>
 
 {% endblock %}

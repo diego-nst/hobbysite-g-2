@@ -9,7 +9,7 @@ class ProductType(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('merchandise_store:product-type', args=[str(self.name)])
+        return reverse('merchandise_store:product-list', args=[str(self.name)])
 
     class Meta:
         ordering=['name'] #orders by name in ascending order
@@ -20,7 +20,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=100, decimal_places=2)
     productType = models.ForeignKey(ProductType,
                                     on_delete=models.CASCADE,
-                                    related_name="books",)
+                                    related_name="products",)
 
     def get_absolute_url(self):
         return reverse('merchandise_store:item', args=[str(self.pk)])
