@@ -6,9 +6,9 @@ from .models import Article
 
 class WikiListView(ListView):
     model = Article
-    template_name = 'site_list.html'
+    template_name = 'wiki_list.html'
 
 
 class WikiDetailView(DetailView):
     model = Article
-    template_name = 'site_detail.html'
+    template_name = 'wiki_detail.html'
