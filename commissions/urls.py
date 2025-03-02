@@ -5,3 +5,5 @@ urlpatterns = [
     path('commissions/list',CommissionListView.as_view(),name=''),
     path('commissions/detail/<int:pk>',CommissionDetailView.as_view(),name='')
 ]
+
+app_name = 'commissions'
