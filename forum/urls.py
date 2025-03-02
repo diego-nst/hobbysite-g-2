@@ -1,12 +1,10 @@
 from django.urls import path
-from .views import ThreadDetailView, ThreadListView
+from .views import PostDetailView, PostListView
+
 
 urlpatterns = [
-    path('forum/threads', ThreadListView.as_view(), name='list'),
-    path('forum/thread/1', ThreadDetailView.as_view(), name='thread_detail')
+    path('forum/threads', PostListView.as_view(), name='post_list'),
+    path('forum/thread/<int:pk>', PostDetailView.as_view(), name='post_detail')
 ]
 
 app_name = 'forum'
-'''List View: /forum/threads
-Detail View: /forum/thread/1
-'''
