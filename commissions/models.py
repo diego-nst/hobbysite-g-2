@@ -10,6 +10,13 @@ class Commission(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.title
+    
+    def get_absolute_url(self):
+        return reverse('commissions:commissions/detail', args = [self.pk])
+
+
 
 class Comment(models.Model):
     commission = models.ForeignKey(Commission, on_delete=models.SET_NULL, null=True, related_name='comment')
