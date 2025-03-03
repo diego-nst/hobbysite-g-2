@@ -15,7 +15,11 @@ class Commission(models.Model):
     
     def get_absolute_url(self):
         return reverse('commissions:commission-detail', args = [self.pk])
+    
 
+    class Meta():
+        ordering = ['created']
+        verbose_name = "Commission"
 
 
 class Comment(models.Model):
@@ -23,3 +27,9 @@ class Comment(models.Model):
     entry = models.TextField(blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+
+    
+    class Meta():
+        ordering = ['-created']
+        verbose_name = "Comment"
+    
