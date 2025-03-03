@@ -20,8 +20,9 @@ class Product(models.Model):
     description = models.TextField()
     price = models.DecimalField(max_digits=100, decimal_places=2)
     productType = models.ForeignKey(ProductType,
-                                    on_delete=models.CASCADE,
-                                    related_name="products",)
+                                    on_delete=models.SET_NULL,
+                                    related_name="products",
+                                    null=True)
 
     def get_absolute_url(self):
         return reverse('merchandise_store:item', args=[str(self.pk)])
