@@ -13,6 +13,7 @@ class ProductType(models.Model):
 
     class Meta:
         ordering=['name'] #orders by name in ascending order
+        verbose_name="Product Type"
 
 class Product(models.Model):
     name = models.CharField(max_length=255)
@@ -27,3 +28,4 @@ class Product(models.Model):
 
     class Meta:
         ordering=['name'] #orders by name in ascending order
+        verbose_name="Product"
