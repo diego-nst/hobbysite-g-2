@@ -7,22 +7,11 @@ from .models import Commission
 
 class CommissionListView(ListView):
     model = Commission
+    context_object_name = 'commissions'
     template_name = 'commissions/commission_list.html'
 
 
 class CommissionDetailView(DetailView):
     model = Commission
+    context_object_name = 'commission'
     template_name = 'commissions/commission_detail.html'
-
-
-def commission_list(request):
-    ctx = {"commissions": Commission.objects.all()}
-    return render(request, 'commissions/commission_list.html',ctx)
-
-
-def commission_detail(request, pk):
-    commission = Commission.objects.get(pk=pk)
-    comments = commission.comments.all()
-    ctx = {"commission": commission,
-           "comments": comments}
-    return render(request, 'commissions/commission_detail.html', ctx)

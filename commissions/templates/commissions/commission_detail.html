@@ -9,7 +9,7 @@
     <p>Updated on: {{commission.updated}}</p>
     <p> </p>
     <h2>Comments:</h2>
-    <ul>{% for comment in comments %}
+    <ul>{% for comment in commission.comments.all %}
         <li><p>{{comment.entry}}</p>
         <p>Created on: {{comment.created}}</p>
         <p>Updated on: {{comment.updated}}</p>
