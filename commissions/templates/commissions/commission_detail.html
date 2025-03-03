@@ -1,1 +1,18 @@
 {% extends 'base.html' %}
+
+{% block title %}{{commission.title}}{% endblock %}
+{% block content %}
+    <h1>{{commission.title}}</h1>
+    <p>{{commission.description}}</p>
+    <p>Number of people needed: {{commission.peopleRequired}}</p>
+    <p>Created on: {{commission.created}}</p>
+    <p>Updated on: {{commission.updated}}</p>
+    <p> </p>
+    <h2>Comments:</h2>
+    <ul>{% for comment in comments %}
+        <li><p>{{comment.entry}}</p>
+        <p>Created on: {{comment.created}}</p>
+        <p>Updated on: {{comment.updated}}</p>
+        <p> </p></li>
+	{% endfor %}</ul>
+{% endblock %}
