@@ -43,6 +43,9 @@ button{
     background-color: darkolivegreen;
     color:black;
 }
+hr{
+    border-color: black
+}
 .headcontent{
     display:grid;
     grid-template-rows: 2rem, 0.1rem;
@@ -71,7 +74,7 @@ button{
     </p>
     <a href="{% url 'blog:article_list' %}">
     <button type="Submit"><p>Back</p></button></a>
-
+    <hr>
     <h4>Song of the day</h4>
 
     <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/19RybK6XDbAVpcdxSbZL1o?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
