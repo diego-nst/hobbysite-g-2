@@ -1,32 +1,98 @@
 {% extends 'base.html' %}
 {% load static %}
 
-<title>{% block title %} Product {{object.name}}{% endblock %}</title>
+<html>
 
-{% block content %}
+<head>
+
+    <title>{% block title %} Product {{object.name}}{% endblock %}</title>
+
+    {% block styles %}
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+
+        @font-face {
+            font-family: "Nunito Sans", sans-serif;
+            src: url("nunito-sans.woff2") format("woff2 supports variations"),
+                url("nunito-sans.woff2") format("woff2-variations");
+            font-weight: 200 1000;
+        }
+
+        a {
+            text-decoration: none;
+            font-family: Nunito Sans;
+            color: black;
+        }
+
+        a:visited {
+            color: black;
+        }
+
+        a:hover {
+            font-style: italic
+        }
+
+        a:focus {
+            color: black;
+        }
+
+        a:active {
+            color: black;
+        }
+
+        body {
+            font-family: "Nunito Sans";
+            background-color: whitesmoke;
+            margin: 3rem;
+            color: black;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        p {
+            font-family: "Nunito Sans";
+            color: black;
+        }
+
+        button {
+            background-color: grey;
+            color: black;
+        }
+    </style>
+    {% endblock %}
+
+</head>
+
+<body>
+
+    {% block content %}
 
     <h1>
         {{ object.name }}
+        <hr>
     </h1>
 
-    <span style="text-align: left; width:49%;  display: inline-block;">
+    <span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
         Price:
     </span>
-    <span style="text-align: left; width:50%;  display: inline-block;">
+    <span style="text-align: left; width:70%;  display: inline-block;">
         {{object.price}}
     </span>
 
-    <span style="text-align: left; width:49%;  display: inline-block;">
+    <span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
         Product Type:
     </span>
-    <span style="text-align: left; width:50%;  display: inline-block;">
+    <span style="text-align: left; width:70%;  display: inline-block;">
         {{object.productType}}
     </span>
 
-    <span style="text-align: left; width:49%;  display: inline-block;">
+    <span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
         Description:
     </span>
-    <span style="text-align: left; width:50%;  display: inline-block;">
+    <span style="text-align: left; width:70%;  display: inline-block;">
         {{object.description}}
     </span>
 
@@ -35,6 +101,15 @@
         https://stackoverflow.com/questions/12438339/how-may-i-align-text-to-the-left-and-text-to-the-right-in-the-same-line
     -->
 
-    <br><br> <a href="{% url 'merchandise_store:product-list' %}">{{"<--- Back to full item list"}}</a>
+    <!-- <br><br> <a href="{% url 'merchandise_store:product-list' %}">{{"<--- Back to full item list"}}</a> -->
 
-{% endblock %}
+    <br><br>
+    <button type="submit">
+        <p><a href="{% url 'merchandise_store:product-list' %}">{{"Back to full item list"}}</a></p>
+    </button>
+
+    {% endblock %}
+
+</body>
+
+</html>

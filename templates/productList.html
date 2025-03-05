@@ -2,29 +2,96 @@
 
 <title>{% block title %}Product List{% endblock %}</title>
 
+{% block styles %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+
+    @font-face {
+        font-family: "Nunito Sans", sans-serif;
+        src: url("nunito-sans.woff2") format("woff2 supports variations"),
+            url("nunito-sans.woff2") format("woff2-variations");
+        font-weight: 200 1000;
+    }
+
+    a {
+        text-decoration: none;
+        font-family: Nunito Sans;
+        color: black;
+    }
+
+    a:visited {
+        color: black;
+    }
+
+    a:hover {
+        font-style: italic
+    }
+
+    a:focus {
+        color: black;
+    }
+
+    a:active {
+        color: black;
+    }
+
+    body {
+        font-family: "Nunito Sans";
+        background-color: whitesmoke;
+        margin: 3rem;
+        color: black;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    p {
+        font-family: "Nunito Sans";
+        color: black;
+    }
+
+    button {
+        background-color: grey;
+        color: black;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 
-    <h2>
-        Available products:
-    </h2>
-    <ul>
-        {% for item in object_list %}
-            <li>
-               
-                <span style="text-align: left; width:49%; display: inline-block;"> 
-                    <a href="{{item.get_absolute_url}}">{{item.name}}</a>
-                </span>
-                
-                <span style="text-align: right; width:50%;  display: inline-block;">
-                    ({{item.price}})
-                </span>
+<h2>
+    Available products:
+</h2>
 
-                <!--
-                    The above code snippet makes use of
-                    https://stackoverflow.com/questions/12438339/how-may-i-align-text-to-the-left-and-text-to-the-right-in-the-same-line
-                -->
-            </li>
+<ul style="padding-left: 0;">
+    {% for itemType in object_list %}
+    <b> {{ itemType.name }} </b>
+    <br>
+    <i> {{ itemType.description }} </i>
+    <br><br>
+    {% for item in itemType.get_products %}
+    <div style="padding-left:40px">
+        <li>
+            <span style="text-align: left; width:69%; display: inline-block; vertical-align: top;">
+                <a href="{{item.get_absolute_url}}">{{item.name}}</a>
+            </span>
 
-        {% endfor %}
-    </ul>
+            <span style="text-align: right; width:30%;  display: inline-block;">
+                ({{item.price}})
+            </span>
+
+            <!--
+                            The above code snippet makes use of
+                            https://stackoverflow.com/questions/12438339/how-may-i-align-text-to-the-left-and-text-to-the-right-in-the-same-line
+                        -->
+        </li>
+    </div>
+    {% endfor %}
+    <br>
+    <hr>
+    <br>
+    {% endfor %}
+</ul>
 {% endblock %}

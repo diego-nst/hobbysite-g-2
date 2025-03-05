@@ -11,6 +11,9 @@ class ProductType(models.Model):
     def get_absolute_url(self):
         return reverse('merchandise_store:product-list', args=[str(self.name)])
 
+    def get_products(self):
+        return self.products.all()
+    
     class Meta:
         ordering=['name'] #orders by name in ascending order
         verbose_name="Product Type"
