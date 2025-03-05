@@ -1,26 +1,17 @@
-from django.shortcuts import render
-from .models import Article, ArticleCategory
+from django.views.generic.list import ListView
+from django.views.generic.detail import DetailView
+
+from .models import Article
 
 # Create your views here.
 
-def article_list(request):
-    print(request)
+class BlogListView(ListView):
 
-    article_categories = ArticleCategory.objects.all()
+    model = Article
+    template_name = 'blog_list.html'
 
-    ctx = {
-        "ArticleCategory": article_categories
-    }
+class BlogDetailView(DetailView):
 
-    return render(request, "blog_list.html", ctx)
+    model = Article
+    template_name = 'blog_detail.html'
 
-def article_detail(request, pk):
-    print(request)
-
-    article = Article.objects.get(pk = pk)
-
-    ctx = {
-        "Article": article,
-    }
-
-    return render(request, "blog_detail.html", ctx)
