@@ -47,15 +47,14 @@ h2,h4{
 {% endblock %}
 
 {% block content %}
-
-<div style="display:flex; justify-content:center">
-    <h2 style="font-size:2rem">Commissions</h2>
-</div>
-<hr>
-
-<div class="threadslist">
-    {% for commission in commissions %}
-        <br><a href="{{commission.get_absolute_url}}"> {{commission.title}} - Created on {{commission.created}}</a><br>
-    {% endfor %}
-</div>
-<iframe style="border-radius:12px" src="https://open.spotify.com/embed/episode/5qqkDY0gge1iPKsRBgRI0j?utm_source=generator&t=484" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>{% endblock %}
+    <div style="display:flex; justify-content:center">
+        <h2 style="font-size:2rem">Commissions</h2>
+    </div>
+    <hr>
+    <div class="threadslist">
+        {% for commission in commissions %}
+            <br><a href="{{commission.get_absolute_url}}"> {{commission.title}} - Created on {{commission.created}}</a><br>
+        {% endfor %}
+    </div>
+    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/episode/5qqkDY0gge1iPKsRBgRI0j?utm_source=generator&t=484" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+{% endblock %}
