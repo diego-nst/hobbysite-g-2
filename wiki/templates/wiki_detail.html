@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
-{% load static %}
 
-{% block title %} Article List {% endblock %}
+{% block title %} Wikis {% endblock %}
 
 {% block styles %}
 <style>
@@ -20,6 +19,7 @@ a{
 }
 a:visited{
     color:black;
+    text-decoration: underline;
 }
 a:hover{
     color:darkolivegreen;
@@ -40,8 +40,11 @@ h2, h4, h5, p{
     color: black;
 }
 button{
-    background-color: black;
-    color: black;
+    background-color: goldenrod;
+    color:black;
+}
+hr{
+    border-color: black
 }
 .headcontent{
     display:grid;
@@ -49,17 +52,31 @@ button{
     margin: 2rem, 0.5rem, 2rem, 2rem;
  
 }
+
 </style>
 {% endblock %}
 
 {% block content %}
-<div style="display:flex; justify-content:center">
-    <h2 style="font-size:2rem">Available Articles</h2>
+
+<div class="headcontent">
+    <div>
+        <h2>{{ article.title }}</h2> 
+        <h5 style="font-size:0.75rem; font-weight: 500"> {{ article.category }} </h5>
+    </div>
+    <p>
+        Created on: {{ article.created_on }}<br>
+        Last Updated: {{ article.updated_on }}
+    </p>
+
 </div>
-<hr>
-    <ol>
-        {% for article in article_list%}
-            <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
-        {% endfor %}
-    </ol>
+    <p>
+    {{ article.entry }}
+    </p>
+    <a href="{% url 'wiki:article_list' %}">
+    <button type="Submit"><p>Back</p></button></a>
+    
+    <hr>
+    <h4>Song of the day</h4>
+    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/61DuXKQqvXkxcrAIiNLIgR?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+
 {% endblock %}

@@ -1,3 +1,8 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Wiki Article List {% endblock %}
+
 {% block styles %}
 <style>
     @import
@@ -35,8 +40,11 @@ h2, h4, h5, p{
     color: black;
 }
 button{
-    background-color: goldenrod;
-    color:black;
+    background-color: black;
+    color: black;
+}
+hr{
+    border-color: black
 }
 .headcontent{
     display:grid;
@@ -44,27 +52,17 @@ button{
     margin: 2rem, 0.5rem, 2rem, 2rem;
  
 }
-
 </style>
 {% endblock %}
 
 {% block content %}
-
-<div class="headcontent">
-    <div>
-        <h2>{{ article.title }}</h2> 
-        <h5 style="font-size:0.75rem; font-weight: 500"> {{ article.category }} </h5>
-    </div>
-    <p>
-        Created on: {{ article.created_on }}<br>
-        Last Updated: {{ article.updated_on }}
-    </p>
-
+<div style="display:flex; justify-content:center">
+    <h2 style="font-size:2rem">Available Articles</h2>
 </div>
-    <p>
-    {{ article.entry }}
-    </p>
-    <a href="{% url 'wiki:article_list' %}">
-    <button type="Submit"><p>Back</p></button></a>
-
+<hr>
+<div class="wikilist">
+    {% for article in article_list %}
+        <br><a href="{{ article.get_absolute_url}}"> {{ article.title }}</a><br>
+    {% endfor %}
+</div>
 {% endblock %}
