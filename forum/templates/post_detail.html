@@ -1,25 +1,73 @@
 {% extends 'base.html' %}
 
+{% block title %}{{ post.title }}{% endblock %}
+{% block styles %}
+<style>
+    @import
+    url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+    @font-face {
+    font-family: "Nunito Sans", sans-serif;
+src: url("nunito-sans.woff2") format("woff2 supports variations"),
+     url("nunito-sans.woff2") format("woff2-variations");
+font-weight: 200 1000;
+} 
+a{
+    text-decoration:none;
+    font-family: Nunito Sans;
+    color: white;
+}
+a:visited{
+    color:white;
+}
+a:hover{
+    color:white;
+}
+a:focus{
+    color:white;
+}
+a:active:{
+    color:white;
+}
+body{
+    background-color: black;
+    margin: 3rem;
+    color: white;
+}
+h2, h4, h5, p{
+    font-family: Nunito Sans;
+    color: white;
+}
+button{
+    background-color: black;
+    color: white;
+}
+.headcontent{
+    display:grid;
+    grid-template-rows: 2rem, 0.1rem;
+    margin: 2rem, 0.5rem, 2rem, 2rem;
+ 
+}
+
+</style>
+{% endblock %}
+
 {% block content %}
-<h4>{{ post.title }}</h4>
-<h5> {{ post.category }} </h6>
 
-    <ul>
-    <br>
+<div class="headcontent">
+    <div>
+        <h2>{{ post.title }}</h2> 
+        <h5 style="font-size:0.75rem; font-weight: 500"> {{ post.category }} </h5>
+    </div>
+    <p>
+        Created on: {{ post.created_on }}<br>
+        Last Updated: {{ post.updated_on }}
+    </p>
+
+</div>
+    <p>
     {{ post.entry }}
-        <p>
-            Created on:{{ post.created_on }}
-        </p>
-        <p>
-            Last Updated: {{ post.updated_on }}
-        </p>
-
-        
-       
-    </ul>
-
-
-
-
+    </p>
+    <a href="{% url 'forum:post_list' %}">
+    <button type="Submit"><p>Back</p></button></a>
 
 {% endblock %}

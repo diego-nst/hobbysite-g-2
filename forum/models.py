@@ -11,6 +11,7 @@ class PostCategory(models.Model):
     
     def get_absolute_url(self):
         return reverse('forum:post_category', args=[str(self.name)])
+        
 
 
 class Post(models.Model):
