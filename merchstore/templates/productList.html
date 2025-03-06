@@ -15,7 +15,7 @@
 
     a {
         text-decoration: none;
-        font-family: Nunito Sans;
+        font-family: "Nunito Sans";
         color: black;
     }
 
@@ -42,25 +42,14 @@
         color: black;
     }
 
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    p {
-        font-family: "Nunito Sans";
+    /* button {
+        background-color: orange;
         color: black;
-    }
-
-    button {
-        background-color: grey;
-        color: black;
-    }
+    } */
 </style>
 {% endblock %}
 
 {% block content %}
-
 <h2>
     Available products:
 </h2>
@@ -69,26 +58,34 @@
     {% for itemType in object_list %}
     <b> {{ itemType.name }} </b>
     <br>
-    <i> {{ itemType.description }} </i>
+    {{ itemType.description }}
     <br><br>
-    {% for item in itemType.get_products %}
+    <div style="padding-left:20px">
+    <span style="text-align: left; width:69%; display: inline-block; vertical-align: top; font-weight: bold;">
+        Items
+    </span>
+    <span style="text-align: right; width:30%;  display: inline-block; vertical-align: top; font-weight: bold;">
+        Price
+    </span>
+    </div>
     <div style="padding-left:40px">
+        {% for item in itemType.get_products %}
         <li>
             <span style="text-align: left; width:69%; display: inline-block; vertical-align: top;">
                 <a href="{{item.get_absolute_url}}">{{item.name}}</a>
             </span>
 
-            <span style="text-align: right; width:30%;  display: inline-block;">
+            <span style="text-align: right; width:30%;  display: inline-block;  vertical-align: top;">
                 ({{item.price}})
             </span>
-
             <!--
-                            The above code snippet makes use of
-                            https://stackoverflow.com/questions/12438339/how-may-i-align-text-to-the-left-and-text-to-the-right-in-the-same-line
-                        -->
+                The code snippet above makes use of
+                https://stackoverflow.com/questions/12438339/how-may-i-align-text-to-the-left-and-text-to-the-right-in-the-same-line
+                for formatting purposes.
+            -->
         </li>
+        {% endfor %}
     </div>
-    {% endfor %}
     <br>
     <hr>
     <br>
