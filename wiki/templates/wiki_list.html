@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Wiki Article List {% endblock %}
+
+{% block styles %}
+<style>
+    @import
+    url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+    @font-face {
+    font-family: "Nunito Sans", sans-serif;
+src: url("nunito-sans.woff2") format("woff2 supports variations"),
+     url("nunito-sans.woff2") format("woff2-variations");
+font-weight: 200 1000;
+} 
+a{
+    text-decoration:none;
+    font-family: Nunito Sans;
+    color: white;
+}
+a:visited{
+    color:black;
+}
+a:hover{
+    color:darkolivegreen;
+}
+a:focus{
+    color:black;
+}
+a:active{
+    color:black;
+}
+body{
+    background-color: palegoldenrod;
+    margin: 3rem;
+    color: black;
+}
+h2, h4, h5, p{
+    font-family: Nunito Sans;
+    color: black;
+}
+button{
+    background-color: black;
+    color: black;
+}
+hr{
+    border-color: black
+}
+.headcontent{
+    display:grid;
+    grid-template-rows: 2rem, 0.1rem;
+    margin: 2rem, 0.5rem, 2rem, 2rem;
+ 
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div style="display:flex; justify-content:center">
+    <h2 style="font-size:2rem">Available Articles</h2>
+</div>
+<hr>
+<div class="wikilist">
+    {% for article in article_list %}
+        <br><a href="{{ article.get_absolute_url}}"> {{ article.title }}</a><br>
+    {% endfor %}
+</div>
+{% endblock %}

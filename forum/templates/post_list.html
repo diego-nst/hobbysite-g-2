@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %} Threads {% endblock %}
+
+{% block styles %}
+<style>
+    @import
+      url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+     @font-face {
+  font-family: "Nunito Sans", sans-serif;
+  src: url("nunito-sans.woff2") format("woff2 supports variations"),
+       url("nunito-sans.woff2") format("woff2-variations");
+  font-weight: 200 1000;
+}  
+a{
+    text-decoration:none;
+    font-family: Nunito Sans;
+    color: white;
+}
+a:visited{
+    color:white;
+}
+a:hover{
+    color:pink;
+}
+a:focus{
+    color:white;
+}
+a:active{
+    color:white;
+}
+body{
+    background-color: black;
+}
+h2,h4{
+    font-family: Nunito Sans;
+    color: white;
+}
+.threadslist{
+    width: 100%;
+    margin: 2rem;
+    color: white;
+    
+}
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<div style="display:flex; justify-content:center">
+    <h2 style="font-size:2rem">Threads</h2>
+</div>
+<hr>
+
+<div class="threadslist">
+   
+    {% for post in post_list %}
+        <br><a href="{{ post.get_absolute_url}}"> {{ post.title }}</a><br>
+       
+    {% endfor %}
+    
+
+</div>
+<hr>
+<h4>Song of the day</h4>
+<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/2bgg4UPkzN6ZEpeIHZgabD?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+
+{% endblock %}
