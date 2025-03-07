@@ -40,6 +40,3 @@ class Post(models.Model):
         ordering = ('-created_on',)
         verbose_name = 'Post'
         verbose_name_plural = 'Posts'
-
-
-# Create your models here.
