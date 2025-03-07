@@ -11,19 +11,18 @@ class ArticleCategory(models.Model):
 
     def get_absolute_url(self):
         return reverse('wiki:article_category', args=[str(self.name)])
-    
 
     class Meta:
-        ordering = ['name'] 
+        ordering = ['name']
         verbose_name = 'Article Category'
         verbose_name_plural = 'Article Categories'
-    
+
 
 class Article(models.Model):
     title = models.CharField(max_length=255)
     category = models.ForeignKey(ArticleCategory,
-                                   on_delete=models.SET_NULL,
-                                   null=True)
+                                 on_delete=models.SET_NULL,
+                                 null=True)
     entry = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
@@ -33,9 +32,8 @@ class Article(models.Model):
 
     def get_absolute_url(self):
         return reverse('wiki:article_detail', args=[str(self.pk)])
-    
 
     class Meta:
-        ordering = ['-created_on'] 
+        ordering = ['-created_on']
         verbose_name = 'Article'
         verbose_name_plural = 'Articles'
