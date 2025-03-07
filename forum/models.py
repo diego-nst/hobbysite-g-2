@@ -3,34 +3,40 @@ from django.urls import reverse
 
 
 class PostCategory(models.Model):
-    name = models.CharField(max_length=255, null = True)
-    description = models.TextField(null = True)
+    name = models.CharField(max_length=255, null=True)
+    description = models.TextField(null=True)
 
     def __str__(self):
         return '{}'.format(self.name)
-    
+
     def get_absolute_url(self):
         return reverse('forum:post_category', args=[str(self.name)])
-        
+
+    class Meta:
+        ordering = ['name']
+        verbose_name = 'Post Category'
+        verbose_name_plural = 'Post Categories'
 
 
 class Post(models.Model):
     title = models.CharField(max_length=255)
     category = models.ForeignKey(
-        PostCategory, 
+        PostCategory,
         on_delete=models.SET_NULL,
-        null = True,
+        null=True,
         related_name="post_category"
-        )
-    entry = models.TextField(null = True)
+    )
+    entry = models.TextField(null=True)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.title
-    
+
     def get_absolute_url(self):
         return reverse('forum:post_detail', args=[str(self.pk)])
-    
 
-# Create your models here.
+    class Meta:
+        ordering = ('-created_on',)
+        verbose_name = 'Post'
+        verbose_name_plural = 'Posts'
