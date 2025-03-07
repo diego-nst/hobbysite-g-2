@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import Comment, Commission
 
+
 class CommentInline(admin.TabularInline):
     model = Comment
     list_filter = ('created',)
