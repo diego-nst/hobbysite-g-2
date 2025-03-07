@@ -12,4 +12,4 @@ class PostCategoryAdmin(admin.ModelAdmin):
 
 admin.site.register(PostCategory, PostCategoryAdmin)
 
-# Register your models here.
+

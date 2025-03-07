@@ -42,4 +42,4 @@ class Post(models.Model):
         verbose_name_plural = 'Posts'
 
 
-# Create your models here.
+

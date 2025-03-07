@@ -15,4 +15,4 @@ class PostDetailView(DetailView):
     model = Post
     template_name = 'post_detail.html'
 
-# Create your views here.
+
