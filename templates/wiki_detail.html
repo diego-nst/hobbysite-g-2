@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+<h2>{{ post.title }}</h2>
+<p><strong>Location:</strong> {{ post.location }}</p>
+<p><strong>Category:</strong> {{ post.category }}</p>
+<p><strong>Description:</strong> {{ post.description }}</p>
+<p><strong>Posted on:</strong> {{ post.date }}</p>
+<p><strong>Votes:</strong> {{ post.vote_score }}</p>
+
+<form action="{% url 'ledger:upvote_post' post.pk %}" method="post" style="display:inline;">
+    {% csrf_token %}
+    <button type="submit">👍 Upvote ({{ post.upvotes }})</button>
+</form>
+
+<form action="{% url 'ledger:downvote_post' post.pk %}" method="post" style="display:inline;">
+    {% csrf_token %}
+    <button type="submit">👎 Downvote ({{ post.downvotes }})</button>
+</form>
+
+{% for image in post.images.all %}
+    <img src="{{ image.image.url }}" alt="{{ image.description }}">
+{% endfor %}
+<hr>
+<h3>Comments</h3>
+
+{% if comments %}
+    {% for comment in comments %}
+        <div style="margin-bottom: 15px; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+            <p>{{ comment.content }}</p>
+            <small>Posted on {{ comment.date_posted }}</small>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>No comments yet. Be the first to comment!</p>
+{% endif %}
+
+<hr>
+<h4>Add a Comment</h4>
+<form method="post">
+    {% csrf_token %}
+    {{ comment_form.as_p }}
+    <button type="submit">Post Comment</button>
+</form>
+
+<p><a href="{% url 'ledger:post_list' %}">Return to the List</a></p>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Recipe List {% endblock %}
+{% block content %}
+<h2>List of Recipes:</h2>
+    <ol>
+        {% for post in post_list%}
+            <li><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></li>
+        {% endfor %}
+    </ol>
+
+    <p> <a href="{% url 'ledger:post_create' %}"> Add a New Recipe </a> </p>
+{% endblock %}
