@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %} Recipe List {% endblock %}
+{% block title %} Wiki List {% endblock %}
 {% block content %}
-<h2>List of Recipes:</h2>
+<h2>List of Wiki:</h2>
     <ol>
-        {% for post in post_list%}
-            <li><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></li>
+        {% for article in article_list%}
+            <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
         {% endfor %}
     </ol>
 
-    <p> <a href="{% url 'wiki:wiki_create' %}"> Add a New Recipe </a> </p>
+    <p> <a href="{% url 'wiki:wiki_create' %}"> Add a New Wiki Post </a> </p>
 {% endblock %}

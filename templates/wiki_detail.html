@@ -1,50 +1,87 @@
 {% extends 'base.html' %}
-{% load static %}
 
-{% block title %}{{ post.title }}{% endblock %}
+{% block title %} Wikis {% endblock %}
+
+{% block styles %}
+<style>
+    @import
+    url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+    @font-face {
+    font-family: "Nunito Sans", sans-serif;
+src: url("nunito-sans.woff2") format("woff2 supports variations"),
+     url("nunito-sans.woff2") format("woff2-variations");
+font-weight: 200 1000;
+} 
+a{
+    text-decoration:none;
+    font-family: Nunito Sans;
+    color: white;
+}
+a:visited{
+    color:black;
+    text-decoration: underline;
+}
+a:hover{
+    color:darkolivegreen;
+}
+a:focus{
+    color:black;
+}
+a:active{
+    color:black;
+}
+body{
+    background-color: palegoldenrod;
+    margin: 3rem;
+    color: black;
+}
+h2, h4, h5, p{
+    font-family: Nunito Sans;
+    color: black;
+}
+button{
+    background-color: goldenrod;
+    color:black;
+}
+hr{
+    border-color: black
+}
+.headcontent{
+    display:grid;
+    grid-template-rows: 2rem, 0.1rem;
+    margin: 2rem, 0.5rem, 2rem, 2rem;
+ 
+}
+
+</style>
+{% endblock %}
 
 {% block content %}
-<h2>{{ post.title }}</h2>
-<p><strong>Location:</strong> {{ post.location }}</p>
-<p><strong>Category:</strong> {{ post.category }}</p>
-<p><strong>Description:</strong> {{ post.description }}</p>
-<p><strong>Posted on:</strong> {{ post.date }}</p>
-<p><strong>Votes:</strong> {{ post.vote_score }}</p>
 
-<form action="{% url 'ledger:upvote_post' post.pk %}" method="post" style="display:inline;">
-    {% csrf_token %}
-    <button type="submit">👍 Upvote ({{ post.upvotes }})</button>
-</form>
+<div class="headcontent">
+    <div>
+        <h2>{{ article.title }}</h2> 
+        <h5 style="font-size:0.75rem; font-weight: 500"> {{ article.category }} </h5>
+        <h5 style="font-size:0.75rem; font-weight: 500"> {{ article.category.description }} </h5>
+    </div>
+    <p>
+        Author: {{ article.author.display_name }}<br>
+        Created on: {{ article.created_on }}<br>
+        Last Updated: {{ article.updated_on }}
+    </p>
+    <p>
+        <img src="{{ article.header_image.url }}">
+    </p>
 
-<form action="{% url 'ledger:downvote_post' post.pk %}" method="post" style="display:inline;">
-    {% csrf_token %}
-    <button type="submit">👎 Downvote ({{ post.downvotes }})</button>
-</form>
+</div>
+    <p>
+    {{ article.entry }}
+    </p>
+    <a href="{% url 'wiki:wiki_list' %}">
+    <button type="Submit"><p>Back</p></button></a>
+    
+    <hr>
+    <h4>Song of the day</h4>
+    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/61DuXKQqvXkxcrAIiNLIgR?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
 
-{% for image in post.images.all %}
-    <img src="{{ image.image.url }}" alt="{{ image.description }}">
-{% endfor %}
-<hr>
-<h3>Comments</h3>
-
-{% if comments %}
-    {% for comment in comments %}
-        <div style="margin-bottom: 15px; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
-            <p>{{ comment.content }}</p>
-            <small>Posted on {{ comment.date_posted }}</small>
-        </div>
-    {% endfor %}
-{% else %}
-    <p>No comments yet. Be the first to comment!</p>
-{% endif %}
-
-<hr>
-<h4>Add a Comment</h4>
-<form method="post">
-    {% csrf_token %}
-    {{ comment_form.as_p }}
-    <button type="submit">Post Comment</button>
-</form>
-
-<p><a href="{% url 'ledger:post_list' %}">Return to the List</a></p>
 {% endblock %}

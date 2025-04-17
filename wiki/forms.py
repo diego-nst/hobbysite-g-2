@@ -7,6 +7,6 @@ class WikiForm(forms.ModelForm):
         model = Article
         fields = ['title', 'entry', 'category', 'entry', 'header_image']
         widgets = {
-            'category': forms.ChoiceField(choices=ArticleCategory.objects.all)
+            'category': forms.Select(choices=ArticleCategory.objects.all,)
         }
 

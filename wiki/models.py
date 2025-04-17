@@ -34,7 +34,7 @@ class Article(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('wiki:article_detail', args=[str(self.pk)])
+        return reverse('wiki:wiki_detail', args=[str(self.pk)])
 
     class Meta:
         ordering = ['-created_on']
