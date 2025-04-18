@@ -60,7 +60,6 @@ class WikiDetailView(DetailView):
             return redirect(self.get_success_url())
 
         else:
-            print("FORM IS NOT")
             ctx = self.get_context_data(**kwargs)
             ctx['form'] = form
             return self.render_to_response(ctx)
