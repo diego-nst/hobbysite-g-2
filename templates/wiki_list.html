@@ -4,11 +4,25 @@
 {% block title %} Wiki List {% endblock %}
 {% block content %}
 <h2>List of Wiki:</h2>
+
+    <p>Your Articles:</p>
     <ol>
-        {% for article in article_list%}
-            <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
+        {% for article in user_articles %}
+        <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
         {% endfor %}
     </ol>
 
-    <p> <a href="{% url 'wiki:wiki_create' %}"> Add a New Wiki Post </a> </p>
+    <p>Other Articles:</p>
+    {% for category in articlecategory_list%}
+        {{ category.name }}
+        <ol>
+            {% for article in other_articles %}
+                {% if article.category == category %}
+                    <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
+                {% endif %}
+            {% endfor %}
+        </ol>
+    {% endfor %}
+
+    <p> <a href="{% url 'wiki:wiki_create' %}"> Add a New Wiki Post </a> </p> 
 {% endblock %}

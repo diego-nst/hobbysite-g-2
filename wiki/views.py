@@ -2,20 +2,52 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Article, Profile
-from .forms import WikiForm
+from .models import Article, ArticleCategory
+from .forms import WikiForm, CommentForm
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
 
 
 class WikiListView(ListView):
-    model = Article
+    model = ArticleCategory
     template_name = 'wiki_list.html'
 
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['user_articles'] = Article.objects.filter(author = self.request.user.profile)
+        ctx['other_articles'] = Article.objects.exclude(author = self.request.user.profile)
+        return ctx
+    
+        '''
+        
+        '''
 
 class WikiDetailView(DetailView):
     model = Article
     template_name = 'wiki_detail.html'
+    
+    def get_success_url(self):
+        return reverse_lazy('wiki:wiki_detail', kwargs={'pk': self.get_object().pk})
+    
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['form'] = CommentForm
+        return ctx
+    
+    def post(self, request, *args, **kwargs):
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            form.instance.author  = self.request.user.profile
+            form.instance.article = Article.objects.get(pk = self.kwargs['pk'])
+            form.save()
+            return redirect(self.get_success_url())
+
+        else:
+            print("FORM IS NOT")
+            ctx = self.get_context_data(**kwargs)
+            ctx['form'] = form
+            return self.render_to_response(ctx)
+
 
 
 class WikiCreateView(LoginRequiredMixin, CreateView):
@@ -31,7 +63,6 @@ class WikiCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-    
 
 class WikiUpdateView(LoginRequiredMixin, UpdateView):
     model = Article
