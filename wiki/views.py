@@ -14,11 +14,26 @@ class WikiListView(ListView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
+
         if self.request.user.is_authenticated:
+            category_dict = dict()
+            for category in ArticleCategory.objects.all():
+                articles = []
+                for article in category.articles.exclude(author=self.request.user.profile):
+                    articles.append(article)
+                category_dict[category] = articles
             ctx['user_articles'] = Article.objects.filter(
                 author=self.request.user.profile)
-            ctx['other_articles'] = Article.objects.exclude(
-                author=self.request.user.profile)
+            ctx['other_articles'] = category_dict
+
+        else:
+            category_dict = dict()
+            for category in ArticleCategory.objects.all():
+                list = []
+                for article in category.articles.all():
+                    list.append(article)
+                category_dict[category] = list
+            ctx['other_articles'] = category_dict
         return ctx
 
 
@@ -31,8 +46,8 @@ class WikiDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        ctx['other_articles'] = Article.objects.filter(
-            category=self.object.category).exclude(author=self.request.user.profile)
+        ctx['read_more'] = Article.objects.filter(
+            category=self.object.category).exclude(pk=self.object.pk)
         ctx['form'] = CommentForm
         return ctx
 
