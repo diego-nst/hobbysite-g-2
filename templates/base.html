@@ -1,24 +1,31 @@
 <html>
+{% load static %}
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %} {% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'main.css' %}">
 </head>
 
 <body>
-    <div class="header">
-        <h1>Online Wiki</h1>
+    <nav>
+        <a class="active" href="#home">Home</a>
+        <a href="#news">Merchandise</a>
+        <a href="#contact">Wiki</a>
+        <a href="#about">Blog</a>
+        <a href="#about">Forum</a>
+        <a href="#about">Commission</a>
         {% if user.is_authenticated %}
         <form method="POST" action="{% url 'logout' %}">
             {% csrf_token %}
             <button type="submit">Logout</button>
         </form>
-        {% else %}
-        <a href="{% url 'login' %}">Please log in to access the recipes.</a>
         {% endif %}
+    </nav>
+    <div class="header">
+        <h1>Online Wiki</h1>
     </div>
-    <hr>
     {% block content %}
     {% endblock %}
 </body>

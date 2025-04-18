@@ -9,12 +9,13 @@ class ArticleInline(admin.TabularInline):
 class ArticleCategoryAdmin(admin.ModelAdmin):
     inlines = [ArticleInline]
 
+
 class CommentInLine(admin.TabularInline):
     model = Comment
 
+
 class ArticleAdmin(admin.ModelAdmin):
     inlines = [CommentInLine]
-
 
 
 admin.site.register(ArticleCategory, ArticleCategoryAdmin)

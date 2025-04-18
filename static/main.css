@@ -1,0 +1,88 @@
+@import
+url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+@font-face {
+font-family: "Nunito Sans", sans-serif;
+src: url("nunito-sans.woff2") format("woff2 supports variations"),
+ url("nunito-sans.woff2") format("woff2-variations");
+font-weight: 200 1000;
+}  
+
+*{
+    margin:0;
+    padding:0;
+ }
+
+nav {
+    background-color: #7A306C;
+    padding: 20px;
+  }
+  
+
+nav a{
+    color: white
+    text-decoration:none;
+    font-weight: 600;
+    font-family: Nunito Sans;
+    color: white;
+    float: right;
+    text-align: center;
+    width: 20%;
+    font-size: 17px;
+}
+
+a:visited{
+    color:white;
+    font-weight: 600;
+    font-family: Nunito Sans;
+}
+a:hover{
+    color: white;
+    font-weight: 800;
+    font-family: Nunito Sans;
+}
+a:focus{
+    color:white;
+    font-weight: 600;
+    font-family: Nunito Sans;
+}
+a:active{
+    color:white;
+    font-weight: 600;
+    font-family: Nunito Sans;
+}
+body{
+    background-color: #F5EEDC;
+}
+h2, h3, h4, h5, p, label, select, ol{
+    font-family: Nunito Sans;
+    color: black;
+}
+label{
+    font-weight: 700;
+}
+button{
+    background-color:pink;
+    font-family: Nunito Sans;
+    font-weight: 800;
+    font-size: 0.75rem;
+    border-radius: 1rem;
+    width: 6rem;
+    padding: 0.35rem;
+    border:1px solid black;
+}
+input{
+    padding: 0.4rem 0.5rem;
+    border-radius: 4px;
+    border:1px solid white;
+    color: white;
+    background-color:black;
+}
+textarea{
+    padding: 1rem 1rem;
+    background-color: black;
+    color:white;
+}
+select{
+    background-color: black;
+}
+

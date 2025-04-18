@@ -3,6 +3,7 @@ from .views import WikiListView, WikiDetailView
 
 
 urlpatterns = [
+    
 ]
 
 app_name = "wiki"

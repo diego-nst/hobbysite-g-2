@@ -45,15 +45,14 @@ class Article(models.Model):
 class Comment(models.Model):
     author = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True)
     article = models.ForeignKey(Article,
-                                 on_delete=models.CASCADE,
-                                 null=True, related_name='comment')
+                                on_delete=models.CASCADE,
+                                null=True, related_name='comment')
     entry = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.entry
-
 
     class Meta:
         ordering = ['-created_on']
