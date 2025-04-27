@@ -1,17 +1,39 @@
-<!DOCTYPE html>
 <html>
-<head>
-	<meta charset="utf-8"/>
-	<meta name="viewport" content="width=device-width, initial-scale=1"/>
-	<title>{% block title %}Title{% endblock %}</title>
-	
-	{% block styles %}
-	
-	{% endblock %}
+{% load static %}
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %} {% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'main.css' %}">
 </head>
+
+<nav>
+    <ul>
+        <li><a class="active" href="#home">Home</a></li>
+        <li><a href="#news">Merchandise</a></li>
+        <li><a href="#contact">Wiki</a></li>
+        <li><a href="#about">Blog</a></li>
+        <li><a href="#about">Forum</a></li>
+        <li><a href="#about">Commission</a></li>
+    {% if user.is_authenticated %}
+    <form method="POST" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <li><button type="submit">Logout</button></li>
+    </form>
+    {% else %}
+    <form method="POST" action="{% url 'login' %}">
+        {% csrf_token %}
+        <li><button type="submit">Login</button></li>
+    </form>
+    {% endif %}
+    <ul>
+</nav>
+
+
 <body>
-	{% block content %}
-	{% endblock %}
+    {% block content %}
+    {% endblock %}
 </body>
+
 </html>

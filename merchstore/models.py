@@ -1,6 +1,6 @@
 from django.db import models
 from django.urls import reverse
-from accounts.models import Profile
+from user_management.models import Profile
 
 class ProductType(models.Model):
     name = models.CharField(max_length=255)
@@ -29,6 +29,11 @@ class Product(models.Model):
                                     related_name="products",
                                     null=True)
     stock = models.IntegerField(default=-99)
+    owner = models.ForeignKey(Profile,
+                              on_delete=models.CASCADE,
+                              related_name='products',
+                              null=True,
+                              )
 
     STATUS_CHOICES = {
         "AVAILABLE": "Available",
@@ -51,10 +56,12 @@ class Product(models.Model):
 class Transaction(models.Model):
     buyer = models.ForeignKey(Profile,
                               null=True,
-                              on_delete=models.SET_NULL)
+                              on_delete=models.SET_NULL,
+                              related_name="transactions")
     product = models.ForeignKey(Product,
                                 null=True,
-                                on_delete=models.SET_NULL)
+                                on_delete=models.SET_NULL,
+                                related_name="transactions")
     amount = models.IntegerField(default=0)
     created_on = models.DateTimeField(auto_now_add=True, null=True)
     

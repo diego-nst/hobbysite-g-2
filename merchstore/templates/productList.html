@@ -54,6 +54,10 @@
     Available products:
 </h2>
 
+<button type="submit">
+    <p><a href="{% url 'merchstore:create-product' %}">{{"Add a product"}}</a></p>
+</button>
+
 <ul style="padding-left: 0;">
     {% for itemType in object_list %}
     <b> {{ itemType.name }} </b>
