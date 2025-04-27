@@ -28,7 +28,7 @@ class Commission(models.Model):
         return reverse('commissions:commission-detail', args=[self.pk])
 
     class Meta():
-        ordering = ['created']
+        ordering = ['status','created']
         verbose_name = "Commissions"
 
 
