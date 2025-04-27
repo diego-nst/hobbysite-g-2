@@ -17,9 +17,9 @@ class CommissionListView(ListView):
             applied = set()
             for application in JobApplication.objects.filter(applicant=self.request.user.profile):
                 applied.add(application.job.commission)
-                ctx['created_commissions']= Commission.objects.filter(author=self.request.user.profile)
-                ctx['applied_commissions']=applied
-            ctx['commissions']=Commission.objects.all()
+            ctx['created_commissions']= Commission.objects.filter(author=self.request.user.profile)
+            ctx['applied_commissions']=applied
+        ctx['commissions']=Commission.objects.all()
         return ctx
 
 
