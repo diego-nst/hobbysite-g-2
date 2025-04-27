@@ -29,7 +29,7 @@ class Commission(models.Model):
 
     class Meta():
         ordering = ['status','created']
-        verbose_name = "Commissions"
+        verbose_name = "Commission"
 
 
 class Job(models.Model):
@@ -49,7 +49,7 @@ class Job(models.Model):
 
     class Meta():
         ordering = ['status','-manpowerRequired']
-        verbose_name = "Comments"
+        verbose_name = "Job"
 
 
 class JobApplication(models.Model):
@@ -69,5 +69,5 @@ class JobApplication(models.Model):
 
     class Meta():
         ordering = ['status','-appliedOn']
-        verbose_name = "Job Applications"
+        verbose_name = "Job Application"
         

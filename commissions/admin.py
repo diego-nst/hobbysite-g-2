@@ -23,13 +23,14 @@ class CommissionAdmin(admin.ModelAdmin):
 class JobAdmin(admin.ModelAdmin):
     model = Job
     search_fields = ('role',)
-    inlines = [JobInline,]
+    inlines = [JobApplicationInline,]
 
 
 class JobApplicationAdmin(admin.ModelAdmin):
     model = JobApplication
     search_fields = ('role',)
-    inlines = [JobInline,]
 
 
 admin.site.register(Commission, CommissionAdmin)
+admin.site.register(Job, JobAdmin)
+admin.site.register(JobApplication, JobApplicationAdmin)
