@@ -52,6 +52,10 @@ h2,h4{
     </div>
     <hr>
     {% if request.user.is_authenticated %}
+        <h2>Commissions Created:</h4>
+        {% for commission in created_commissions %}
+            <br><a href="{{commission.get_absolute_url}}"> {{commission.title}} - Created on {{commission.created}} <p style="text-align: right; padding-right: 50px;">({{commission.get_status_display}})</p></a><br>
+        {% endfor %}
         <h2>Commissions Applied to:</h4>
         {% for commission in applied_commissions %}
             <br><a href="{{commission.get_absolute_url}}"> {{commission.title}} - Created on {{commission.created}} <p style="text-align: right; padding-right: 50px;">({{commission.get_status_display}})</p></a><br>
