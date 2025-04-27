@@ -1,13 +1,23 @@
 from django.db import models
 from django.urls import reverse
 from django.core.validators import MinValueValidator
+from user_management.models import Profile
 
 
 class Commission(models.Model):
+    OPEN = "A"
+    FULL = "B"
+    COMPLETED = "C"
+    DISCONTINUED = "D"
+    STATUS_CHOICES = {
+        OPEN: "Open",
+        FULL: "Full",
+        COMPLETED: "Completed",
+        DISCONTINUED: "Discountinued",
+    }
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True)
-    peopleRequired = models.IntegerField(
-        default=0, validators=[MinValueValidator(0)])
+    status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=OPEN)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -19,16 +29,45 @@ class Commission(models.Model):
 
     class Meta():
         ordering = ['created']
-        verbose_name = "Commission"
+        verbose_name = "Commissions"
 
 
-class Comment(models.Model):
+class Job(models.Model):
+    OPEN = "A"
+    FULL = "B"
+    STATUS_CHOICES = {
+        OPEN: "Open",
+        FULL: "Full",
+    }
     commission = models.ForeignKey(
-        Commission, on_delete=models.CASCADE, related_name='comments')
-    entry = models.TextField(blank=True)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
+        Commission, on_delete=models.CASCADE, related_name='jobs')
+    role = models.TextField(blank=True)
+    manpowerRequired = models.IntegerField(
+        default=0, validators=[MinValueValidator(0)])
+    status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=OPEN)
+
 
     class Meta():
-        ordering = ['-created']
-        verbose_name = "Comment"
+        ordering = ['status','-manpowerRequired']
+        verbose_name = "Comments"
+
+
+class JobApplication(models.Model):
+    PENDING = "A"
+    ACCEPTED = "B"
+    REJECTED = "C"
+    STATUS_CHOICES = {
+        PENDING: "Pending",
+        ACCEPTED: "Accepted",
+        REJECTED: "Rejected",
+    }
+    job = models.ForeignKey(Job, on_delete=models.CASCADE, related_name='applications')
+    applicant = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='job_applications')
+    status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=PENDING)
+    appliedOn = models.DateTimeField(auto_now_add=True)
+
+
+    class Meta():
+        ordering = ['status','-appliedOn']
+        verbose_name = "Job Applications"
+        
