@@ -45,7 +45,9 @@ class Job(models.Model):
     manpowerRequired = models.IntegerField(
         default=0, validators=[MinValueValidator(0)])
     status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=OPEN)
-
+    
+    def __str__(self):
+        return self.role
 
     class Meta():
         ordering = ['status','-manpowerRequired']
@@ -66,6 +68,8 @@ class JobApplication(models.Model):
     status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=PENDING)
     appliedOn = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.job.role
 
     class Meta():
         ordering = ['status','-appliedOn']
