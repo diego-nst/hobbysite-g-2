@@ -126,7 +126,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_ROOT = BASE_DIR/'media'
 MEDIA_URL = '/media/'
-LOGIN_REDIRECT_URL = "/wiki/articles"
+LOGIN_REDIRECT_URL = "/blog/articles"
 LOGOUT_REDIRECT_URL = "/accounts/login"
 
 # Default primary key field type
