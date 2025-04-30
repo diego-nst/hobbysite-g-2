@@ -48,6 +48,11 @@ class Product(models.Model):
 
     def get_absolute_url(self):
         return reverse('merchstore:item', args=[str(self.pk)])
+    
+    def save(self, *args, **kwargs):
+        if self.stock <= 0:
+            self.STATUS_CHOICES = "NO_STOCK"
+        super(Product, self).save(*args, **kwargs)
 
     class Meta:
         ordering = ['name']  # orders by name in ascending order
@@ -66,7 +71,7 @@ class Transaction(models.Model):
     created_on = models.DateTimeField(auto_now_add=True, null=True)
     
     STATUS_CHOICES = {
-        "ON_CART": "On cart",
+        "IN_CART": "On cart",
         "TO_PAY": "To pay",
         "TO_SHIP": "To ship",
         "TO_RECEIVE": "To receive",

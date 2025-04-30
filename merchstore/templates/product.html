@@ -65,6 +65,19 @@
         <hr>
     </h1>
 
+    <form method="post">
+        {% csrf_token %}
+        {{ form }}
+        
+        {% if object.stock <= 0 or user.profile == object.owner %}
+        <input type="submit" value="Add to cart" disabled>
+        <!-- used https://www.w3schools.com/tags/att_button_disabled.asp -->
+
+        {% else %}
+        <input type="submit" value="Add to cart">
+        {% endif %}
+    </form>
+
     <span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
         Price:
     </span>
@@ -117,6 +130,14 @@
     <button type="submit">
         <p><a href="{% url 'merchstore:product-list' %}">{{"Back to full item list"}}</a></p>
     </button>
+
+
+    {% if user.profile == object.owner %}
+    <br><br>
+    <button type="submit">
+        <p><a href="{% url 'merchstore:update-product' pk=object.pk %}">{{"Update your product listing"}}</a></p>
+    </button>
+    {% endif %}
 
     <br><br>
     Song of the Day:
