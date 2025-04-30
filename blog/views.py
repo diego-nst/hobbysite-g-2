@@ -47,6 +47,29 @@ class BlogDetailView(DetailView):
     model = Article
     template_name = 'blog_detail.html'
 
+    def get_success_url(self):
+        return reverse_lazy('blog:blog_detail', kwargs={'pk': self.get_object().pk})
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['read_more'] = Article.objects.filter(
+            author=self.object.author).exclude(pk=self.object.pk)
+        ctx['form'] = CommentForm
+        return ctx
+    def post(self, request, *args, **kwargs):
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            form.instance.author = self.request.user.profile
+            form.instance.article = self.get_object()
+            form.save()
+            return redirect(self.get_success_url())
+        else:
+            print("FORM IN NOT VALID")
+            ctx = self.get_context_data(**kwargs)
+            ctx['form'] = form
+            return self.render_to_response(ctx)
+
+
 
 class BlogCreateView(LoginRequiredMixin, CreateView):
     model = Article

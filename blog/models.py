@@ -1,6 +1,6 @@
 from django.db import models
 from django.urls import reverse
-from user_management import Profile
+from user_management.models import Profile
 
 
 class ArticleCategory(models.Model):
@@ -24,8 +24,11 @@ class Article(models.Model):
     category = models.ForeignKey(ArticleCategory,
                                  on_delete=models.SET_NULL,
                                  null=True)
+    author = models.ForeignKey(Profile,
+                               on_delete=models.SET_NULL,
+                               null=True)
     entry = models.TextField()
-    header_images = models.ImageField(upload_to='images/', null=True)
+    header_image = models.ImageField(upload_to='images/', null=True)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
 
