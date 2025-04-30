@@ -25,7 +25,7 @@ class BlogListView(LoginRequiredMixin, ListView):
             category_dict = dict()
             for category in ArticleCategory.objects.all():
                 articles = []
-                for article in category.articles.exclude(author=self.request.user.profile):
+                for article in category.article_set.exclude(author=self.request.user.profile):
                     articles.append(article)
                 category_dict[category] = articles
             ctx['user_articles'] = Article.objects.filter(
@@ -56,6 +56,8 @@ class BlogDetailView(DetailView):
             author=self.object.author).exclude(pk=self.object.pk)
         ctx['form'] = CommentForm
         return ctx
+    
+
     def post(self, request, *args, **kwargs):
         form = CommentForm(request.POST)
         if form.is_valid():
@@ -77,7 +79,7 @@ class BlogCreateView(LoginRequiredMixin, CreateView):
     form_class = BlogForm
 
     def get_success_url(self):
-        return reverse_lazy('blog:blog_list')
+        return reverse_lazy('blog:article_list')
     
     def form_valid(self, form):
         form.instance.author = self.request.user.profile
@@ -89,4 +91,4 @@ class BlogUpdateView(LoginRequiredMixin, CreateView):
     form_class = BlogForm
 
     def get_success_url(self):
-        return reverse_lazy('blog:blog_detail', kwargs={'pk': self.get_object().pk})
+        return reverse_lazy('blog:article_detail', kwargs={'pk': self.get_object().pk})
