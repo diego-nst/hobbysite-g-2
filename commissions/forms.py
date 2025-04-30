@@ -22,5 +22,10 @@ class CommissionForm(forms.ModelForm):
             DISCONTINUED: "Discountinued",
         }
         widgets = {
-            'statues': forms.Select(choices=STATUS_CHOICES,)
+            'status': forms.Select(choices=STATUS_CHOICES,)
         }
+
+class JobForm(forms.ModelForm):
+    class Meta:
+        model = Job
+        fields = ['role','manpowerRequired']
