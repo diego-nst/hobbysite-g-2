@@ -57,52 +57,59 @@
         Your Products:
     </h2>
 
-    <ul style="padding-left: 0;">
-        {% for productType, product in owned_by_user.items %}
-            <b> {{ productType.name }} </b>
-            <br>
-            {{ productType.description }}
-            <br><br>
+    {% if user_is_selling %}
 
-            <div style="padding-left:20px">
-                <span style="text-align: left; width:69%; display: inline-block; vertical-align: top; font-weight: bold;">
-                    Items
-                </span>
-                <span style="text-align: right; width:30%;  display: inline-block; vertical-align: top; font-weight: bold;">
-                    Price
-                </span>
-            </div>
-
-            <div style="padding-left:40px">
-                {% for p in product %}
-                <li>
-                    <span style="text-align: left; width:69%; display: inline-block; vertical-align: top;">
-                        <a href="{{item.get_absolute_url}}">{{p.name}}</a>
-                    </span>
-                    <span style="text-align: right; width:30%;  display: inline-block;  vertical-align: top;">
-                        ({{p.price}})
-                    </span>
-                </li>
-                {% endfor %}
+        <ul style="padding-left: 0;">
+            {% for productType, productsList in owned_by_user.items %}
+                <b> {{ productType.name }} </b>
                 <br>
-            </div>
-        {% endfor %}
-    </ul>
+                {{ productType.description }}
+                <br><br>
+
+                <div style="padding-left:20px">
+                    <span style="text-align: left; width:69%; display: inline-block; vertical-align: top; font-weight: bold;">
+                        Items
+                    </span>
+                    <span style="text-align: right; width:30%;  display: inline-block; vertical-align: top; font-weight: bold;">
+                        Price
+                    </span>
+                </div>
+
+                <div style="padding-left:40px">
+                    {% for p in productsList %}
+                    <li>
+                        <span style="text-align: left; width:69%; display: inline-block; vertical-align: top;">
+                            <a href="{{p.get_absolute_url}}">{{p.name}}</a>
+                        </span>
+                        <span style="text-align: right; width:30%;  display: inline-block;  vertical-align: top;">
+                            ({{p.price}})
+                        </span>
+                    </li>
+                    {% endfor %}
+                    <br>
+                </div>
+            {% endfor %}
+        </ul>
+    {% else %}
+    You have not put up any products for sale.
+    {% endif %}
+
+    <br>
+    <button type="submit">
+        <p><a href="{% url 'merchstore:create-product' %}">{{"Add a product"}}</a></p>
+    </button>
+
 {% endif %}
 
 <h2>
     Available products:
 </h2>
 
-<button type="submit">
-    <p><a href="{% url 'merchstore:create-product' %}">{{"Add a product"}}</a></p>
-</button>
-
 <ul style="padding-left: 0;">
-    {% for productType, product in products_dict.items %}
-    <b> {{ products_dict.name }} </b>
+    {% for productType, productsList in user_can_buy.items %}
+    <b> {{ productType.name }} </b>
     <br>
-    {{ products_dict.description }}
+    {{ productType.description }}
     <br><br>
     <div style="padding-left:20px">
     <span style="text-align: left; width:69%; display: inline-block; vertical-align: top; font-weight: bold;">
@@ -113,10 +120,10 @@
     </span>
     </div>
     <div style="padding-left:40px">
-        {% for p in product %}
+        {% for p in productsList %}
         <li>
             <span style="text-align: left; width:69%; display: inline-block; vertical-align: top;">
-                <a href="{{item.get_absolute_url}}">{{p.name}}</a>
+                <a href="{{p.get_absolute_url}}">{{p.name}}</a>
             </span>
 
             <span style="text-align: right; width:30%;  display: inline-block;  vertical-align: top;">
@@ -136,9 +143,14 @@
     {% endfor %}
 </ul>
 
-Song of the Day:
-<iframe style="border-radius:12px"
-    src="https://open.spotify.com/embed/track/5xspW6L8pnfE2MtsX3eDia?utm_source=generator" width="100%" height="152"
-    frameBorder="0" allowfullscreen=""
-    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+{% if user.is_authenticated %}
+    <button type="submit">
+        <p><a href="{% url 'merchstore:cart' %}">{{"View your cart"}}</a></p>
+    </button>
+
+    <button type="submit">
+        <p><a href="{% url 'merchstore:transactions-list' %}">{{"View your seller transactions"}}</a></p>
+    </button>
+{% endif %}
+
 {% endblock %}

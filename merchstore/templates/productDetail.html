@@ -68,14 +68,15 @@
     <form method="post">
         {% csrf_token %}
         {{ form }}
-        
-        {% if object.stock <= 0 or user.profile == object.owner %}
-        <input type="submit" value="Add to cart" disabled>
-        <!-- used https://www.w3schools.com/tags/att_button_disabled.asp -->
 
+        {% if object.stock <= 0 %}
+            Sorry, this item is out of stock.
+        {% elif user.profile == object.owner %}
+            You are the owner of this product.
         {% else %}
-        <input type="submit" value="Add to cart">
+            <input type="submit" value="Add to cart">
         {% endif %}
+        
     </form>
 
     <span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
@@ -140,12 +141,6 @@
     {% endif %}
 
     <br><br>
-    Song of the Day:
-    <iframe style="border-radius:12px"
-        src="https://open.spotify.com/embed/track/5xspW6L8pnfE2MtsX3eDia?utm_source=generator" width="100%" height="152"
-        frameBorder="0" allowfullscreen=""
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-
     {% endblock %}
 
 </body>
