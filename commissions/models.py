@@ -44,7 +44,7 @@ class Job(models.Model):
         Commission, on_delete=models.CASCADE, related_name='jobs')
     role = models.TextField(blank=True)
     manpowerRequired = models.IntegerField(
-        default=0, validators=[MinValueValidator(0)])
+        default=1, validators=[MinValueValidator(1)])
     status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=OPEN)
     
     def __str__(self):

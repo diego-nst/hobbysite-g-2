@@ -69,7 +69,7 @@ class CommissionUpdateView(LoginRequiredMixin,DetailView):
         ctx = super().get_context_data(**kwargs)
         ctx['form'] = CommissionForm(instance=self.get_object())
         ctx['job_form'] = JobForm()
-        ctx['apply_form'] = JobApplicationForm
+        ctx['apply_form'] = JobApplicationForm()
         
         sumManpower=0
         acceptedManpower=0
@@ -85,7 +85,6 @@ class CommissionUpdateView(LoginRequiredMixin,DetailView):
         return ctx
     
     def post(self, request, *args, **kwargs):
-        print(request.POST)
         if('commission-edit' in request.POST):
             form = CommissionForm(request.POST)
             if form.is_valid():
@@ -134,8 +133,37 @@ class CommissionUpdateView(LoginRequiredMixin,DetailView):
                 ctx = self.get_context_data(**kwargs)
                 ctx['form'] = form
                 return self.render_to_response(ctx)
-                    
-        
 
     def get_success_url(self):
         return reverse_lazy('commissions:commission-detail', kwargs={'pk': self.get_object().pk})
+
+
+class CommissionCreateView(LoginRequiredMixin,ListView):
+    model = Commission
+    template_name = 'commissions/commission_add.html'
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['form'] = CommissionForm()
+        ctx['job_form'] = JobForm()
+        return ctx
+        
+    def post(self, request, *args, **kwargs):   
+        form = CommissionForm(request.POST)
+        jform = JobForm(request.POST)
+        if form.is_valid():
+            c = form.save(commit=False)
+            c.author = self.request.user.profile
+            c.save()
+
+            if(jform.is_valid() and request.POST.get('role')!=''):
+                j=jform.save(commit=False)
+                j.commission = c
+                j.save()
+            
+            return redirect(reverse_lazy('commissions:commission-detail', kwargs={'pk': c.pk}))
+        else:
+            print("FORM IS NOT")
+            ctx = self.get_context_data(**kwargs)
+            ctx['form'] = form
+            return self.render_to_response(ctx)
