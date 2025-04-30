@@ -56,12 +56,19 @@ h2,h4{
         {% for commission in created_commissions %}
             <br><a href="{{commission.get_absolute_url}}"> {{commission.title}} - Created on {{commission.created}} <p style="text-align: right; padding-right: 50px;">({{commission.get_status_display}})</p></a><br>
         {% endfor %}
+        <button><a href="/commissions/add">Create</a></button>
         <h2>Commissions Applied to:</h4>
         {% for commission in applied_commissions %}
             <br><a href="{{commission.get_absolute_url}}"> {{commission.title}} - Created on {{commission.created}} <p style="text-align: right; padding-right: 50px;">({{commission.get_status_display}})</p></a><br>
         {% endfor %}
         <hr>
+
+        <div style="display:flex; justify-content:center">
+            <h2 style="font-size:2rem">All Commissions</h2>
+        </div>
+        
     {% endif %}
+    
     <div class="threadslist">
         {% for commission in commissions %}
             <br><a href="{{commission.get_absolute_url}}"> {{commission.title}} - Created on {{commission.created}} <p style="text-align: right; padding-right: 50px;">({{commission.get_status_display}})</p></a><br>

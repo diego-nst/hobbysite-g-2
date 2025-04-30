@@ -31,32 +31,49 @@
 {% endblock %}
 {% block content %}
     <div style="padding-left: 15px; padding-top: 15px;">
-    <h1>{{commission.title}}</h1>
-    <p><span class="indent"></span>{{commission.description}}</p>
-    <p>Number of people needed: {{commission.peopleRequired}}</p>
-    <p>Created on: {{commission.created}}</p>
-    <p>Updated on: {{commission.updated}}</p>
+        <h1>{{commission.title}}</h1>
+        <p><span class="indent"></span>{{commission.description}}</p>
+        <p>Author: {{commission.author}}</p>
+        <p>Number of people needed: {{commission.peopleRequired}}</p>
+        <p>Created on: {{commission.created}}</p>
+        <p>Updated on: {{commission.updated}}</p>
+        <p>Sum Manpower: {{sumManpower}}</p>
+        <p>Open Manpower: {{openManpower}}</p>
     </div>
     <hr>
-    <h2 style="padding-left: 15px;">Comments:</h2>
+    <h2 style="padding-left: 15px;">Jobs:</h2>
     <div class="accordion" id="commentAccordion" style="padding: 15px;">
-        {% for comment in commission.comments.all %}
+        {% for job in commission.jobs.all %}
         <div class="accordion-item">
             <h2 class="accordion-header" id='heading{{comment.pk}}'>
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{comment.pk}}" aria-expanded="false" aria-controls="collapse{{comment.pk}}">
-                Comment {{ forloop.counter }}
+                {{job.role}}
                 </button>
             </h2>
             <div id="collapse{{comment.pk}}" class="accordion-collapse collapse" aria-labelledby="heading{{comment.pk}}">
                 <div class="accordion-body " style="background-color:midnightblue;color: white;">
-                    <p>{{comment.entry}}</p>
-                    <p>Created on: {{comment.created}}</p>
-                    <p>Updated on: {{comment.updated}}</p>
+                    <p>{{job.get_status_display}}</p>
+                    {% if request.user.is_authenticated and job.status == "A" %}
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <label for = "job">
+                            <input type="hidden" id="job" name="job" value = {{job.pk}}>
+                        </label>
+                        {{ application_form }}
+                        <button type="submit">Apply</button>
+                    </form>
+                    {% else %}
+                        <button>Apply</button> 
+                    {% endif %}
                 </div>
             </div>
         </div>
         {% endfor %}
     </div>
+    {% if request.user.is_authenticated %}
+        {% if user.profile == commission.author %}
+            <div style="padding: 15px;"><a class="btn btn-primary" href="/commissions/{{commission.pk}}/edit" role="button" style="background-color: #006992;">Edit</a></div>
+        {% endif %}
+    {% endif %}
     <div style="padding: 15px;"><a class="btn btn-primary" href="/commissions/list" role="button" style="background-color: #006992;">Back to Detail view</a></div>
-    
 {% endblock %}
