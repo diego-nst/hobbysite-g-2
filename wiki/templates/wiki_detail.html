@@ -1,83 +1,84 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %} Wikis {% endblock %}
+{% block title %} {{ article.title }} {% endblock %}
 
-{% block styles %}
-<style>
-    @import
-    url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
-    @font-face {
-    font-family: "Nunito Sans", sans-serif;
-src: url("nunito-sans.woff2") format("woff2 supports variations"),
-     url("nunito-sans.woff2") format("woff2-variations");
-font-weight: 200 1000;
-} 
-a{
-    text-decoration:none;
-    font-family: Nunito Sans;
-    color: white;
-}
-a:visited{
-    color:black;
-    text-decoration: underline;
-}
-a:hover{
-    color:darkolivegreen;
-}
-a:focus{
-    color:black;
-}
-a:active{
-    color:black;
-}
-body{
-    background-color: palegoldenrod;
-    margin: 3rem;
-    color: black;
-}
-h2, h4, h5, p{
-    font-family: Nunito Sans;
-    color: black;
-}
-button{
-    background-color: goldenrod;
-    color:black;
-}
-hr{
-    border-color: black
-}
-.headcontent{
-    display:grid;
-    grid-template-rows: 2rem, 0.1rem;
-    margin: 2rem, 0.5rem, 2rem, 2rem;
- 
-}
-
-</style>
-{% endblock %}
 
 {% block content %}
 
-<div class="headcontent">
-    <div>
-        <h2>{{ article.title }}</h2> 
-        <h5 style="font-size:0.75rem; font-weight: 500"> {{ article.category }} </h5>
-        <h5 style="font-size:0.75rem; font-weight: 500"> {{ article.category.description }} </h5>
-    </div>
-    <p>
-        Created on: {{ article.created_on }}<br>
-        Last Updated: {{ article.updated_on }}
-    </p>
+<header>
+    <img src="{{ article.header_image.url }}">
+    <h1>{{ article.title }}</h1> 
+    <section class = 'category'>
+        <h4> Category: {{ article.category }} </h4>
+        <p> {{ article.category.description }} </p>
+    </section>
+    <section class = 'author'>
+        <h4> Created by {{ article.author.display_name }} on {{ article.created_on }}</h4>
+        <p> Last Updated: {{ article.updated_on }} </p>
+    </section>
+</header>
 
-</div>
-    <p>
-    {{ article.entry }}
-    </p>
-    <a href="{% url 'wiki:article_list' %}">
-    <button type="Submit"><p>Back</p></button></a>
-    
-    <hr>
-    <h4>Song of the day</h4>
-    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/61DuXKQqvXkxcrAIiNLIgR?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+<main>
+    <article>
+        <section class = 'article'>
+            <p> {{ article.entry }} </p>
+            {% if user.profile == article.author %}
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ image_form.as_p }}
+                <input type="submit" value="Submit">
+                </form>
+            {% endif %}
+        </section>
 
+        <section class = 'comment_entry'>
+            <h3> Leave a comment! </h3>
+            {% if user.is_authenticated %}
+                <form method="post">
+                {% csrf_token %}
+                {{ comment_form.as_p }}
+                <input type="submit" value="Submit">
+                </form>
+            {% else %}
+                <p> Login to leave a comment.</p>
+            {% endif %}
+        </section>
+        
+        <section class="comments_display">
+            <h3>Comments:</h3>
+            <div class="comments_row">
+                {% for comment in comments %}
+                    <div class="comments">
+                        <h4>{{ comment.author }} at {{ comment.created_on }} </h4>
+                        <p>{{ comment.entry }}</p>
+                    </div>
+                {% empty %}
+                    <p>No comments yet.</p>
+                {% endfor %}
+            </div>
+        </section>
+
+        <h2 style="color: #4C2E05; margin-top: 20px;">Read more:</h2>
+        <section class = 'others'>
+                <ol>
+                    {% for article in read_more %}
+                        <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
+                    {% endfor %}
+                </ol>
+        </section>
+
+        <aside>
+            {% if user.profile == article.author %}
+                <a href="{% url 'wiki:wiki_list' %}">
+                <button type="Submit"><p>Back to List</p></button></a>
+                <a href="{% url 'wiki:wiki_update' article.pk%}">
+                <button type="Submit"><p>Update Information</p></button></a>
+            {% else %}
+                <a href="{% url 'wiki:wiki_list' %}">
+                <button type="Submit"><p>Back to List</p></button></a>   
+            {% endif %}
+        </aside>
+
+</main>
 {% endblock %}

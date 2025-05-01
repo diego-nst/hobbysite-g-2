@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Article Edit {% endblock %}
+
+{% block content %}
+<h1> Edit the Article: </h1>
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit">
+</form>
+<p> <a href="{% url 'wiki:wiki_detail' article.pk %}"> Return to the Article </a> </p>
+{% endblock %}
+
