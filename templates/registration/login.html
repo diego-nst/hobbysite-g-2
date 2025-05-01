@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Log In {% endblock %}
+{% comment %} <link rel="stylesheet" href="{% static 'css/main.css' %}" type="text/css"> {% endcomment %}
+{% block styles %}
+<style>
+body{
+    margin: 2rem;
+  
+}
+h2{
+    margin: 0;
+    color: #434D20;
+    }
+.formfields{
+    display: flex;
+    margin: 0;
+}
+
+.loginpage{
+    background-color: #F8DEDF;
+    padding: 5rem;
+    border-radius: 5rem;
+    box-shadow: 4px 4px 5px #9FA881;
+    width:40%;
+    transform: translate(75%, 20%);
+}
+input{
+    padding: 0.4rem 0.5rem;
+    border-radius: 4px;
+    border:1px dotted #9FA881;
+    background-color: #FFFFE8;
+    color:#434d20;
+}
+
+</style>
+{% endblock %}
+{%block content %}
+<section class="loginpage">
+
+<h2>Log In</h2>
+<div class="formfields">
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    
+    <button type="submit">Login</button>
+    </form>
+</div>
+<br>
+    <a href="{% url 'password_reset' %}">Forgot password?</a>
+    <br><a href="{% url 'forum:thread_list' %}">Continue without logging in</a> 
+</section>
+{% endblock %}
