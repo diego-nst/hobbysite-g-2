@@ -1,15 +1,27 @@
 from django.contrib import admin
-from .models import Post, PostCategory
+from .models import Thread, ThreadCategory, Comment
 
 
-class PostInline(admin.TabularInline):
-    model = Post
+# class ThreadInline(admin.TabularInline):
+#     model = Thread
 
 
-class PostCategoryAdmin(admin.ModelAdmin):
-    inlines = [PostInline,]
+# class ThreadCategoryAdmin(admin.ModelAdmin):
+#     inlines = [ThreadInline,]
 
 
-admin.site.register(PostCategory, PostCategoryAdmin)
+# admin.site.register(ThreadCategory, ThreadCategoryAdmin)
 
+class ThreadAdmin(admin.ModelAdmin):
+    model = Thread
+
+class ThreadCategoryAdmin(admin.ModelAdmin):
+    model = ThreadCategory
+
+class ThreadCommentAdmin(admin.ModelAdmin):
+    model = Comment
+
+admin.site.register(Thread, ThreadAdmin)
+admin.site.register(ThreadCategory,ThreadCategoryAdmin)
+admin.site.register(Comment, ThreadCommentAdmin)
 
