@@ -26,7 +26,7 @@ class Article(models.Model):
                                  on_delete=models.SET_NULL,
                                  null=True, related_name='articles')
     entry = models.TextField()
-    header_image = models.ImageField(upload_to='images/', null=True)
+    header_image = models.ImageField(upload_to='header/', null=True)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
 
@@ -55,6 +55,14 @@ class Comment(models.Model):
         return self.entry
 
     class Meta:
-        ordering = ['created_on']
+        ordering = ['-created_on']
         verbose_name = 'Comment'
         verbose_name_plural = 'Comments'
+
+
+class ArticleImage(models.Model):
+    image = models.ImageField(upload_to='images/', null=True)
+    description = models.TextField(max_length=255)
+    article = models.ForeignKey(Article,
+                               on_delete=models.CASCADE,
+                               related_name="images")

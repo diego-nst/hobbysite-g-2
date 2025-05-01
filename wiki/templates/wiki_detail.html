@@ -23,6 +23,13 @@
     <article>
         <section class = 'article'>
             <p> {{ article.entry }} </p>
+            {% if user.profile == article.author %}
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ image_form.as_p }}
+                <input type="submit" value="Submit">
+                </form>
+            {% endif %}
         </section>
 
         <section class = 'comment_entry'>
@@ -30,7 +37,7 @@
             {% if user.is_authenticated %}
                 <form method="post">
                 {% csrf_token %}
-                {{ form.as_p }}
+                {{ comment_form.as_p }}
                 <input type="submit" value="Submit">
                 </form>
             {% else %}
