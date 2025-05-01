@@ -13,7 +13,6 @@ from .forms import ThreadForm, CommentForm
 class ThreadListView(ListView):
     model = Thread
     template_name = 'thread_list.html'
-    # redirect_field_name = 'login.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -22,7 +21,6 @@ class ThreadListView(ListView):
                 author=self.request.user.profile)
             context['other_threads'] = Thread.objects.exclude(
                 author=self.request.user.profile)
-        #    context['all_threads'] = Thread.objects.all()
         context['thread_categories'] = ThreadCategory.objects.all()
         return context
 
@@ -30,8 +28,6 @@ class ThreadListView(ListView):
 class ThreadDetailView(DetailView):
     model = Thread
     template_name = 'thread_detail.html'
-    # form_class = CommentForm
-    # redirect_field_name = 'login.html'
 
     def get_success_url(self):
         return reverse_lazy('forum:thread_detail', kwargs={'pk': self.get_object().pk})
