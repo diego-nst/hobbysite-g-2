@@ -67,24 +67,26 @@
     <br><br>
 
     <div style="padding-left:20px">
-        <span style="text-align: left; width:69%; display: inline-block; vertical-align: top; font-weight: bold;">
+        <span style="text-align: left; width:49%; display: inline-block; vertical-align: top; font-weight: bold;">
             Items
         </span>
-        <span style="text-align: right; width:30%;  display: inline-block; vertical-align: top; font-weight: bold;">
+        <span style="text-align: left; width:25%;  display: inline-block; vertical-align: top; font-weight: bold;">
             Price
         </span>
-    </div>
-
-    <div style="padding-left:40px">
+        <span style="text-align: left; width:25%;  display: inline-block; vertical-align: top; font-weight: bold;">
+            Status
+        </span>
+        
         {% for p in productsList %}
-        <li>
-            <span style="text-align: left; width:69%; display: inline-block; vertical-align: top;">
+            <span style="text-align: left; width:49%; display: inline-block; vertical-align: top;">
                 <a href="{{p.get_absolute_url}}">{{p.name}}</a>
             </span>
-            <span style="text-align: right; width:30%;  display: inline-block;  vertical-align: top;">
-                ({{p.price}})
+            <span style="text-align: left; width:25%;  display: inline-block;  vertical-align: top;">
+                {{p.price}}
             </span>
-        </li>
+            <span style="text-align: left; width:25%;  display: inline-block;  vertical-align: top;">
+                {{p.price}}
+            </span>
         {% endfor %}
         <br>
     </div>
@@ -112,29 +114,25 @@ You have not put up any products for sale.
     {{ productType.description }}
     <br><br>
     <div style="padding-left:20px">
-        <span style="text-align: left; width:69%; display: inline-block; vertical-align: top; font-weight: bold;">
+        <span style="text-align: left; width:49%; display: inline-block; vertical-align: top; font-weight: bold;">
             Items
         </span>
-        <span style="text-align: right; width:30%;  display: inline-block; vertical-align: top; font-weight: bold;">
+        <span style="text-align: left; width:25%;  display: inline-block; vertical-align: top; font-weight: bold;">
             Price
         </span>
-    </div>
-    <div style="padding-left:40px">
+        <span style="text-align: left; width:25%;  display: inline-block; vertical-align: top; font-weight: bold;">
+            Status
+        </span>
         {% for p in productsList %}
-        <li>
-            <span style="text-align: left; width:69%; display: inline-block; vertical-align: top;">
+            <span style="text-align: left; width:49%; display: inline-block; vertical-align: top;">
                 <a href="{{p.get_absolute_url}}">{{p.name}}</a>
             </span>
-
-            <span style="text-align: right; width:30%;  display: inline-block;  vertical-align: top;">
-                ({{p.price}})
+            <span style="text-align: left; width:25%;  display: inline-block;  vertical-align: top;">
+                {{p.price}}
             </span>
-            <!--
-                The code snippet above makes use of
-                https://stackoverflow.com/questions/12438339/how-may-i-align-text-to-the-left-and-text-to-the-right-in-the-same-line
-                for formatting purposes.
-            -->
-        </li>
+            <span style="text-align: left; width:25%;  display: inline-block;  vertical-align: top;">
+                {{p.price}}
+            </span>
         {% endfor %}
     </div>
     <br>

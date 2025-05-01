@@ -56,14 +56,10 @@ class ProductListView(ListView):
         context['form'] = CreateTransactionForm()
         return context
 
-
 class ProductDetailView(DetailView):
     model = Product
     template_name = 'productDetail.html'
     form_class = CreateTransactionForm
-
-    def get_success_url(self):
-        return redirect(reverse('merchstore:cart'))
 
     def get_context_data(self, **kwargs):
         pk = self.kwargs['pk']
@@ -81,10 +77,9 @@ class ProductDetailView(DetailView):
             t.product = Product.objects.get(pk=pk)
             t.status = 'IN_CART'
             if ((t.amount <= 0)):
-                print("You must add at least 1 item to cart.")
+                print('Error. At least one item must be added to cart.')
             if ((t.product.stock - t.amount) < 0):
-                print('Please input a number greater than or equal to the remaining stock.')
-                # im thinking of having this message show up on the webpage
+                print('Error. The quantity given is creater than the remaining stock')
             else:
                 t.product.stock = t.product.stock - t.amount
                 if (t.product.stock == 0):
@@ -92,8 +87,6 @@ class ProductDetailView(DetailView):
             t.product.save()
             t.save()
             return redirect(reverse('merchstore:cart'))
-            return self.get(request, *args, **kwargs)
-       
         else:
             print('The Transaction form submission was invalid.')
             print(form.errors)
