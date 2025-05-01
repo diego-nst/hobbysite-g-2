@@ -1,68 +1,18 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %} Blogs {% endblock %}
 
-{% block styles %}
-<style>
-    @import
-    url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
-    @font-face {
-    font-family: "Nunito Sans", sans-serif;
-src: url("nunito-sans.woff2") format("woff2 supports variations"),
-     url("nunito-sans.woff2") format("woff2-variations");
-font-weight: 200 1000;
-} 
-a{
-    text-decoration:none;
-    font-family: Nunito Sans;
-    color: white;
-}
-a:visited{
-    color:black;
-    text-decoration: underline;
-}
-a:hover{
-    color:darkgreen;
-}
-a:focus{
-    color:black;
-}
-a:active{
-    color:black;
-}
-body{
-    background-color: #89CC04;
-    margin: 3rem;
-    color: black;
-}
-h2, h4, h5, p{
-    font-family: Nunito Sans;
-    color: black;
-}
-button{
-    background-color: darkolivegreen;
-    color:black;
-}
-hr{
-    border-color: black
-}
-.headcontent{
-    display:grid;
-    grid-template-rows: 2rem, 0.1rem;
-    margin: 2rem, 0.5rem, 2rem, 2rem;
- 
-}
-
-</style>
-{% endblock %}
 
 {% block content %}
 
 <div class="headcontent">
     <div>
+        <img src="{{ article.header_image.url }}">
         <h2>{{ article.title }}</h2> 
-        <h5 style="font-size:0.75rem; font-weight: 500"> {{ article.category }} </h5>
-        <h5 style="font-size:0.75rem; font-weight: 500"> {{ article.category.description }} </h5>
+        <h4> Category: {{ article.category }} </h5>
+        <p> {{ article.category.description }} </p>
+        <h3> Created by {{article.author.display_name}}</h3>
     </div>
     <p>
         Created on: {{ article.created_on }}<br>
@@ -75,9 +25,53 @@ hr{
     </p>
     <a href="{% url 'blog:article_list' %}">
     <button type="Submit"><p>Back</p></button></a>
-    
-    <hr>
-    <h4>Song of the day</h4>
+    {% if user.profile == article.author %}
+    <a href="{% url 'blog:article_update' article.pk%}">
+    <button type="Submit"><p>Update Information</p></button></a>
+    {% endif %}
 
-    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/19RybK6XDbAVpcdxSbZL1o?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    
+
+    <section class="comment_post">
+        {% if user.is_authenticated %}
+            <h3> Leave a comment! </h3>
+            <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Submit">
+            </form>
+        {% else %}
+            <h3> Login to post a comment!</h3>
+         {% endif %}
+    </section>
+
+    <section class="comments_display">
+        <h3>Comments</h3>
+        <div class="comments_row">
+            {% for comment in article.comment_set.all %}
+                <div class="comments">
+                    <h4>{{ comment.author }} at {{ comment.created_on }} </h4>
+                    <p>{{ comment.entry }}</p>
+                </div>
+            {% empty %}
+                <p>No comments yet.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="other_articles">
+        <div>
+            <h3>Check out this author's other articles!</h3>
+            <ol>
+                {% for article in read_more %}
+                    <li><a href='{{article.get_absolute_url }}'>{{article.title}}</a></li>
+                {% endfor %}
+            </ol>
+        
+        </div>
+    </section>
+
+    <a href="{% url 'blog:article_list' %}">
+    <button type="Submit"><p>Back to Blog List</p></button></a>
+    
 {% endblock %}
