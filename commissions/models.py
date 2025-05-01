@@ -15,10 +15,12 @@ class Commission(models.Model):
         COMPLETED: "Completed",
         DISCONTINUED: "Discountinued",
     }
-    author = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='commissions',null=True)
+    author = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, related_name='commissions', null=True)
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True)
-    status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=OPEN)
+    status = models.CharField(
+        max_length=1, choices=STATUS_CHOICES, default=OPEN)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -29,7 +31,7 @@ class Commission(models.Model):
         return reverse('commissions:commission-detail', args=[self.pk])
 
     class Meta():
-        ordering = ['status','created']
+        ordering = ['status', 'created']
         verbose_name = "Commission"
 
 
@@ -45,13 +47,14 @@ class Job(models.Model):
     role = models.TextField(blank=True)
     manpowerRequired = models.IntegerField(
         default=1, validators=[MinValueValidator(1)])
-    status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=OPEN)
-    
+    status = models.CharField(
+        max_length=1, choices=STATUS_CHOICES, default=OPEN)
+
     def __str__(self):
         return self.role
 
     class Meta():
-        ordering = ['status','-manpowerRequired']
+        ordering = ['status', '-manpowerRequired']
         verbose_name = "Job"
 
 
@@ -64,15 +67,17 @@ class JobApplication(models.Model):
         ACCEPTED: "Accepted",
         REJECTED: "Rejected",
     }
-    job = models.ForeignKey(Job, on_delete=models.CASCADE, related_name='applications')
-    applicant = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='job_applications')
-    status = models.CharField(max_length=1,choices=STATUS_CHOICES,default=PENDING)
+    job = models.ForeignKey(Job, on_delete=models.CASCADE,
+                            related_name='applications')
+    applicant = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, related_name='job_applications')
+    status = models.CharField(
+        max_length=1, choices=STATUS_CHOICES, default=PENDING)
     appliedOn = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.job.role
 
     class Meta():
-        ordering = ['status','-appliedOn']
+        ordering = ['status', '-appliedOn']
         verbose_name = "Job Application"
-        
