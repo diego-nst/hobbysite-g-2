@@ -23,12 +23,14 @@ class ProductType(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
-    price = models.DecimalField(max_digits=100, decimal_places=2)
+    price = models.DecimalField(max_digits=100, 
+                                decimal_places=2, 
+                                default=1)
     productType = models.ForeignKey(ProductType,
                                     on_delete=models.SET_NULL,
                                     related_name='products',
                                     null=True)
-    stock = models.IntegerField(default=-99)
+    stock = models.IntegerField(default=1)
     owner = models.ForeignKey(Profile,
                               on_delete=models.CASCADE,
                               related_name='products',
@@ -70,7 +72,7 @@ class Transaction(models.Model):
                                 null=True,
                                 on_delete=models.SET_NULL,
                                 related_name='transactions')
-    amount = models.IntegerField(default=0)
+    amount = models.IntegerField(default=1)
     created_on = models.DateTimeField(auto_now_add=True, null=True)
     
     STATUS_CHOICES = {

@@ -5,7 +5,6 @@ from .models import Product, ProductType, Transaction
 class ProductInLine(admin.TabularInline):
     model = Product
 
-
 class ProductTypeAdmin(admin.ModelAdmin):
     model = ProductType
     inlines = [ProductInLine]

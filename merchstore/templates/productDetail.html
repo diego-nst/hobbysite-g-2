@@ -67,17 +67,21 @@
 
     <form method="post">
         {% csrf_token %}
-        {{ form }}
-
-        {% if object.stock <= 0 %}
-            Sorry, this item is out of stock.
-        {% elif user.profile == object.owner %}
-            You are the owner of this product.
+        <label for="amount">
+            <span>Amount: </span>
+            <input type="number" id="amount" name="amount" min="1">
+        </label>
+        {% if user.profile == object.owner %}
+            <input type="submit" value="Add to cart" disabled="True">
+            <br> You are the owner of this product. 
+        {% elif object.stock == 0 or object.stock < 0 %}
+            <input type="submit" value="Add to cart" disabled="True">
+            <br> Sorry, this product is currently out of stock.
         {% else %}
             <input type="submit" value="Add to cart">
         {% endif %}
-        
     </form>
+    
 
     <span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
         Price:

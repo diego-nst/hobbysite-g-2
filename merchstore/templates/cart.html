@@ -53,50 +53,49 @@
 
 {% if user.is_authenticated%}
 
-    <h2>
-        Your Cart:
-    </h2>
+<h2>
+    Your Cart:
+</h2>
 
-    <ul style="padding-left: 0;">
-        {% for owner, productList in user_cart.items %}
-            <b> Owner: {{ owner.display_name }} </b>
-            <br><br>
+<ul style="padding-left: 0;">
+    {% for owner, transactions in user_cart.items %}
+    <b> Owner: {{ owner.display_name }} </b>
+    <br><br>
 
-            <div style="padding-left:20px">
-                <span style="text-align: left; width:59%; display: inline-block; vertical-align: top; font-weight: bold;">
-                    Items
-                </span>
-                <span style="text-align: right; width:20%;  display: inline-block; vertical-align: top; font-weight: bold;">
-                    Price per piece
-                </span>
-                <span style="text-align: right; width:20%;  display: inline-block; vertical-align: top; font-weight: bold;">
-                    Quantity
-                </span>
-            </div>
+    <div style="padding-left:20px">
+        <span style="text-align: left; width:59%; display: inline-block; vertical-align: top; font-weight: bold;">
+            Items
+        </span>
+        <span style="text-align: right; width:20%;  display: inline-block; vertical-align: top; font-weight: bold;">
+            Price per piece
+        </span>
+        <span style="text-align: right; width:20%;  display: inline-block; vertical-align: top; font-weight: bold;">
+            Quantity
+        </span>
+    </div>
 
-            <div style="padding-left:40px">
-                {% for p in productList %}
-                <li>
-                    <span style="text-align: left; width:59%; display: inline-block; vertical-align: top;">
-                        <a href="{{p.get_absolute_url}}">{{p.name}}</a>
-                    </span>
-                    <span style="text-align: right; width:20%;  display: inline-block;  vertical-align: top;">
-                        {{p.price}}
-                    </span>
-                    <span style="text-align: right; width:20%;  display: inline-block;  vertical-align: top;">
-                        {{p.stock}}
-                    </span>
-                </li>
-                {% endfor %}
-                <br>
-            </div>
+    <div style="padding-left:40px">
+        {% for t in transactions %}
+
+        <li>
+            <span style="text-align: left; width:59%; display: inline-block; vertical-align: top;">
+                <a href="{{t.product.get_absolute_url}}">{{t.product.name}}</a>
+            </span>
+            <span style="text-align: right; width:20%;  display: inline-block;  vertical-align: top;">
+                {{t.product.price}}
+            </span>
+            <span style="text-align: right; width:20%;  display: inline-block;  vertical-align: top;">
+                {{t.amount}}
+            </span>
+        </li>
         {% endfor %}
-    </ul>
+        <br>
+    </div>
+    {% endfor %}
+</ul>
 {% endif %}
-
-Song of the Day:
-<iframe style="border-radius:12px"
-    src="https://open.spotify.com/embed/track/5xspW6L8pnfE2MtsX3eDia?utm_source=generator" width="100%" height="152"
-    frameBorder="0" allowfullscreen=""
-    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+<br><br><br>
+<button type="submit">
+    <p><a href="{% url 'merchstore:product-list' %}">{{"Back to full item list"}}</a></p>
+</button>
 {% endblock %}

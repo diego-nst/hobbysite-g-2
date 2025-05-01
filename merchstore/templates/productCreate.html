@@ -62,9 +62,29 @@
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form }}
-        <button type="submit">Submit</button>
+        <!-- <label for="price">
+            <span>Price: </span>
+            <input type="number" id="price" name="price" min="1">
+        </label>
+        <label for="stock">
+            <span>Stock: </span>
+            <input type="number" id="stock" name="stock" min="1">
+        </label> -->
         <input type="hidden" name="owner" value=user>
+        <button type="submit">Submit</button>
     </form>
+
+    <!-- <form method="post">
+        {% csrf_token %}
+        <label for="price">
+            <span>Pricec: </span>
+            <input type="number" id="price" name="price" min="1">
+        </label>
+        <label for="stock">
+            <span>Stock: </span>
+            <input type="number" id="stock" name="stock" min="1">
+        </label>
+    </form> -->
 
     <br><br><br>
     <button type="submit">
