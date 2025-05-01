@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}{{commission.title}}{% endblock %}
+{% block title %}{{commission.title}} Edit{% endblock %}
 
 {% block styles %}
     
@@ -32,13 +32,16 @@
 {% block content %}
     <div style="padding-left: 15px; padding-top: 15px;">
         <h1>{{commission.title}}</h1>
-        <p><span class="indent"></span>{{commission.description}}</p>
-        <p>Author: {{commission.author}}</p>
+        <h1> Edit the Article: </h1>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" name="commission-edit" value="commission-edit" >Apply Changes</button>
+        </form>
         <p>Sum Manpower: {{sumManpower}}</p>
         <p>Open Manpower: {{openManpower}}</p>
         <p>Created on: {{commission.created}}</p>
         <p>Updated on: {{commission.updated}}</p>
-        
     </div>
     <hr>
     <h2 style="padding-left: 15px;">Jobs:</h2>
@@ -56,28 +59,26 @@
                     <p>Manpower Required: {{job.manpowerRequired}}</p>
                     {% for jobApplication in job.applications.all %}
                         <p>{{jobApplication.applicant}} - {{jobApplication.get_status_display}}</p>
+                        {% if jobApplication.status == 'A' %}
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <label for = "job">
+                                <input type="hidden" id="jobApplication" name="jobApplication" value = {{jobApplication.pk}}>
+                            </label>
+                            {{ apply_form }}
+                            <button type="submit" name="job-accept" value="job-accept" >Accept</button><button type="submit" name="job-reject" value="job-reject" >Reject</button>
+                        </form>
+                        {% endif %}
                     {% endfor %}
-                    {% if request.user.is_authenticated and job.status == "A" %}
-                    <form method="POST" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <label for = "job">
-                            <input type="hidden" id="job" name="job" value = {{job.pk}}>
-                        </label>
-                        {{ application_form }}
-                        <button type="submit">Apply</button>
-                    </form>
-                    {% else %}
-                        <button>Apply</button> 
-                    {% endif %}
                 </div>
             </div>
         </div>
         {% endfor %}
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ job_form.as_p }}
+            <button type="submit" name="job-create" value="job-create" >Make Job</button>
+        </form>
     </div>
-    {% if request.user.is_authenticated %}
-        {% if user.profile == commission.author %}
-            <div style="padding: 15px;"><a class="btn btn-primary" href="{% url 'commissions:commission-edit' commission.pk %}" role="button" style="background-color: #006992;">Edit</a></div>
-        {% endif %}
-    {% endif %}
-    <div style="padding: 15px;"><a class="btn btn-primary" href="/commissions/list" role="button" style="background-color: #006992;">Back to Detail view</a></div>
+    <div style="padding: 15px;"><a class="btn btn-primary" href="{% url 'commissions:commission-detail' commission.pk %}" role="button" style="background-color: #006992;">Return to the Commission</a></div>
 {% endblock %}
