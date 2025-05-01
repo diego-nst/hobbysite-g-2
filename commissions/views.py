@@ -108,6 +108,9 @@ class CommissionUpdateView(LoginRequiredMixin, DetailView):
                 j.role = request.POST.get('role')
                 j.manpowerRequired = request.POST.get('manpowerRequired')
                 j.save()
+                c = self.get_object()
+                c.status = 'A'
+                c.save()
                 return redirect(reverse_lazy('commissions:commission-edit', kwargs={'pk': self.get_object().pk}))
             else:
                 print("FORM IS NOT")
@@ -128,6 +131,16 @@ class CommissionUpdateView(LoginRequiredMixin, DetailView):
                 if (accepted >= j.manpowerRequired):
                     j.status = 'B'
                 j.save()
+
+                full = True
+                for job in Job.objects.filter(commission=self.get_object()):
+                    if (job.status != 'B'):
+                        full = False
+                if (full):
+                    c = self.get_object()
+                    if (c.status == 'A'):
+                        c.status = 'B'
+                    c.save()
 
                 return redirect(reverse_lazy('commissions:commission-edit', kwargs={'pk': self.get_object().pk}))
             else:
