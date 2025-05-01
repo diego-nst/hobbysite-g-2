@@ -29,10 +29,10 @@ class WikiListView(ListView):
         else:
             category_dict = dict()
             for category in ArticleCategory.objects.all():
-                list = []
+                articles = []
                 for article in category.articles.all():
-                    list.append(article)
-                category_dict[category] = list
+                    articles.append(article)
+                category_dict[category] = articles
             ctx['other_articles'] = category_dict
         return ctx
 
@@ -49,6 +49,9 @@ class WikiDetailView(DetailView):
         ctx['read_more'] = Article.objects.filter(
             category=self.object.category).exclude(pk=self.object.pk)
         ctx['form'] = CommentForm
+        comments = self.object.comment.all()
+        limit = 10
+        ctx['comments'] = comments[:limit]
         return ctx
 
     def post(self, request, *args, **kwargs):
@@ -58,11 +61,10 @@ class WikiDetailView(DetailView):
             form.instance.article = self.get_object()
             form.save()
             return redirect(self.get_success_url())
-
         else:
             ctx = self.get_context_data(**kwargs)
             ctx['form'] = form
-            return self.render_to_response(ctx)
+            return self.render_to_response(ctx)        
 
 
 class WikiCreateView(LoginRequiredMixin, CreateView):

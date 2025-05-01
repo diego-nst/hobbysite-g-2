@@ -23,17 +23,6 @@
     <article>
         <section class = 'article'>
             <p> {{ article.entry }} </p>
-            <aside>
-                {% if user.profile == article.author %}
-                    <a href="{% url 'wiki:wiki_list' %}">
-                    <button type="Submit"><p>Back to List</p></button></a>
-                    <a href="{% url 'wiki:wiki_update' article.pk%}">
-                    <button type="Submit"><p>Update Information</p></button></a>
-                {% else %}
-                    <a href="{% url 'wiki:wiki_list' %}">
-                    <button type="Submit"><p>Back to List</p></button></a>   
-                {% endif %}
-            </aside>
         </section>
 
         <section class = 'comment_entry'>
@@ -44,13 +33,15 @@
                 {{ form.as_p }}
                 <input type="submit" value="Submit">
                 </form>
-             {% endif %}
+            {% else %}
+                <p> Login to leave a comment.</p>
+            {% endif %}
         </section>
         
         <section class="comments_display">
             <h3>Comments:</h3>
             <div class="comments_row">
-                {% for comment in article.comment.all %}
+                {% for comment in comments %}
                     <div class="comments">
                         <h4>{{ comment.author }} at {{ comment.created_on }} </h4>
                         <p>{{ comment.entry }}</p>
@@ -61,12 +52,26 @@
             </div>
         </section>
 
+        <h2 style="color: #4C2E05; margin-top: 20px;">Read more:</h2>
         <section class = 'others'>
-            <h2>Read more:</h2>
-            {% for article in read_more %}
-                <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
-            {% endfor %}
+                <ol>
+                    {% for article in read_more %}
+                        <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
+                    {% endfor %}
+                </ol>
         </section>
+
+        <aside>
+            {% if user.profile == article.author %}
+                <a href="{% url 'wiki:wiki_list' %}">
+                <button type="Submit"><p>Back to List</p></button></a>
+                <a href="{% url 'wiki:wiki_update' article.pk%}">
+                <button type="Submit"><p>Update Information</p></button></a>
+            {% else %}
+                <a href="{% url 'wiki:wiki_list' %}">
+                <button type="Submit"><p>Back to List</p></button></a>   
+            {% endif %}
+        </aside>
 
 </main>
 {% endblock %}

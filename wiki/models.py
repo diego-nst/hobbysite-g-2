@@ -37,7 +37,7 @@ class Article(models.Model):
         return reverse('wiki:wiki_detail', args=[str(self.pk)])
 
     class Meta:
-        ordering = ['category']
+        ordering = ['-created_on']
         verbose_name = 'Article'
         verbose_name_plural = 'Articles'
 
@@ -55,6 +55,6 @@ class Comment(models.Model):
         return self.entry
 
     class Meta:
-        ordering = ['-created_on']
+        ordering = ['created_on']
         verbose_name = 'Comment'
         verbose_name_plural = 'Comments'
