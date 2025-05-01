@@ -70,31 +70,28 @@
         <span style="text-align: left; width:20%;  display: inline-block; vertical-align: top; font-weight: bold;">
             Start of transaction
         </span>
-    </div>
-
-    <div style="padding-left:40px">
         {% for transaction in transactionList %}
-        <li>
-            <span style="text-align: left; width:39%; display: inline-block; vertical-align: top;">
-                <a href="{{transaction.product.get_absolute_url}}">{{transaction.product.name}}</a>
-            </span>
-            <span style="text-align: left; width:20%;  display: inline-block;  vertical-align: top;">
-                {{transaction.product.price}}
-            </span>
-            <span style="text-align: left; width:20%;  display: inline-block;  vertical-align: top;">
-                {{transaction.amount}}
-            </span>
-            <span style="text-align: left; width:20%;  display: inline-block;  vertical-align: top;">
-                {{transaction.created_on}}
-            </span>
-        </li>
+        <span style="text-align: left; width:39%; display: inline-block; vertical-align: top;">
+            <a href="{{transaction.product.get_absolute_url}}">{{transaction.product.name}}</a>
+        </span>
+        <span style="text-align: left; width:20%;  display: inline-block;  vertical-align: top;">
+            {{transaction.product.price}}
+        </span>
+        <span style="text-align: left; width:20%;  display: inline-block;  vertical-align: top;">
+            {{transaction.amount}}
+        </span>
+        <span style="text-align: left; width:20%;  display: inline-block;  vertical-align: top;">
+            {{transaction.created_on}}
+        </span>
         {% endfor %}
-        <br>
+    <br>
     </div>
+    <br>
+    <hr>
+    <br>
     {% endfor %}
 </ul>
 {% endif %}
-<br><br><br>
 <button type="submit">
     <p><a href="{% url 'merchstore:product-list' %}">{{"Back to full item list"}}</a></p>
 </button>

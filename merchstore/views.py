@@ -162,14 +162,12 @@ class TransactionListView(LoginRequiredMixin, ListView):
         seller_transactions = dict()
 
         if self.request.user.is_authenticated:
-            for transaction in self.request.user.profile.transactions.all():
-                if transaction.buyer in seller_transactions:
-                    seller_transactions[transaction.buyer].append(transaction)
-                    print("a")
-                else:
-                    seller_transactions[transaction.buyer] = [transaction]
-                    print("b")
-                    print(transaction.buyer.display_name)
+            for transaction in Transaction.objects.all():
+                if transaction.product.owner==self.request.user.profile:
+                    if transaction.buyer in seller_transactions:
+                        seller_transactions[transaction.buyer].append(transaction)
+                    else:
+                        seller_transactions[transaction.buyer] = [transaction]
         context['seller_transactions'] = seller_transactions
         return context
 

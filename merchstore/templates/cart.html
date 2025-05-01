@@ -61,7 +61,6 @@
     {% for owner, transactions in user_cart.items %}
     <b> Owner: {{ owner.display_name }} </b>
     <br><br>
-
     <div style="padding-left:20px">
         <span style="text-align: left; width:59%; display: inline-block; vertical-align: top; font-weight: bold;">
             Items
@@ -72,12 +71,7 @@
         <span style="text-align: right; width:20%;  display: inline-block; vertical-align: top; font-weight: bold;">
             Quantity
         </span>
-    </div>
-
-    <div style="padding-left:40px">
         {% for t in transactions %}
-
-        <li>
             <span style="text-align: left; width:59%; display: inline-block; vertical-align: top;">
                 <a href="{{t.product.get_absolute_url}}">{{t.product.name}}</a>
             </span>
@@ -87,14 +81,15 @@
             <span style="text-align: right; width:20%;  display: inline-block;  vertical-align: top;">
                 {{t.amount}}
             </span>
-        </li>
         {% endfor %}
         <br>
     </div>
+    <br>
+    <hr>
+    <br>
     {% endfor %}
 </ul>
 {% endif %}
-<br><br><br>
 <button type="submit">
     <p><a href="{% url 'merchstore:product-list' %}">{{"Back to full item list"}}</a></p>
 </button>
