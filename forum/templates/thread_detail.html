@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ thread.title }}{% endblock %}
+{% block styles %}
+<style>
+
+h5{
+    font-family: Nunito Sans;
+    font-size:0.75rem; 
+    font-weight: 500; 
+    color:#4C2E05;
+    }
+h3{
+    color:#434d20;
+}
+h2,h4,h5, p{
+    color:#4C2E05;
+}
+
+
+.headcontent{
+    background-color:#434D20;
+    padding:1rem 1.5rem 1rem;  
+  
+}
+h1{
+    color:#FFFFE8;
+}
+
+.content{
+  
+    margin: 0rem 3rem 2rem;   
+    padding: 1rem;
+    background-color:#F8DEDF;
+    border-radius: 1rem;
+    box-shadow: 4px 4px 5px #9FA881;
+
+}
+p, h4, h5{
+    text-align: left;
+    color: #434D20;
+}
+
+.content>img{
+    width:100%;
+}
+.headcontent>p{
+    font-size: 0.7rem;
+    color:#FFFFE8;
+}
+.comment>p{
+    font-size:0.7rem;
+    color:#434D20;
+}
+.comment{
+    background-color:#F8DEDF;
+    padding: 1rem;
+    border-radius: 1rem;
+    margin: 0rem 3rem 2rem;   
+    box-shadow: 4px 4px 5px #9FA881;
+}
+.category{
+    background-color:#FFFFE8;
+    border-radius: 1rem;
+    width: 20%;
+}
+.category>h5{
+    text-align: center;
+}
+.similarthreads{
+    margin:1rem 1.5rem 0.3rem;   
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="headcontent">
+    <h1>{{ thread.title }}</h1> 
+    <div class="category">
+    <h5 style="padding:0.5rem; width=100%;"><b> {{ thread.category }} </b></h5>
+    </div>
+    <p>By:
+    {% if object.author %}
+         {{ object.author.display_name }}
+    {% endif %}
+    <br>
+        Created on: {{ thread.created_on }}<br>
+        Last Updated: {{ thread.updated_on }}
+    </p>
+</div>
+<br><br>
+    
+<div class="content">
+    <p>
+        {{ thread.entry }}
+    </p>
+
+    {% if object.image %}
+    <img src="{{ object.image.url }}" alt="">
+    {% endif %}
+</div>
+
+{% if user.is_authenticated %}
+    {% if thread.author == loggedin_user %}
+        <a href="{{ thread.get_absolute_url}}/edit"><button type="Submit">Edit</button></a>
+    {% endif %} 
+
+{% endif %}
+<hr class="newhr2">
+<h3 style="margin: 1.5rem;">Comments</h3>
+<div class="comment">
+    
+{% if thread.comments.all %}
+        {% for comment in thread.comments.all %}
+            <h4>{{ comment.author.display_name }}</h4>
+            <h5>{{ comment.entry }}</h5>
+            <p>
+            Created on: {{ comment.created_on }}
+            <br>
+            Updated on: {{ comment.updated_on }}</p><br><hr class="newhr2">
+    {% endfor %}
+{% else %}
+    <h5>No comments yet</h5>
+    <hr class="newhr2">
+{% endif %}
+{% if user.is_authenticated %}
+<h3>Leave a reply</h3>
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form }}<br>
+    <button type="submit" value="Submit">Submit</button>
+</form>
+</div>
+
+<div class="buttons">
+    <form method="POST" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit">Logout</button>
+    </form>
+    <a href="{% url 'forum:thread_list' %}">
+        <button type="Submit">Home</button></a><br>  
+</div><br>
+    
+{% else %}
+</div>
+    <a href="{% url 'login' %}"><button type="Submit">Log In</button></a>
+    <a href="{% url 'forum:thread_list' %}">
+        <button type="Submit">Home</button></a><br>  
+    {% endif %}
+    
+   
+
+<hr class="newhr2">
+<div class="similarthreads">
+<h3>Similar threads you may like:</h3>
+{% if thread.category %}
+    {% for post in thread.category.threads.all|slice:":3" %}
+        {% if post != thread %}
+        <a href="{{ post.get_absolute_url }}">{{ post.title }}</a><br><br>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+</div>
+<hr class="newhr2">
+<footer>
+    <h4>Song of the day</h4>
+    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/2ADSh3Mp744n2586tpUtIW?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></footer>
+   
+
+{% endblock %}

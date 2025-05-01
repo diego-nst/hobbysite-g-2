@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %} Forum {% endblock %}
+{% block styles %}
+<style>
+section{
+    background-color:#434d20;
+    width=device-width;
+}
+h2{
+    color: #FFFFE8;
+}
+.threadslist{
+    padding: 2rem;
+    background-color:#F8DEDF;
+    border-radius: 2rem;
+    margin:1rem 3.5rem;
+    box-shadow: 4px 4px 5px #9FA881;
+} 
+.threadslist > h2, h3, p{
+    color: #434d20;
+    text-align:left;
+}
+
+.threadscontent{
+    padding: 0rem 1rem;
+}
+.login{
+    margin: 2rem; 
+    line-height:0.5rem; 
+    color:#434D20;
+}
+.login>p{
+    text-align: center;
+}
+.navigation{
+ 
+    display: flex;
+    width: 100%;
+    flex-flow: row wrap;
+    gap: 1.5rem;
+    flex-direction: row-reverse; 
+  }
+ navigation>a{
+    text-decoration:none;
+    font-weight: 600;
+    color:#434d20;
+}
+.navigation>a:visited{
+    color:#434d20;
+    font-weight: 600;
+   
+}
+.navigation>a:hover{
+    color:#9FA881;
+    font-weight: 800;
+  
+}
+.navigation>a:focus{
+    color:#434d20;
+    font-weight: 600;
+  
+}
+.navigation>a:active{
+    color:#434d20;
+    font-weight: 600;
+
+} 
+  .navsticky{
+    position: sticky;
+    top: 0;
+    background-color: #FFFFE8;
+    border-bottom: 2px dashed #9FA881;
+    padding: 10px;
+
+}
+.newhr1{
+    border: 1.5px dashed #9FA881;
+}
+.newhr2{
+    border: 0.5px dashed #9FA881;
+}
+
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<section style="display:flex; justify-content:center">
+    <h2 style="font-size:2rem">Forum</h2>
+</section>
+<div class="navsticky">
+    <div class="navigation">
+     {% for category in thread_categories %}
+        <a href="#{{ category.name }}"><h5>{{ category.name }}</h5></a>
+     {% endfor %}
+    </div>
+</div><br><br>
+
+{% if user.is_authenticated %}
+
+<section class="threadslist">
+    <h2>Your Threads</h2>
+    <hr class="newhr2"><br>
+    <div class="threadscontent">
+    {% if user_threads %}
+    {% for thread in user_threads %}
+    <a href="{{ thread.get_absolute_url }}">{{ thread.title }}</a><br><br>
+    {% endfor %}
+    {% else %}
+        <p>No threads yet</p>
+    {% endif %}
+    </div>
+
+    <br><h2>All Threads</h2>
+    <hr class="newhr2">
+    <div class="threadscontent">
+    {% for category in thread_categories %}
+    <br><h3>{{ category.name }}</h3>
+    {% if category.threads.all %}
+        {% for thread in category.threads.all %}
+            {% if thread in other_threads %}
+            <a href="{{ thread.get_absolute_url }}">{{ thread.title }}</a><br><br>
+            {% endif %}
+        {% endfor %}
+        {% else %}
+        <p>No threads yet</p>
+    {% endif %} 
+    {% endfor %}
+    </div>
+
+</section>
+
+<br>
+<div class="buttons">
+<br><a href="{% url 'forum:thread-create' %}">
+    <button type="Submit">Add Thread</button></a>
+
+<form method="POST"action="{% url 'logout' %}">
+{% csrf_token %}
+<button type="submit">Logout</button>
+</form>
+</div>
+
+{% else %}
+<section class="threadslist">
+    <h2>All Threads</h2>
+    <hr class="newhr2">
+    <div class="threadscontent">
+    {% for category in thread_categories %}
+    <a id="{{ category.name }}"></a>
+    <br><h3>{{ category.name }}</h3>
+    {% if category.threads.all %}
+        {% for thread in category.threads.all %}
+            <a href="{{ thread.get_absolute_url }}">{{ thread.title }}</a><br><br><br>
+        {% endfor %}
+    {% else %}
+    <p>No threads yet </p>
+    {% endif %} 
+    {% endfor %}
+    </div>
+
+</section>
+
+<div class="login">
+<p><a href="{% url 'login' %}"><strong>Log in</strong></a> to add your own Thread</p>
+</div>
+{% endif %}  
+
+<hr class="newhr1">
+<footer>
+	<h4>Song of the day</h4>
+    <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/2ADSh3Mp744n2586tpUtIW?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+{% endblock %}
