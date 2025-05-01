@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+<title>{% block title %} Your Cart % {% endblock %}</title>
+
+{% block styles %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+
+    @font-face {
+        font-family: "Nunito Sans", sans-serif;
+        src: url("nunito-sans.woff2") format("woff2 supports variations"),
+            url("nunito-sans.woff2") format("woff2-variations");
+        font-weight: 200 1000;
+    }
+
+    a {
+        text-decoration: none;
+        font-family: "Nunito Sans";
+        color: black;
+    }
+
+    a:visited {
+        color: black;
+    }
+
+    a:hover {
+        font-style: italic
+    }
+
+    a:focus {
+        color: black;
+    }
+
+    a:active {
+        color: black;
+    }
+
+    body {
+        font-family: "Nunito Sans";
+        background-color: whitesmoke;
+        margin: 3rem;
+        color: black;
+    }
+
+    /* button {
+        background-color: orange;
+        color: black;
+    } */
+</style>
+{% endblock %}
+
+{% block content %}
+
+{% if user.is_authenticated%}
+
+<h2>
+    Your Cart:
+</h2>
+
+<ul style="padding-left: 0;">
+    {% for owner, transactions in user_cart.items %}
+    <b> Owner: {{ owner.display_name }} </b>
+    <br><br>
+    <div style="padding-left:20px">
+        <span style="text-align: left; width:59%; display: inline-block; vertical-align: top; font-weight: bold;">
+            Items
+        </span>
+        <span style="text-align: right; width:20%;  display: inline-block; vertical-align: top; font-weight: bold;">
+            Price per piece
+        </span>
+        <span style="text-align: right; width:20%;  display: inline-block; vertical-align: top; font-weight: bold;">
+            Quantity
+        </span>
+        {% for t in transactions %}
+            <span style="text-align: left; width:59%; display: inline-block; vertical-align: top;">
+                <a href="{{t.product.get_absolute_url}}">{{t.product.name}}</a>
+            </span>
+            <span style="text-align: right; width:20%;  display: inline-block;  vertical-align: top;">
+                {{t.product.price}}
+            </span>
+            <span style="text-align: right; width:20%;  display: inline-block;  vertical-align: top;">
+                {{t.amount}}
+            </span>
+        {% endfor %}
+        <br>
+    </div>
+    <br>
+    <hr>
+    <br>
+    {% endfor %}
+</ul>
+{% endif %}
+<button type="submit">
+    <p><a href="{% url 'merchstore:product-list' %}">{{"Back to full item list"}}</a></p>
+</button>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<head>
+
+    <title>{% block title %} Update Product {{object.name}}{% endblock %}</title>
+
+    {% block styles %}
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+
+        @font-face {
+            font-family: "Nunito Sans", sans-serif;
+            src: url("nunito-sans.woff2") format("woff2 supports variations"),
+                url("nunito-sans.woff2") format("woff2-variations");
+            font-weight: 200 1000;
+        }
+
+        a {
+            text-decoration: none;
+            font-family: "Nunito Sans";
+            color: black;
+        }
+
+        a:visited {
+            color: black;
+        }
+
+        a:hover {
+            font-style: italic;
+        }
+
+        a:focus {
+            color: black;
+        }
+
+        a:active {
+            color: black;
+        }
+
+        body {
+            font-family: "Nunito Sans";
+            background-color: whitesmoke;
+            margin: 3rem;
+            color: black;
+        }
+
+        button {
+            background-color: grey;
+            color: black;
+        }
+    </style>
+    {% endblock %}
+
+</head>
+
+{% block content %}
+
+<body>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit">Submit</button>
+    </form>
+
+    <br><br><br>
+    <button type="submit">
+        <p><a href="{% url 'merchstore:product-list' %}">{{"Back to full item list"}}</a></p>
+    </button>
+
+</body>
+
+{% endblock %}

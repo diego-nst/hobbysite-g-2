@@ -29,7 +29,7 @@
         }
 
         a:hover {
-            font-style: italic
+            font-style: italic;
         }
 
         a:focus {
@@ -65,6 +65,24 @@
         <hr>
     </h1>
 
+    <form method="post">
+        {% csrf_token %}
+        <label for="amount">
+            <span>Amount: </span>
+            <input type="number" id="amount" name="amount" min="1">
+        </label>
+        {% if user.profile == object.owner %}
+            <input type="submit" value="Add to cart" disabled="True">
+            <br> You are the owner of this product. 
+        {% elif object.stock == 0 or object.stock < 0 %}
+            <input type="submit" value="Add to cart" disabled="True">
+            <br> Sorry, this product is currently out of stock.
+        {% else %}
+            <input type="submit" value="Add to cart">
+        {% endif %}
+    </form>
+    
+
     <span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
         Price:
     </span>
@@ -80,10 +98,31 @@
     </span>
 
     <span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
+        Stock:
+    </span>
+    <span style="text-align: left; width:70%;  display: inline-block;">
+        {{object.stock}}
+    </span>
+
+    <span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
+        Status:
+    </span>
+    <span style="text-align: left; width:70%;  display: inline-block;">
+        {{object.status}}
+    </span>
+
+    <span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
         Description:
     </span>
     <span style="text-align: left; width:70%;  display: inline-block;">
         {{object.description}}
+    </span>
+
+    <span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
+        Seller:
+    </span>
+    <span style="text-align: left; width:70%;  display: inline-block;">
+        {{object.owner}}
     </span>
 
     <!--
@@ -97,13 +136,15 @@
         <p><a href="{% url 'merchstore:product-list' %}">{{"Back to full item list"}}</a></p>
     </button>
 
-    <br><br>
-    Song of the Day:
-    <iframe style="border-radius:12px"
-        src="https://open.spotify.com/embed/track/5xspW6L8pnfE2MtsX3eDia?utm_source=generator" width="100%" height="152"
-        frameBorder="0" allowfullscreen=""
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
 
+    {% if user.profile == object.owner %}
+    <br><br>
+    <button type="submit">
+        <p><a href="{% url 'merchstore:update-product' pk=object.pk %}">{{"Update your product listing"}}</a></p>
+    </button>
+    {% endif %}
+
+    <br><br>
     {% endblock %}
 
 </body>
