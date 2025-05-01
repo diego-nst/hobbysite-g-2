@@ -48,7 +48,7 @@ class BlogDetailView(DetailView):
     template_name = 'blog_detail.html'
 
     def get_success_url(self):
-        return reverse_lazy('blog:blog_detail', kwargs={'pk': self.get_object().pk})
+        return reverse_lazy('blog:article_detail', kwargs={'pk': self.get_object().pk})
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
