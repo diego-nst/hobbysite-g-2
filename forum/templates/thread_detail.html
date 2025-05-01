@@ -12,7 +12,6 @@ h5{
     }
 h3{
     color:#434d20;
-    {% comment %} margin:1rem; {% endcomment %}
 }
 h2,h4,h5, p{
     color:#4C2E05;
@@ -20,10 +19,6 @@ h2,h4,h5, p{
 
 
 .headcontent{
-    {% comment %} display:grid;
-    grid-template-rows: 2rem, 0.1rem; {% endcomment %}
-    {% comment %} margin: 2rem, 0.5rem, 2rem, 2rem; {% endcomment %}
-    {% comment %} margin: 1rem; {% endcomment %}
     background-color:#434D20;
     padding:1rem 1.5rem 1rem;  
   
@@ -36,11 +31,8 @@ h1{
   
     margin: 0rem 3rem 2rem;   
     padding: 1rem;
-    {% comment %} background-color:#FFFFE8; {% endcomment %}
     background-color:#F8DEDF;
     border-radius: 1rem;
-    {% comment %} border-bottom: 2px solid #E9839D;
-    border-right: 2px solid #E9839D; {% endcomment %}
     box-shadow: 4px 4px 5px #9FA881;
 
 }
@@ -71,8 +63,6 @@ p, h4, h5{
     background-color:#FFFFE8;
     border-radius: 1rem;
     width: 20%;
-    {% comment %} padding: 0rem 0.5rem;
-    margin:0.1rem; {% endcomment %}
 }
 .category>h5{
     text-align: center;
@@ -113,33 +103,11 @@ p, h4, h5{
 </div>
 
 {% if user.is_authenticated %}
-
-
-
-{% comment %} <p>{{ loggedin_user }}</p> {% endcomment %}
     {% if thread.author == loggedin_user %}
         <a href="{{ thread.get_absolute_url}}/edit"><button type="Submit">Edit</button></a>
     {% endif %} 
 
-
 {% endif %}
-{% comment %} <div class="buttons">
-<form method="POST" action="{% url 'logout' %}">
-{% csrf_token %}
-<button type="submit">Logout</button>
-</form>
-
-{% else %}
-<a href="{% url 'login' %}"><button type="Submit">Log In</button></a>
-{% endif %}
-<a href="{% url 'forum:thread_list' %}">
-<button type="Submit">Home</button></a><br>  
-</div> {% endcomment %}
-
- {% comment %} if user is the author, allow edit {% endcomment %}
-
-   
-{% comment %} show the comments of the thread {% endcomment %}
 <hr class="newhr2">
 <h3 style="margin: 1.5rem;">Comments</h3>
 <div class="comment">
@@ -157,14 +125,6 @@ p, h4, h5{
     <h5>No comments yet</h5>
     <hr class="newhr2">
 {% endif %}
-
-{% comment %} make a form to add a comment {% endcomment %}
-
-{% comment %} <form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    <label for=""
-    <button type="submit" value="Submit">Submit</button>
-</form> {% endcomment %}
 {% if user.is_authenticated %}
 <h3>Leave a reply</h3>
 <form method="POST" enctype="multipart/form-data">
@@ -172,10 +132,6 @@ p, h4, h5{
     {{ form }}<br>
     <button type="submit" value="Submit">Submit</button>
 </form>
-{% comment %} {% else %}
-<a href="{% url 'login' %}">Log in to access</a> {% endcomment %}
-
-
 </div>
 
 <div class="buttons">
@@ -197,14 +153,8 @@ p, h4, h5{
    
 
 <hr class="newhr2">
-{% comment %} show two more posts from the same category {% endcomment %}
 <div class="similarthreads">
 <h3>Similar threads you may like:</h3>
-{% comment %} {% if thread.category %}
-    {% for post in thread.category.threads.all %}
-        <a href="{{ post.get_absolute_url }}">{{ post.title }} - {{ post.category }} - {{ post.author }} <br></a>
-    {% endfor %}
-{% endif %}  {% endcomment %}
 {% if thread.category %}
     {% for post in thread.category.threads.all|slice:":3" %}
         {% if post != thread %}

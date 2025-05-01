@@ -59,7 +59,6 @@ class ThreadCreateView(LoginRequiredMixin, CreateView):
     template_name = 'thread_form.html'
 
     def get_success_url(self):
-        # return reverse_lazy('forum:thread_detail', kwargs={'pk': self.object.pk})
         return reverse_lazy('forum:thread_list')
 
     def get_context_data(self, **kwargs):
@@ -83,7 +82,6 @@ class ThreadCreateView(LoginRequiredMixin, CreateView):
 class ThreadUpdateView(LoginRequiredMixin, UpdateView):
     model = Thread
     form_class = ThreadForm
-    # form_class = ThreadUpdateForm
     template_name = 'thread_form.html'
 
     def get_success_url(self):

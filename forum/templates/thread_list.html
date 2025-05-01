@@ -3,9 +3,6 @@
 
 
 {% block title %} Forum {% endblock %}
-{% comment %} <link rel="stylesheet" href="{% static 'css/main.css' %}" type="text/css"> {% endcomment %}
-
-
 {% block styles %}
 <style>
 section{
@@ -18,10 +15,8 @@ h2{
 .threadslist{
     padding: 2rem;
     background-color:#F8DEDF;
-    {% comment %} color:#4C2E05; {% endcomment %}
     border-radius: 2rem;
     margin:1rem 3.5rem;
-    {% comment %} border: 3px dashed #9FA881; {% endcomment %}
     box-shadow: 4px 4px 5px #9FA881;
 } 
 .threadslist > h2, h3, p{
@@ -46,7 +41,6 @@ h2{
     width: 100%;
     flex-flow: row wrap;
     gap: 1.5rem;
-    {% comment %} padding: 2rem 1rem 1rem; {% endcomment %}
     flex-direction: row-reverse; 
   }
  navigation>a{
@@ -78,8 +72,6 @@ h2{
     position: sticky;
     top: 0;
     background-color: #FFFFE8;
-    {% comment %} border-bottom: 1px solid white; {% endcomment %}
-    {% comment %} border-top: 3px dashed #9FA881; {% endcomment %}
     border-bottom: 2px dashed #9FA881;
     padding: 10px;
 
@@ -102,11 +94,6 @@ h2{
 </section>
 <div class="navsticky">
     <div class="navigation">
-      {% comment %} <a href="#GayPop">Pop</a>
-    <a href="#GayYearning">Yearning</a> 
-     <a href="#Redflag">Red Flag</a> 
-     <a href="#Opm"> OPM</a> 
-     <a href="#Kpop">Kpop</a> {% endcomment %}
      {% for category in thread_categories %}
         <a href="#{{ category.name }}"><h5>{{ category.name }}</h5></a>
      {% endfor %}
@@ -119,22 +106,20 @@ h2{
     <h2>Your Threads</h2>
     <hr class="newhr2"><br>
     <div class="threadscontent">
+    {% if user_threads %}
     {% for thread in user_threads %}
     <a href="{{ thread.get_absolute_url }}">{{ thread.title }}</a><br><br>
     {% endfor %}
+    {% else %}
+        <p>No threads yet</p>
+    {% endif %}
     </div>
-
-    {% comment %} <br><h3>All Threads</h3>
-    {% for other_thread in other_threads %}
-    <a href="{{ other_thread.get_absolute_url }}">{{ other_thread.title }} - {{ other_thread.category }}</a><br><br>
-    {% endfor %}  {% endcomment %}
 
     <br><h2>All Threads</h2>
     <hr class="newhr2">
     <div class="threadscontent">
     {% for category in thread_categories %}
     <br><h3>{{ category.name }}</h3>
-    {% comment %} <p>{{ category.threads.all }}</p> {% endcomment %}
     {% if category.threads.all %}
         {% for thread in category.threads.all %}
             {% if thread in other_threads %}
@@ -146,10 +131,6 @@ h2{
     {% endif %} 
     {% endfor %}
     </div>
-
-
-
-
 
 </section>
 
@@ -164,13 +145,8 @@ h2{
 </form>
 </div>
 
-
 {% else %}
 <section class="threadslist">
-{% comment %} {% for thread in thread_list %}
-    <br><a href="{{ thread.get_absolute_url}}"> {{ thread.title }} - {{ thread.category }}</a><br>
-    {% endfor %}   {% endcomment %}
-
     <h2>All Threads</h2>
     <hr class="newhr2">
     <div class="threadscontent">
@@ -178,11 +154,9 @@ h2{
     <a id="{{ category.name }}"></a>
     <br><h3>{{ category.name }}</h3>
     {% if category.threads.all %}
-    {% comment %} {% if category.threads.all %} {% endcomment %}
         {% for thread in category.threads.all %}
             <a href="{{ thread.get_absolute_url }}">{{ thread.title }}</a><br><br><br>
         {% endfor %}
-    {% comment %} {% endif %} {% endcomment %}
     {% else %}
     <p>No threads yet </p>
     {% endif %} 
@@ -191,36 +165,11 @@ h2{
 
 </section>
 
-
-
-
 <div class="login">
 <p><a href="{% url 'login' %}"><strong>Log in</strong></a> to add your own Thread</p>
 </div>
 {% endif %}  
 
-{% comment %} <div class="threadslist">
-   
- {% for thread in thread_list %}
-        <br><a href="{{ thread.get_absolute_url}}"> {{ thread.title }} - {{ thread.category }}</a><br>
-    {% endfor %}   
-
-    {% for thread in user_threads %}
-    <br><a href="{{ thread.get_absolute_url }}">{{ thread.title }} - {{ thread.category }}- {{ thread.author }}</a><br>
-    {% endfor %}
-
-    {% for other_thread in other_threads %}
-    <br><a href="{{ other_thread.get_absolute_url }}">{{ other_thread.title }} - {{ other_thread.category }} - {{ other_thread.author }}</a><br>
-    {% endfor %} 
-    
-   
-
-    
-    <br><a href="{% url 'forum:thread-create' %}">
-        <button type="Submit">Add Thread</button></a>
-
-  
-</div> {% endcomment %}
 <hr class="newhr1">
 <footer>
 	<h4>Song of the day</h4>
