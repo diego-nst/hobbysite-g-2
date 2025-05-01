@@ -25,9 +25,6 @@
     </p>
     <a href="{% url 'blog:article_list' %}">
     <button type="Submit"><p>Back</p></button></a>
-    
-    <hr>
-
     {% if user.profile == article.author %}
     <a href="{% url 'blog:article_update' article.pk%}">
     <button type="Submit"><p>Update Information</p></button></a>
