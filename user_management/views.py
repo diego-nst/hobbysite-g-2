@@ -1,3 +1,56 @@
 from django.shortcuts import render
+from django.views.generic import TemplateView
+from django.views.generic import UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from commissions.models import Commission, JobApplication
+from blog.models import Article as BlogArticle
+from merchstore.models import Product, ProductType, Transaction
+from forum.models import Thread
+from wiki.models import Article as WikiArticle
+from .models import Profile
+from .forms import ProfileForm
 
-# Create your views here.
+class UpdateProfile(UpdateView, LoginRequiredMixin):
+    model = Profile
+    form = ProfileForm
+    template_name = "user_management/profile.html"
+    fields = ['display_name', 'email']
+
+
+
+class DashboardView(TemplateView):
+    template_name = "user_management/dashboard.html"
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+
+        if (self.request.user.is_authenticated):
+            user_cart = dict()
+            for transaction in self.request.user.profile.transactions.all():
+                if transaction.product.owner in user_cart:
+                    user_cart[transaction.product.owner].append(transaction)
+                else:
+                    user_cart[transaction.product.owner] = [transaction]
+            seller_transactions = dict()
+            for transaction in Transaction.objects.all():
+                if transaction.product.owner==self.request.user.profile:
+                    if transaction.buyer in seller_transactions:
+                        seller_transactions[transaction.buyer].append(transaction)
+                    else:
+                        seller_transactions[transaction.buyer] = [transaction]
+            ctx['seller_transactions'] = seller_transactions
+            ctx['user_cart'] = user_cart
+            ctx['blog_articles'] = BlogArticle.objects.filter(
+                author=self.request.user.profile)
+            ctx['user_threads'] = Thread.objects.filter(
+                author=self.request.user.profile)
+            ctx['wiki_articles'] = WikiArticle.objects.filter(
+                author=self.request.user.profile)
+            applied = set()
+            for application in JobApplication.objects.filter(applicant=self.request.user.profile):
+                applied.add(application.job.commission)
+            ctx['created_commissions'] = Commission.objects.filter(
+                author=self.request.user.profile)
+            ctx['applied_commissions'] = applied
+
+        return ctx

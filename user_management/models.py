@@ -9,6 +9,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     display_name = models.CharField(max_length=63)
     email = models.EmailField()
+    slug = models.SlugField(default="", null=False)
 
     def __str__(self):
         return self.display_name
