@@ -3,9 +3,8 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-# remove these?
-from django.urls import reverse_lazy, reverse
-from django.shortcuts import render, redirect
+from django.urls import reverse
+from django.shortcuts import redirect
 
 from .models import Product, ProductType, Transaction
 from .forms import CreateTransactionForm, CreateProductForm, UpdateProductForm
@@ -32,10 +31,8 @@ class ProductListView(ListView):
                 for product in pt.get_products():
                     if (product.owner == self.request.user.profile):
                         user_products_dict[pt] += [product]
-                        print('user_products_dict was appended with ' + product.name)
                     else:
                         products_dict[pt] += [product]
-                        print('products_dict was appended with ' + product.name)
 
                 if len(user_products_dict[pt]) == 0:
                     del user_products_dict[pt]

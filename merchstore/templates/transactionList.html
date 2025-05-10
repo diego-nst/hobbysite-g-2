@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-<title>{% block title %} Transaction List{% endblock %}</title>
+<title>{% block title %} Transaction List {% endblock %}</title>
 
 {% block styles %}
 <style>
@@ -24,15 +24,13 @@
     }
 
     a:hover {
-        font-style: italic
+        font-style: italic;
+        color: #C46BAE;
     }
 
-    a:focus {
-        color: black;
-    }
-
-    a:active {
-        color: black;
+    a.menu:hover {
+        font-style: italic;
+        color: black
     }
 
     body {
@@ -42,17 +40,40 @@
         color: black;
     }
 
-    /* button {
-        background-color: orange;
+    .stickyMenu {
+        position: sticky;
+        top: 0;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-evenly;
+        padding-top: 4px;
+        padding-bottom: 4px;
+
+        background: #CDE990;
         color: black;
-    } */
+        /* 
+            references: 
+            https://www.w3schools.com/HOWTO/howto_js_sticky_header.asp 
+            https://www.w3schools.com/css/css3_flexbox_container.asp
+        */
+    }
+
 </style>
 {% endblock %}
 
 {% block content %}
 
 {% if user.is_authenticated%}
+<br>
+<div class="stickyMenu">
+        <div><a class="menu" href="{% url 'merchstore:create-product' %}">{{"Add a product"}}</a></div>
+        <div><a class="menu" href="{% url 'merchstore:cart' %}">{{"View cart"}}</a></div>
+        <div><a class="menu" href="{% url 'merchstore:transactions-list' %}">{{"View transactions"}}</a></div>
+</div>
+
 <ul style="padding-left: 0;">
+    <h2>Seller Transactions</h2>
     {% for buyer, transactionList in seller_transactions.items %}
     <b> Buyer: {{ buyer.display_name }} </b>
     <br><br>
@@ -91,6 +112,8 @@
     <br>
     {% endfor %}
 </ul>
+{% else %}
+    Please log in to view your seller transactions.
 {% endif %}
 <button type="submit">
     <p><a href="{% url 'merchstore:product-list' %}">{{"Back to full item list"}}</a></p>

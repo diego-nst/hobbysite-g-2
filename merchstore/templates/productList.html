@@ -24,15 +24,13 @@
     }
 
     a:hover {
-        font-style: italic
+        font-style: italic;
+        color: #C46BAE;
     }
 
-    a:focus {
-        color: black;
-    }
-
-    a:active {
-        color: black;
+    a.menu:hover {
+        font-style: italic;
+        color: black
     }
 
     body {
@@ -42,68 +40,86 @@
         color: black;
     }
 
-    /* button {
-        background-color: orange;
+    .stickyMenu {
+        position: sticky;
+        top: 0;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-evenly;
+        padding-top: 4px;
+        padding-bottom: 4px;
+
+        background: #CDE990;
         color: black;
-    } */
+        /* 
+            references: 
+            https://www.w3schools.com/HOWTO/howto_js_sticky_header.asp 
+            https://www.w3schools.com/css/css3_flexbox_container.asp
+        */
+    }
+
 </style>
 {% endblock %}
 
 {% block content %}
 
-{% if user.is_authenticated%}
-
-<h2>
-    Your Products:
-</h2>
-
-{% if user_is_selling %}
-
-<ul style="padding-left: 0;">
-    {% for productType, productsList in owned_by_user.items %}
-    <b> {{ productType.name }} </b>
-    <br>
-    {{ productType.description }}
-    <br><br>
-
-    <div style="padding-left:20px">
-        <span style="text-align: left; width:49%; display: inline-block; vertical-align: top; font-weight: bold;">
-            Items
-        </span>
-        <span style="text-align: left; width:25%;  display: inline-block; vertical-align: top; font-weight: bold;">
-            Price
-        </span>
-        <span style="text-align: left; width:25%;  display: inline-block; vertical-align: top; font-weight: bold;">
-            Status
-        </span>
-        
-        {% for p in productsList %}
-            <span style="text-align: left; width:49%; display: inline-block; vertical-align: top;">
-                <a href="{{p.get_absolute_url}}">{{p.name}}</a>
-            </span>
-            <span style="text-align: left; width:25%;  display: inline-block;  vertical-align: top;">
-                {{p.price}}
-            </span>
-            <span style="text-align: left; width:25%;  display: inline-block;  vertical-align: top;">
-                {{p.price}}
-            </span>
-        {% endfor %}
-        <br>
-    </div>
-    <br>
-    <hr>
-    <br>
-    {% endfor %}
-</ul>
-{% else %}
-You have not put up any products for sale.
-{% endif %}
-
 <br>
-<button type="submit">
-    <p><a href="{% url 'merchstore:create-product' %}">{{"Add a product"}}</a></p>
-</button>
+<div class="stickyMenu">
+    {% if user.is_authenticated %}
+        <div><a class="menu" href="{% url 'merchstore:create-product' %}">{{"Add a product"}}</a></div>
+        <div><a class="menu" href="{% url 'merchstore:cart' %}">{{"View cart"}}</a></div>
+        <div><a class="menu" href="{% url 'merchstore:transactions-list' %}">{{"View transactions"}}</a></div>
+    {% else %}
+        <div>Welcome to the Merchandise Store!</div>
+    {% endif %}
+</div>
 
+{% if user.is_authenticated %}
+
+    <h2>Your Products: </h2>
+
+    {% if user_is_selling %}
+
+    <ul style="padding-left: 0;">
+        {% for productType, productsList in owned_by_user.items %}
+        <b> {{ productType.name }} </b>
+        <br>
+        {{ productType.description }}
+        <br><br>
+
+        <div style="padding-left:20px">
+            <span style="text-align: left; width:49%; display: inline-block; vertical-align: top; font-weight: bold;">
+                Items
+            </span>
+            <span style="text-align: left; width:25%;  display: inline-block; vertical-align: top; font-weight: bold;">
+                Price
+            </span>
+            <span style="text-align: left; width:25%;  display: inline-block; vertical-align: top; font-weight: bold;">
+                Status
+            </span>
+            
+            {% for p in productsList %}
+                <span style="text-align: left; width:49%; display: inline-block; vertical-align: top;">
+                    <a href="{{p.get_absolute_url}}">{{p.name}}</a>
+                </span>
+                <span style="text-align: left; width:25%;  display: inline-block;  vertical-align: top;">
+                    {{p.price}}
+                </span>
+                <span style="text-align: left; width:25%;  display: inline-block;  vertical-align: top;">
+                    {{p.price}}
+                </span>
+            {% endfor %}
+            <br>
+        </div>
+        <br>
+        <hr>
+        <br>
+        {% endfor %}
+    </ul>
+    {% else %}
+        You have not put up any products for sale.
+    {% endif %}
 {% endif %}
 
 <h2>
@@ -143,15 +159,5 @@ You have not put up any products for sale.
     <br>
     {% endfor %}
 </ul>
-
-{% if user.is_authenticated %}
-<button type="submit">
-    <p><a href="{% url 'merchstore:cart' %}">{{"View your cart"}}</a></p>
-</button>
-
-<button type="submit">
-    <p><a href="{% url 'merchstore:transactions-list' %}">{{"View your seller transactions"}}</a></p>
-</button>
-{% endif %}
 
 {% endblock %}
