@@ -19,7 +19,7 @@ class WikiListView(ListView):
             category_dict = dict()
             for category in ArticleCategory.objects.all():
                 articles = []
-                for article in category.articles.exclude(author=self.request.user.profile):
+                for article in category.wikis.exclude(author=self.request.user.profile):
                     articles.append(article)
                 category_dict[category] = articles
             ctx['user_articles'] = Article.objects.filter(

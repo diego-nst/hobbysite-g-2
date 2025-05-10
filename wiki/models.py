@@ -65,4 +65,4 @@ class ArticleImage(models.Model):
     description = models.TextField(max_length=255)
     article = models.ForeignKey(Article,
                                on_delete=models.CASCADE,
-                               related_name="images")
+                               related_name="wiki_images")
