@@ -48,8 +48,7 @@
     .header_image img{
         display: block;
         margin: auto;
-        max-width: 100%;
-        width:auto;
+        width: 100%;
         height:10%;
         border-radius: 1rem;
     }
@@ -76,7 +75,7 @@
     .gallery_image img {
         width: 250px;
         height: auto;
-        margin: 10px;
+        margin: 1%;
         border-radius: 0.5rem;
         object-fit: cover;
     }
@@ -96,6 +95,9 @@
         color:#434D20;
     }
     .comments_display h2{
+        color:#434D20;
+    }
+    .other_articles h2, h3{
         color:#434D20;
     }
     .category{
@@ -119,7 +121,7 @@
         <div class = "category">
             <h2> {{ article.category }} </h2>
         </div>
-        <h3> Author: {{article.author.display_name}}</h3>
+        <h4> Author: {{article.author.display_name}}</h4>
         <h4> Created on: {{ article.created_on }} </h4>
         <h4>Last Updated: {{ article.updated_on }} </h4>
     </div>
@@ -129,65 +131,79 @@
     <img src="{{ article.header_image.url }}">
 </div>
 
-    <div class="content">
-        <p>
+<div class="content">
+    <p>
         {{ article.entry }}
-        </p>
-    </div>
+    </p>
+</div>
 
-    <a href="{% url 'blog:article_list' %}">
-    <button type="Submit"><p>Back</p></button></a>
-    {% if user.profile == article.author %}
+<a href="{% url 'blog:article_list' %}">
+<button type="Submit"><p>Back</p></button></a>
+
+{% if user.profile == article.author %}
     <a href="{% url 'blog:article_update' article.pk%}">
     <button type="Submit"><p>Update Information</p></button></a>
+{% endif %}
+
+<div class="gallery">
+    <p> Image Gallery: </p>
+    <div class="gallery_image">
+        {% for image in article.images.all %}
+            <img src="{{ image.blog_images.url }}" alt="Gallery image">
+        {% endfor %}
+    </div>
+    {% if user.profile == article.author %}
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ image_form.as_p }}
+            <input type="submit" value="Submit">
+            </form>
     {% endif %}
+</div>
 
-    
-
-    <section class="comment_post">
-        {% if user.is_authenticated %}
-            <h3>Leave a Comment!</h3>
+<section class="comments_post">
+    {% if user.is_authenticated %}
+        <h2>Leave a Comment!</h2>
             <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
             <input type="submit" value="Submit">
             </form>
-        {% else %}
-            <h3> Login to post a comment!</h3>
-         {% endif %}
-        </section>
+    {% else %}
+        <h3> Login to post a comment!</h3>
+    {% endif %}
+</section>
 
 
-    <section class="comments_display">
-        <h2>Comments</h2>
-        <div class="comments_row">
-            {% for comment in article.blog_comments.all %}
-                <div class="comments">
-                    <p>{{ comment.author }} at {{ comment.created_on }} <p>
-                    <hr>
-                    <p>{{ comment.entry }}</p>
+<section class="comments_display">
+    <h2>Comments</h2>
+    <div class="comments_row">
+        {% for comment in article.blog_comments.all %}
+            <div class="comments">
+                <p>{{ comment.author }} at {{ comment.created_on }} <p>
+                <hr>
+                <p>{{ comment.entry }}</p>
+            </div>
+        {% empty %}
+            <p>No comments yet.</p>
+        {% endfor %}
+    </div>
+</section>
 
-                </div>
-            {% empty %}
-                <p>No comments yet.</p>
+
+<section class="other_articles">
+    <div>
+        <h3>Check out this author's other articles!</h3>
+        <ol>
+            {% for article in read_more %}
+                <li><a href='{{article.get_absolute_url }}'>{{article.title}}</a></li>
             {% endfor %}
-        </div>
-    </section>
+        </ol>
+    
+    </div>
+</section>
 
-
-    <section class="other_articles">
-        <div>
-            <h3>Check out this author's other articles!</h3>
-            <ol>
-                {% for article in read_more %}
-                    <li><a href='{{article.get_absolute_url }}'>{{article.title}}</a></li>
-                {% endfor %}
-            </ol>
-        
-        </div>
-    </section>
-
-    <a href="{% url 'blog:article_list' %}">
-    <button type="Submit"><p>Back to Blog List</p></button></a>
+<a href="{% url 'blog:article_list' %}">
+<button type="Submit"><p>Back to Blog List</p></button></a>
     
 {% endblock %}
