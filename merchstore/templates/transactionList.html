@@ -18,26 +18,37 @@
         font-family: "Nunito Sans";
         color: black;
     }
-
-    a:visited {
-        color: black;
-    }
-
-    a:hover {
+    
+    a:hover{
         font-style: italic;
         color: #C46BAE;
     }
 
+    a.menu {
+        text-decoration: none; 
+        color: #FFFFE8;
+    }
+
     a.menu:hover {
         font-style: italic;
-        color: black
+        color: #FFFFE8
     }
 
     body {
         font-family: "Nunito Sans";
-        background-color: whitesmoke;
+        background-color: #FFFFE8;
         margin: 3rem;
         color: black;
+    }
+
+    button.bottomNav {
+        color: #FFFFE8;
+        background-color: #434D20;
+        font-weight: 600;
+        padding: 10px;
+        border-radius: 8px;
+        border: none;
+        width: 200px;
     }
 
     .stickyMenu {
@@ -50,13 +61,20 @@
         padding-top: 4px;
         padding-bottom: 4px;
 
-        background: #CDE990;
-        color: black;
+        background: #434D20;
+        color: #FFFFE8;
         /* 
             references: 
             https://www.w3schools.com/HOWTO/howto_js_sticky_header.asp 
             https://www.w3schools.com/css/css3_flexbox_container.asp
         */
+    }
+
+    .pageTitle {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
     }
 
 </style>
@@ -73,7 +91,7 @@
 </div>
 
 <ul style="padding-left: 0;">
-    <h2>Seller Transactions</h2>
+    <h2>Your Transactions:</h2>
     {% for buyer, transactionList in seller_transactions.items %}
     <b> Buyer: {{ buyer.display_name }} </b>
     <br><br>
@@ -115,7 +133,7 @@
 {% else %}
     Please log in to view your seller transactions.
 {% endif %}
-<button type="submit">
-    <p><a href="{% url 'merchstore:product-list' %}">{{"Back to full item list"}}</a></p>
+<button type="submit" class="bottomNav">
+    <p><a class="menu" href="{% url 'merchstore:product-list' %}">{{"Back to full item list"}}</a></p>
 </button>
 {% endblock %}

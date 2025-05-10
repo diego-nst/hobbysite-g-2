@@ -19,70 +19,113 @@
         }
 
         a {
-            text-decoration: none;
+            text-decoration: underline;
             font-family: "Nunito Sans";
-            color: black;
+            color: #434D20;
         }
-
-        a:visited {
-            color: black;
-        }
-
-        a:hover {
+        
+        a:hover{
             font-style: italic;
+            color: #434D20;
         }
 
-        a:focus {
-            color: black;
+        a.menu {
+            text-decoration: none; 
+            color: #FFFFE8;
         }
 
-        a:active {
-            color: black;
+        a.menu:hover {
+            font-style: italic;
+            color: #FFFFE8
         }
 
         body {
             font-family: "Nunito Sans";
-            background-color: whitesmoke;
+            background-color: #FFFFE8;
             margin: 3rem;
             color: black;
         }
 
-        button {
-            background-color: grey;
-            color: black;
+        button.bottomNav {
+            color: #FFFFE8;
+            background-color: #434D20;
+            font-weight: 600;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            width: 200px;
         }
+
+        .stickyMenu {
+            position: sticky;
+            top: 0;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: space-evenly;
+            padding-top: 4px;
+            padding-bottom: 4px;
+
+            background: #434D20;
+            color: #FFFFE8;
+            /* 
+                references: 
+                https://www.w3schools.com/HOWTO/howto_js_sticky_header.asp 
+                https://www.w3schools.com/css/css3_flexbox_container.asp
+            */
+        }
+
+        .pageTitle {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+        }
+
     </style>
-    {% endblock %}
+{% endblock %}
 
 </head>
 
 <body>
 
     {% block content %}
+    <br>
+    <div class="stickyMenu">
+        {% if user.is_authenticated %}
+            <div><a class="menu" href="{% url 'merchstore:create-product' %}">{{"Add a product"}}</a></div>
+            <div><a class="menu" href="{% url 'merchstore:cart' %}">{{"View cart"}}</a></div>
+            <div><a class="menu" href="{% url 'merchstore:transactions-list' %}">{{"View transactions"}}</a></div>
+        {% endif %}
+    </div>
 
-    <h1>
-        {{ object.name }}
-        <hr>
-    </h1>
+    <div class="pageTitle">
+        <div>
+            <h1> {{ object.name }} </h1>
+        </div>
+    </div>
+    <hr>
 
+    <br>
     <form method="post">
         {% csrf_token %}
         <label for="amount">
             <span>Amount: </span>
-            <input type="number" id="amount" name="amount" min="1">
+            <input type="number" id="amount" name="amount" min="1" max={{object.stock}}>
         </label>
-        {% if user.profile == object.owner %}
+        {% if request.user.profile == object.owner %}
             <input type="submit" value="Add to cart" disabled="True">
-            <br> You are the owner of this product. 
+            <br><br>You are the owner of this product. 
+            <br>Click <a href="{% url 'merchstore:update-product' pk=object.pk %}">{{"here"}}</a> to update your product listing.
         {% elif object.stock == 0 or object.stock < 0 %}
             <input type="submit" value="Add to cart" disabled="True">
-            <br> Sorry, this product is currently out of stock.
+            <br><br> Sorry, this product is currently out of stock.
         {% else %}
             <input type="submit" value="Add to cart">
         {% endif %}
     </form>
     
-
+    <br>
     <span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
         Price:
     </span>
@@ -131,18 +174,10 @@
         for formatting purposes.
     -->
 
-    <br><br>
-    <button type="submit">
-        <p><a href="{% url 'merchstore:product-list' %}">{{"Back to full item list"}}</a></p>
+    <br><br><hr><br>
+    <button class="bottomNav" type="submit">
+        <p><a class="menu" href="{% url 'merchstore:product-list' %}">{{"Back to full item list"}}</a></p>
     </button>
-
-
-    {% if user.profile == object.owner %}
-    <br><br>
-    <button type="submit">
-        <p><a href="{% url 'merchstore:update-product' pk=object.pk %}">{{"Update your product listing"}}</a></p>
-    </button>
-    {% endif %}
 
     <br><br>
     {% endblock %}

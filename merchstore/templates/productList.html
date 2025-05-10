@@ -28,14 +28,20 @@
         color: #C46BAE;
     }
 
+
+    a.menu {
+        text-decoration: none; 
+        color: #FFFFE8;
+    }
+
     a.menu:hover {
         font-style: italic;
-        color: black
+        color: #FFFFE8
     }
 
     body {
         font-family: "Nunito Sans";
-        background-color: whitesmoke;
+        background-color: #FFFFE8;
         margin: 3rem;
         color: black;
     }
@@ -50,8 +56,8 @@
         padding-top: 4px;
         padding-bottom: 4px;
 
-        background: #CDE990;
-        color: black;
+        background: #434D20;
+        color: #FFFFE8;
         /* 
             references: 
             https://www.w3schools.com/HOWTO/howto_js_sticky_header.asp 
@@ -81,14 +87,15 @@
 
     {% if user_is_selling %}
 
+    {% for productType, productsList in owned_by_user.items %}
     <ul style="padding-left: 0;">
-        {% for productType, productsList in owned_by_user.items %}
+
         <b> {{ productType.name }} </b>
         <br>
         {{ productType.description }}
         <br><br>
 
-        <div style="padding-left:20px">
+        <div style="padding-left:40px">
             <span style="text-align: left; width:49%; display: inline-block; vertical-align: top; font-weight: bold;">
                 Items
             </span>
@@ -97,7 +104,7 @@
             </span>
             <span style="text-align: left; width:25%;  display: inline-block; vertical-align: top; font-weight: bold;">
                 Status
-            </span>
+            </span> 
             
             {% for p in productsList %}
                 <span style="text-align: left; width:49%; display: inline-block; vertical-align: top;">
@@ -107,16 +114,14 @@
                     {{p.price}}
                 </span>
                 <span style="text-align: left; width:25%;  display: inline-block;  vertical-align: top;">
-                    {{p.price}}
+                    {{p.status}}
                 </span>
             {% endfor %}
             <br>
         </div>
-        <br>
-        <hr>
-        <br>
-        {% endfor %}
     </ul>
+    <br><hr>
+    {% endfor %}
     {% else %}
         You have not put up any products for sale.
     {% endif %}
@@ -125,14 +130,13 @@
 <h2>
     Available products:
 </h2>
-
+{% for productType, productsList in user_can_buy.items %}
 <ul style="padding-left: 0;">
-    {% for productType, productsList in user_can_buy.items %}
     <b> {{ productType.name }} </b>
     <br>
     {{ productType.description }}
     <br><br>
-    <div style="padding-left:20px">
+    <div style="padding-left:40px">
         <span style="text-align: left; width:49%; display: inline-block; vertical-align: top; font-weight: bold;">
             Items
         </span>
@@ -150,14 +154,13 @@
                 {{p.price}}
             </span>
             <span style="text-align: left; width:25%;  display: inline-block;  vertical-align: top;">
-                {{p.price}}
+                {{p.status}}
             </span>
         {% endfor %}
     </div>
-    <br>
-    <hr>
-    <br>
-    {% endfor %}
 </ul>
+<br><hr>
+{% endfor %}
+
 
 {% endblock %}

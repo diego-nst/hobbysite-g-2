@@ -109,6 +109,15 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'productUpdate.html'
     form_class = UpdateProductForm
 
+    def get_context_data(self, **kwargs):
+        pk = self.kwargs['pk']
+        context = super().get_context_data(**kwargs)
+        context['pk'] = pk
+        context['product'] = Product.objects.get(pk=pk)
+        context['product_types'] = ProductType.objects.all()
+        context['status_options'] = Product.STATUS_CHOICES
+        return context
+
     def form_valid(self, form):
         if form.instance.stock <= 0:
             form.instance.status = 'NO_STOCK'
@@ -119,21 +128,6 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
 
 class CartView(LoginRequiredMixin, ListView):
     model = Transaction
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        user_cart = dict()
-        products_in_cart = dict()
-        if self.request.user.is_authenticated:
-            for transaction in self.request.user.profile.transactions.all():
-                if transaction.product.owner in user_cart:
-                    user_cart[transaction.product.owner].append(transaction)
-                else:
-                    user_cart[transaction.product.owner] = [transaction]
-                products_in_cart.add(transaction.product)
-
-        context['user_cart'] = user_cart
-        return context
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
