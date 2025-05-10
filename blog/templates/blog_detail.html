@@ -9,17 +9,14 @@
 <div class="headcontent">
     <div>
         <img src="{{ article.header_image.url }}">
-        <h2>{{ article.title }}</h2> 
+        <h1>{{ article.title }}</h1> 
+        <h3> Author: {{article.author.display_name}}</h3>
+        <h4> Created on: {{ article.created_on }}, Last Updated: {{ article.updated_on }} </h4>
         <h4> Category: {{ article.category }} </h5>
-        <p> {{ article.category.description }} </p>
-        <h3> Created by {{article.author.display_name}}</h3>
     </div>
-    <p>
-        Created on: {{ article.created_on }}<br>
-        Last Updated: {{ article.updated_on }}
-    </p>
-
 </div>
+
+
     <p>
     {{ article.entry }}
     </p>

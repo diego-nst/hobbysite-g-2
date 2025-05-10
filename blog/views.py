@@ -2,6 +2,8 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
 from .models import Article, ArticleCategory
 from .forms import BlogForm, CommentForm
 from django.urls import reverse_lazy
@@ -25,7 +27,7 @@ class BlogListView(LoginRequiredMixin, ListView):
             category_dict = dict()
             for category in ArticleCategory.objects.all():
                 articles = []
-                for article in category.article_set.exclude(author=self.request.user.profile):
+                for article in category.blog.exclude(author=self.request.user.profile):
                     articles.append(article)
                 category_dict[category] = articles
             ctx['user_articles'] = Article.objects.filter(
@@ -79,7 +81,7 @@ class BlogCreateView(LoginRequiredMixin, CreateView):
     form_class = BlogForm
 
     def get_success_url(self):
-        return reverse_lazy('blog:article_list')
+        return reverse_lazy('blog"article_list')
     
     def form_valid(self, form):
         form.instance.author = self.request.user.profile
@@ -92,3 +94,12 @@ class BlogUpdateView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse_lazy('blog:article_detail', kwargs={'pk': self.get_object().pk})
+    
+@login_required
+def BlogUpdateView(request, pk):
+    template_name = 'blog_update.html'
+    article = Article.objects.get(pk=pk)
+    form = BlogForm
+
+    ctx = {'form': form, 'article': article}
+    return render(request, template_name, ctx)
