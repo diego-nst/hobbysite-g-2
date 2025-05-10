@@ -1,11 +1,30 @@
 {% extends 'base.html' %}
 
+{% block styles %}
+<style>
+    section{
+      
+        background-color: #F8DEDF;
+        padding: 3rem 4rem;
+        border-radius: 5rem;
+        box-shadow: 4px 4px 5px #9FA881;
+        width:75%;
+        transform: translate(17%, 3%);
+    }
+    
+</style>
+
+{% endblock %}
+
 {% block content %} 
+<section>
 <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit" value="Submit">Submit</button>
 </form>
 <br>
-<a href="{% url 'forum:thread_list' %}"><button type="Submit">Home</button></a>  
+<a href="{% url 'forum:thread_list' %}"><button type="Submit">Home</button></a>
+</section>
+     
 {% endblock %}
