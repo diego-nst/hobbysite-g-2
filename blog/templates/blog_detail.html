@@ -6,20 +6,135 @@
 
 {% block content %}
 
+<style>
+
+    h5{
+        font-family: Nunito Sans;
+        font-size:0.75rem; 
+        font-weight: 500; 
+        color:#4C2E05;
+        }
+    
+    h1, h2, h3, h4{
+        color:#434D20
+    }
+    
+    .headcontent{
+        background-color:#434D20;
+        padding:1rem 1.5rem 1rem;
+        margin-bottom: 20px;  
+    }
+    .headcontent p, h1, h2, h3, h4, h5{
+        color:#FFFFE8;
+    }
+    .content{
+        margin: 0rem 3rem 2rem;   
+        padding: 1rem;
+        background-color:#F8DEDF;
+        border-radius: 1rem;
+        box-shadow: 4px 4px 5px #9FA881;
+    }
+    .content p{
+        color: #434D20
+    }
+    .header_image{
+        margin: 0rem 3rem 2rem;   
+        padding: 1rem;
+        background-color:#F8DEDF;
+        border-radius: 1rem;
+        box-shadow: 4px 4px 5px #9FA881;
+    }
+
+    .header_image img{
+        display: block;
+        margin: auto;
+        max-width: 100%;
+        width:auto;
+        height:10%;
+        border-radius: 1rem;
+    }
+    .gallery{
+        background-color: #F8DEDF;
+        border-radius: 1rem;
+        box-shadow: 4px 4px 5px #9FA881;
+    }
+    
+    .gallery p{
+        text-align: center;
+        padding: 20px;
+        font-size: 30px;
+    }
+    
+    .gallery_image{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin: 0rem 3rem 1rem;   
+        padding: 0.5rem;
+    }
+    
+    .gallery_image img {
+        width: 250px;
+        height: auto;
+        margin: 10px;
+        border-radius: 0.5rem;
+        object-fit: cover;
+    }
+    
+    .comment p{
+        font-size:0.7rem;
+        color:#434D20;
+    }
+    .comment{
+        background-color:#F8DEDF;
+        padding: 1rem;
+        border-radius: 1rem;
+        margin: 0rem 3rem 2rem;   
+        box-shadow: 4px 4px 5px #9FA881;
+    }
+    .comments_post h2{
+        color:#434D20;
+    }
+    .comments_display h2{
+        color:#434D20;
+    }
+    .category{
+        background-color:#FFFFE8;
+        border-radius: 1rem;
+        width: 20%;
+    }
+    .category h2, h5{
+        text-align: center;
+        color: #434D20
+    }
+    .similarthreads{
+        margin:1rem 1.5rem 0.3rem;   
+    }
+    </style>
+
+
 <div class="headcontent">
     <div>
-        <img src="{{ article.header_image.url }}">
         <h1>{{ article.title }}</h1> 
+        <div class = "category">
+            <h2> {{ article.category }} </h2>
+        </div>
         <h3> Author: {{article.author.display_name}}</h3>
-        <h4> Created on: {{ article.created_on }}, Last Updated: {{ article.updated_on }} </h4>
-        <h4> Category: {{ article.category }} </h5>
+        <h4> Created on: {{ article.created_on }} </h4>
+        <h4>Last Updated: {{ article.updated_on }} </h4>
     </div>
 </div>
 
+<div class="header_image">
+    <img src="{{ article.header_image.url }}">
+</div>
 
-    <p>
-    {{ article.entry }}
-    </p>
+    <div class="content">
+        <p>
+        {{ article.entry }}
+        </p>
+    </div>
+
     <a href="{% url 'blog:article_list' %}">
     <button type="Submit"><p>Back</p></button></a>
     {% if user.profile == article.author %}
@@ -31,7 +146,7 @@
 
     <section class="comment_post">
         {% if user.is_authenticated %}
-            <h3> Leave a comment! </h3>
+            <h3>Leave a Comment!</h3>
             <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
@@ -40,21 +155,25 @@
         {% else %}
             <h3> Login to post a comment!</h3>
          {% endif %}
-    </section>
+        </section>
+
 
     <section class="comments_display">
-        <h3>Comments</h3>
+        <h2>Comments</h2>
         <div class="comments_row">
-            {% for comment in article.comment_set.all %}
+            {% for comment in article.blog_comments.all %}
                 <div class="comments">
-                    <h4>{{ comment.author }} at {{ comment.created_on }} </h4>
+                    <p>{{ comment.author }} at {{ comment.created_on }} <p>
+                    <hr>
                     <p>{{ comment.entry }}</p>
+
                 </div>
             {% empty %}
                 <p>No comments yet.</p>
             {% endfor %}
         </div>
     </section>
+
 
     <section class="other_articles">
         <div>
