@@ -50,7 +50,7 @@ class WikiDetailView(DetailView):
             category=self.object.category).exclude(pk=self.object.pk)
         ctx['image_form'] = ArticleImageForm
         ctx['comment_form'] = CommentForm
-        comments = self.object.comment.all()
+        comments = self.object.wiki_comment.all()
         limit = 10
         ctx['comments'] = comments[:limit]
         return ctx
