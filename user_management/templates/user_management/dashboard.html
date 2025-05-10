@@ -1,6 +1,116 @@
 <!DOCTYPE html>
 <html>
 <body>
+
+    {% for buyer, transactionList in seller_transactions.items %}
+    <b> Buyer: {{ buyer.display_name }} </b>
+    <br><br>
+
+    <div style="padding-left:20px">
+        <span style="text-align: left; width:39%; display: inline-block; vertical-align: top; font-weight: bold;">
+            Items
+        </span>
+        <span style="text-align: left; width:20%;  display: inline-block; vertical-align: top; font-weight: bold;">
+            Price per piece
+        </span>
+        <span style="text-align: left; width:20%;  display: inline-block; vertical-align: top; font-weight: bold;">
+            Quantity
+        </span>
+        <span style="text-align: left; width:20%;  display: inline-block; vertical-align: top; font-weight: bold;">
+            Start of transaction
+        </span>
+        {% for transaction in transactionList %}
+        <span style="text-align: left; width:39%; display: inline-block; vertical-align: top;">
+            <a href="{{transaction.product.get_absolute_url}}">{{transaction.product.name}}</a>
+        </span>
+        <span style="text-align: left; width:20%;  display: inline-block;  vertical-align: top;">
+            {{transaction.product.price}}
+        </span>
+        <span style="text-align: left; width:20%;  display: inline-block;  vertical-align: top;">
+            {{transaction.amount}}
+        </span>
+        <span style="text-align: left; width:20%;  display: inline-block;  vertical-align: top;">
+            {{transaction.created_on}}
+        </span>
+    {% endfor %}
+        <br>
+    </div>
+    <br>
+    <hr>
+    <br>
+    {% endfor %}
     
+    {% for owner, transactions in user_cart.items %}
+    <b> Owner: {{ owner.display_name }} </b>
+    <br><br>
+    <div style="padding-left:20px">
+        <span style="text-align: left; width:59%; display: inline-block; vertical-align: top; font-weight: bold;">
+            Items
+        </span>
+        <span style="text-align: right; width:20%;  display: inline-block; vertical-align: top; font-weight: bold;">
+            Price per piece
+        </span>
+        <span style="text-align: right; width:20%;  display: inline-block; vertical-align: top; font-weight: bold;">
+            Quantity
+        </span>
+        {% for t in transactions %}
+            <span style="text-align: left; width:59%; display: inline-block; vertical-align: top;">
+                <a href="{{t.product.get_absolute_url}}">{{t.product.name}}</a>
+            </span>
+            <span style="text-align: right; width:20%;  display: inline-block;  vertical-align: top;">
+                {{t.product.price}}
+            </span>
+            <span style="text-align: right; width:20%;  display: inline-block;  vertical-align: top;">
+                {{t.amount}}
+            </span>
+        {% endfor %}
+        <br>
+    </div>
+    <br>
+    <hr>
+    <br>
+    {% endfor %}
+
+    {% for category, article in other_articles.items %} 
+        <strong>{{ category.name }}</strong>
+        <ol>
+            {% for article in article %}
+                <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
+            {% endfor %}
+        </ol>
+    {% endfor %}
+
+    {% for thread in user_threads %}
+    <a href="{{ thread.get_absolute_url }}">{{ thread.title }}</a><br><br>
+    {% endfor %}
+
+    {% for category, article in other_articles.items %} 
+        <strong>{{ category.name }}</strong>
+        <ol>
+            {% for article in article %}
+                <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
+            {% endfor %}
+        </ol>
+    {% endfor %}
+
+    <h2>Commissions Created:</h4>
+    {% for commission in created_commissions %}
+        <br><a href="{{commission.get_absolute_url}}"><span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
+            {{commission.title}} - Created on {{commission.created}}
+        </span>
+        <span style="text-align: left; width:70%;  display: inline-block;">
+            ({{commission.get_status_display}})
+        </span></a><br>
+    {% endfor %}
+
+    <h2>Commissions Applied to:</h4>
+    {% for commission in applied_commissions %}
+        <br><a href="{{commission.get_absolute_url}}"><span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
+            {{commission.title}} - Created on {{commission.created}}
+        </span>
+        <span style="text-align: left; width:70%;  display: inline-block;">
+            ({{commission.get_status_display}})
+        </span></a><br>
+    {% endfor %}
 </body>
 </html>
