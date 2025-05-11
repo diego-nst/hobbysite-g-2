@@ -2,54 +2,137 @@
 
 {% block title %} Wiki List {% endblock %}
 
+{% block styles %}
+<style>
+section{
+    background-color:#434d20;
+    width: device-width;
+}
+
+h2, h3 {
+    color: #FFFFE8;
+}
+.threadslist {
+    padding: 2rem;
+    background-color: #F8DEDF;
+    border-radius: 2rem;
+    margin: 1rem 3.5rem;
+    box-shadow: 4px 4px 5px #9FA881;
+}
+.threadslist > h2, h3, p {
+    color: #434d20;
+    text-align: left;
+}
+.threadscontent {
+    padding: 0rem 1rem;
+}
+.login {
+    margin: 2rem;
+    line-height: 0.5rem;
+    color: #434D20;
+}
+.login > p {
+    text-align: center;
+}
+.navigation {
+    display: flex;
+    width: 100%;
+    flex-flow: row wrap;
+    gap: 1.5rem;
+    flex-direction: row-reverse;
+}
+.navigation > a {
+    text-decoration: none;
+    font-weight: 600;
+    color: #434d20;
+}
+.navigation > a:visited {
+    color: #434d20;
+}
+.navigation > a:hover {
+    color: #9FA881;
+    font-weight: 800;
+}
+.navigation > a:focus,
+.navigation > a:active {
+    color: #434d20;
+    font-weight: 600;
+}
+.navsticky {
+    position: sticky;
+    top: 0;
+    background-color: #FFFFE8;
+    border-bottom: 2px dashed #9FA881;
+    padding: 10px;
+}
+.newhr1 {
+    border: 1.5px dashed #9FA881;
+}
+.newhr2 {
+    border: 0.5px dashed #9FA881;
+}
+</style>
+{% endblock %}
+
 {% block content %}
-<header>
-    <h1>Online Wiki</h1>
-</header>
 
-<main>
-    <article>
-        <section class = 'list'>
-            {% if user.is_authenticated %}
-                <h3>Your Articles:</h3>
-                <ol>
-                    {% for article in user_articles %}
-                    <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
-                    {% endfor %}
-                </ol>
-            {% else %}
-                <h3>Your Articles:</h3>
-                <p> Login to view your articles!</p>
-            {% endif %}
-        </section>
-        
-        <section class = 'list'>
-            {% if user.is_authenticated %}
-                <h3>All Articles:</h3>
-                {% for category, article in other_articles.items %} 
-                    <strong>{{ category.name }}</strong>
-                    <ol>
-                        {% for article in article %}
-                            <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
-                        {% endfor %}
-                    </ol>
+<section style="display:flex; justify-content:center">
+    <h2 style="font-size:2rem">Online Wiki</h2>
+</section>
+<div class="navsticky">
+    <div class="navigation">
+     {% for category in thread_categories %}
+        <a href="#{{ category.name }}"><h5>{{ category.name }}</h5></a>
+     {% endfor %}
+    </div>
+</div><br><br>
+
+<section class="threadslist">
+    {% if user.is_authenticated %}
+        <h2>Your Articles</h2>
+        <hr class="newhr2"><br>
+        <div class="threadscontent">
+            {% if user_articles %}
+                {% for article in user_articles %}
+                    <a href="{{ article.get_absolute_url }}">{{ article.title }}</a><br><br>
                 {% endfor %}
             {% else %}
-                <h3>All Articles:</h3>
-                {% for category, article in other_articles.items %} 
-                    <strong>{{ category.name }}</strong>
-                    <ol>
-                        {% for article in article %}
-                            <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
-                        {% endfor %}
-                    </ol>
-                {% endfor %}
+                <p>No articles yet</p>
             {% endif %}
-        </section>
-    </article>
-</main>
+        </div>
+    {% else %}
+        <h2>Your Articles</h2>
+        <hr class="newhr2"><br>
+        <div class="threadscontent">
+            <p>Login to view your articles!</p>
+        </div>
+    {% endif %}
 
-<aside>
-    <a href="{% url 'wiki:wiki_create' %}"><button> Add a New Wiki Post </button></a> 
-</aside>
+    <br><h2>All Articles</h2>
+    <hr class="newhr2">
+    <div class="threadscontent">
+        {% for category, article_list in other_articles.items %}
+            <a id="{{ category.name }}"></a>
+            <br><h3>{{ category.name }}</h3>
+            {% if article_list %}
+                {% for article in article_list %}
+                    <a href="{{ article.get_absolute_url }}">{{ article.title }}</a><br><br>
+                {% endfor %}
+            {% else %}
+                <p>No articles yet</p>
+            {% endif %}
+        {% endfor %}
+    </div>
+</section>
+
+<br>
+<div class="buttons" style="margin-left: 3.5rem;">
+    <br>
+    <a href="{% url 'wiki:wiki_create' %}">
+        <button type="Submit">Add a New Wiki Post</button>
+    </a>
+</div>
+
+
+
 {% endblock %}

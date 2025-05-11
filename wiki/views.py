@@ -5,8 +5,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Article, ArticleCategory, ArticleImage
 from .forms import WikiForm, CommentForm, ArticleImageForm
 from django.urls import reverse_lazy
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 
+def index(request):
+    return render(request, 'home.html')
 
 class WikiListView(ListView):
     model = ArticleCategory
