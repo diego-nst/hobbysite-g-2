@@ -22,6 +22,21 @@ h2,h4,h5, p{
     padding:1rem 1.5rem 1rem;  
   
 }
+
+
+.header_image {
+    margin: 2rem auto; 
+}
+
+.header_image img {
+    display: block;
+    margin: auto;
+    border-radius: 1rem;
+    max-width: 50%;
+    height: auto;
+    box-shadow: 4px 4px 5px #9FA881;
+}
+
 h1{
     color:#FFFFE8;
 }
@@ -32,50 +47,90 @@ h1{
     background-color:#F8DEDF;
     border-radius: 1rem;
     box-shadow: 4px 4px 5px #9FA881;
-
+    gap: 20px;
 }
 p, h4, h5{
+
     text-align: left;
     color: #434D20;
 }
 
-.content img{
-    display: block;
-    margin: auto;
-    width:50%;
-    height:50%
-}
 .headcontent p{
     font-size: 0.7rem;
     color:#FFFFE8;
 }
 
-.gallery{
+.gallery {
+    display: block;
+    margin: 1rem auto; /* Reduced vertical spacing */
     background-color: #F8DEDF;
     border-radius: 1rem;
-    box-shadow: 4px 4px 5px #9FA881;
+    box-shadow: 0 6px 12px #9FA881;
+    max-width: 90%;
+    padding: 2rem;
 }
 
-.gallery p{
+.gallery h3 {
     text-align: center;
-    padding: 20px;
-    font-size: 30px;
+    font-size: 2rem;
+    margin: 0 0 1.5rem 0; /* Removed top margin, kept bottom margin */
+    color: #333333;
 }
 
-.gallery_image{
+.gallery_image {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    margin: 0rem 3rem 1rem;   
-    padding: 0.5rem;
+    gap: 1.5rem;
 }
 
 .gallery_image img {
     width: 250px;
+    max-width: 100%;
     height: auto;
-    margin: 10px;
-    border-radius: 0.5rem;
+    border-radius: 0.75rem;
     object-fit: cover;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.author_controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8dedf;
+  border-radius: 1rem;
+  box-shadow: 4px 4px 5px #9fa881;
+  padding: 2rem;
+  margin: 2rem auto;
+  gap: 1rem;
+  max-width: 500px;
+  width: 90%;
+}
+
+.image_form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  width: 100%;
+}
+
+.author_controls a button,
+.image_form input[type="submit"] {
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  background-color: #d48b90;
+  border: none;
+  border-radius: 0.5rem;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.author_controls a button:hover,
+.image_form input[type="submit"]:hover {
+  background-color: #b26c6f;
 }
 
 .comment p{
@@ -111,7 +166,7 @@ p, h4, h5{
 <div class="headcontent">
     <h1>{{ article.title }}</h1> 
     <div class="category">
-    <h5 style="padding:0.5rem; width=100%;"><b> {{ article.category }} </b></h5>
+    <h5 style="padding:0.5rem; width:100%;"><b> {{ article.category }} </b></h5>
     </div>
     <p>
     By:
@@ -127,33 +182,40 @@ p, h4, h5{
 <br>
 <br>
 
+{% if article.header_image %}
+    <div class = 'header_image'>
+        <img src="{{ article.header_image.url }}">
+    </div>
+{% endif %}
+
 <div class="content">
     <p> {{ article.entry }} </p>
-    {% if article.header_image %}
-        <img src="{{ article.header_image.url }}">
-    {% endif %}
 </div>
 
 <div class="gallery">
-    <p> Image Gallery: </p>
+    <h3> Image Gallery: </h3>
     <div class="gallery_image">
         {% for image in article.wiki_images.all %}
             <img src="{{ image.image.url }}" alt="Gallery image">
         {% endfor %}
     </div>
-    {% if user.profile == article.author %}
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ image_form.as_p }}
-            <input type="submit" value="Submit">
-            </form>
-    {% endif %}
 </div>
 
 {% if user.is_authenticated %}
-    {% if thread.author == loggedin_user %}
-        <a href="{% url 'wiki:wiki_update' article.pk%}"><button type="Submit">Edit</button></a>
-    {% endif %} 
+    {% if user.profile == article.author %}
+<div class="author_controls">
+    <h3> Author Controls: </h3>
+    <a href="{% url 'wiki:wiki_update' article.pk %}">
+    <button type="button">Edit the Article</button>
+    </a>
+    <h3> Add an image to the gallery: </h3>
+    <form class="image_form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ image_form }}
+        <input type="submit" value="Submit">
+    </form>
+</div>
+    {% endif %}
 {% endif %}
 
 <br>
