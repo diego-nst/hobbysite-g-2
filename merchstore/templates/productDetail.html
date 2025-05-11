@@ -74,16 +74,22 @@
                 https://www.w3schools.com/css/css3_flexbox_container.asp
             */
         }
+        
+        .labelSpan {
+            text-align: left;
+            width: 29%;
+            display: inline-block;
+            vertical-align: top;
+        }
 
-        .pageTitle {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: nowrap;
-            justify-content: space-between;
+        .infoSpan {
+            text-align: left;
+            width: 70%;
+            display: inline-block;
         }
 
     </style>
-{% endblock %}
+    {% endblock %}
 
 </head>
 
@@ -98,81 +104,67 @@
             <div><a class="menu" href="{% url 'merchstore:transactions-list' %}">{{"View transactions"}}</a></div>
         {% endif %}
     </div>
-
-    <div class="pageTitle">
-        <div>
-            <h1> {{ object.name }} </h1>
-        </div>
-    </div>
+    <h1> {{ object.name }} </h1>
     <hr>
 
-    <br>
-    <form method="post">
-        {% csrf_token %}
-        <label for="amount">
-            <span>Amount: </span>
-            <input type="number" id="amount" name="amount" min="1" max={{object.stock}}>
-        </label>
-        {% if request.user.profile == object.owner %}
-            <input type="submit" value="Add to cart" disabled="True">
-            <br><br>You are the owner of this product. 
-            <br>Click <a href="{% url 'merchstore:update-product' pk=object.pk %}">{{"here"}}</a> to update your product listing.
-        {% elif object.stock == 0 or object.stock < 0 %}
-            <input type="submit" value="Add to cart" disabled="True">
-            <br><br> Sorry, this product is currently out of stock.
-        {% else %}
+    {% if request.user.profile == object.owner %}
+        <br>You are the owner of this product. 
+        <br>Click <a href="{% url 'merchstore:update-product' pk=object.pk %}">{{"here"}}</a> to update your product listing.
+    {% elif object.stock == 0 or object.stock < 0 %}
+        <br> Sorry, this product is currently out of stock.
+    {% else %}
+        <br>    
+        {% csrf_token %}    
+        <form method="post"></form>
+            <label for="amount">
+                <span>Amount: </span>
+                <input type="number" id="amount" name="amount" min="1" max={{object.stock}}>
+            </label>
             <input type="submit" value="Add to cart">
-        {% endif %}
-    </form>
+        </form>
+    {% endif %}
     
-    <br>
-    <span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
-        Price:
-    </span>
-    <span style="text-align: left; width:70%;  display: inline-block;">
+    <br><br>
+    <span class="labelSpan">
+        Price: </span>
+    <span class="infoSpan">
         {{object.price}}
     </span>
 
-    <span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
+    <span class="labelSpan">
         Product Type:
     </span>
-    <span style="text-align: left; width:70%;  display: inline-block;">
+    <span class="infoSpan">
         {{object.productType}}
     </span>
 
-    <span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
+    <span class="labelSpan">
         Stock:
     </span>
-    <span style="text-align: left; width:70%;  display: inline-block;">
+    <span class="infoSpan">
         {{object.stock}}
     </span>
 
-    <span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
+    <span class="labelSpan">
         Status:
     </span>
-    <span style="text-align: left; width:70%;  display: inline-block;">
+    <span class="infoSpan">
         {{object.status}}
     </span>
 
-    <span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
+    <span class="labelSpan">
         Description:
     </span>
-    <span style="text-align: left; width:70%;  display: inline-block;">
+    <span class="infoSpan">
         {{object.description}}
     </span>
 
-    <span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
+    <span class="labelSpan">
         Seller:
     </span>
-    <span style="text-align: left; width:70%;  display: inline-block;">
+    <span class="infoSpan">
         {{object.owner}}
     </span>
-
-    <!--
-        The code snippet above makes use of
-        https://stackoverflow.com/questions/12438339/how-may-i-align-text-to-the-left-and-text-to-the-right-in-the-same-line
-        for formatting purposes.
-    -->
 
     <br><br><hr><br>
     <button class="bottomNav" type="submit">

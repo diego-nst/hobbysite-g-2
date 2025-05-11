@@ -75,37 +75,29 @@
             */
         }
 
-        .pageTitle {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: nowrap;
-            justify-content: space-between;
-        }
-
     </style>
 {% endblock %}
 
 </head>
 
+{% block content %}
+<br>
+<div class="stickyMenu">
+    {% if user.is_authenticated %}
+        <div><a class="menu" href="{% url 'merchstore:create-product' %}">{{"Add a product"}}</a></div>
+        <div><a class="menu" href="{% url 'merchstore:cart' %}">{{"View cart"}}</a></div>
+        <div><a class="menu" href="{% url 'merchstore:transactions-list' %}">{{"View transactions"}}</a></div>
+    {% endif %}
+</div>
+
+<div class="pageTitle">
+    <div>
+        <h1> {{ transaction.product.name }} </h1>
+    </div>
+</div>
+<hr>
+
 <body>
-
-    {% block content %}
-    <br>
-    <div class="stickyMenu">
-        {% if user.is_authenticated %}
-            <div><a class="menu" href="{% url 'merchstore:create-product' %}">{{"Add a product"}}</a></div>
-            <div><a class="menu" href="{% url 'merchstore:cart' %}">{{"View cart"}}</a></div>
-            <div><a class="menu" href="{% url 'merchstore:transactions-list' %}">{{"View transactions"}}</a></div>
-        {% endif %}
-    </div>
-
-    <div class="pageTitle">
-        <div>
-            <h1> {{ transaction.product.name }} </h1>
-        </div>
-    </div>
-    <hr>
-
     <br>
     <span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
         Buyer:
@@ -145,7 +137,7 @@
                 </span>
                 <span style="text-align: left; width:70%;  display: inline-block;">
                     <select name="status" id="status">
-                        {% for skey, svalue in status_options.items %}
+                        {% for skey, svalue in status_choices.items %}
                             <option value="{{skey}}">{{svalue}}</option>
                         {% endfor %}
                     </select>

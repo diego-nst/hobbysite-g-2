@@ -72,13 +72,6 @@
             */
         }
 
-        .pageTitle {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: nowrap;
-            justify-content: space-between;
-        }
-
         form.product {
             display: flex;
             flex-direction: column;
@@ -89,46 +82,6 @@
             margin: 50px auto;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .formGroup {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        label {
-            width: 100px;
-            font-size: 16px;
-            color: black;
-        }
-
-        input[type="text"], input[type="number"] {
-            flex-grow: 1;
-            padding: 10px;
-            border: 1px solid #FFFFE8;
-            border-radius: 4px;
-            font-size: 16px;
-        }
-
-        input[type="submit"] {
-            width: 100%;
-            padding: 10px;
-            background-color: #434D20;
-            color: #FFFFE8;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        input[type="submit"]:hover {
-            background-color: #434D20;
-        }
-
-        input[type="submit"]:active {
-            background-color: #434D20;
         }
 
     </style>
@@ -153,44 +106,6 @@
         <button type="submit">Submit</button>
         </form>
     </div>
-
-    <!-- <form class="product">
-        <div class="form-group">
-            <label for="name">Name: </label>
-            <input type="text" id="name" name="name" value="{{product.name}}">
-        </div>
-        <div class="form-group">
-            <label for="description">Description: </label>
-            <input type="text" id="description" name="description" value="{{product.description}}">
-        </div>
-        <div class="form-group">
-            <label for="price">Price: </label>
-            <input type="number" id="price" name="price" min="0" value="{{product.price}}">
-        </div>
-        <div class="form-group">
-            <label for="stock">Stock: </label>
-            <input type="number" id="stock" name="stock" min="0" value="{{product.stock}}">
-        </div>
-        <div>
-            <label for="productType">Product Type: </label>
-            <select name="productType" id="productType" selected="{{product.productType}}">
-                {% for type in product_types %}
-                    <option value="{{type.pk}}">{{type.name}}</option>
-                {% endfor %}
-                <option selected="selected">{{object.productType}}</option>
-            </select>
-        </div>
-        <div>
-            <label for="status">Status: </label>
-            <select name="status" id="status">
-                {% for skey, svalue in status_options.items %}
-                    <option value="{{skey}}">{{skey}}</option>
-                {% endfor %}
-                <option selected="selected">{{product.status}}</option>
-            </select>
-        </div>
-        <input type="submit" value="Submit">
-    </form> -->
 
     <br><br><br>
     <button class="bottomNav" type="submit">

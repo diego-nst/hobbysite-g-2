@@ -13,13 +13,13 @@
         font-weight: 200 1000;
     }
 
-    a {
+    a.transactionDetail {
         text-decoration: none;
         font-family: "Nunito Sans";
         color: black;
     }
     
-    a:hover{
+    a.transactionDetail:hover{
         font-style: italic;
         color: #C46BAE;
     }
@@ -70,13 +70,6 @@
         */
     }
 
-    .pageTitle {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        justify-content: space-between;
-    }
-
     .listContent {
         display: flex;
         flex-direction: row;
@@ -103,12 +96,12 @@
     <b> Buyer: {{ buyer.display_name }} </b>
     <br><br>
 
-    <div style="padding-left: 20px; max-width: 95%; margin:auto;">
+    <div style="padding-left: 20px; margin:auto;">
         <div class="listContent">
             <div>
                 <b>Items</b>
                 {% for transaction in transactionList %}
-                <br><a href="{{transaction.get_absolute_url}}">{{transaction.product.name}}</a>
+                <br><a class="transactionDetail" href="{{transaction.get_absolute_url}}">{{transaction.product.name}}</a>
                 {% endfor %}
             </div>
             <div>

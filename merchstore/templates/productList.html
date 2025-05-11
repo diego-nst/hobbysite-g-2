@@ -13,17 +13,17 @@
         font-weight: 200 1000;
     }
 
-    a {
+    a.itemDetail {
         text-decoration: none;
         font-family: "Nunito Sans";
         color: black;
     }
 
-    a:visited {
+    a.itemDetail:visited {
         color: black;
     }
 
-    a:hover {
+    a.itemDetail:hover {
         font-style: italic;
         color: #C46BAE;
     }
@@ -65,6 +65,24 @@
         */
     }
 
+    .itemSpan {
+        text-align: left;
+        width: 49%;
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    .priceSpan, .statusSpan {
+        text-align: left;
+        width: 25%;
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    .header {
+        font-weight: bold;
+    }
+    
 </style>
 {% endblock %}
 
@@ -96,24 +114,24 @@
         <br><br>
 
         <div style="padding-left:40px">
-            <span style="text-align: left; width:49%; display: inline-block; vertical-align: top; font-weight: bold;">
+            <span class="itemSpan header">
                 Items
             </span>
-            <span style="text-align: left; width:25%;  display: inline-block; vertical-align: top; font-weight: bold;">
+            <span class="priceSpan header">
                 Price
             </span>
-            <span style="text-align: left; width:25%;  display: inline-block; vertical-align: top; font-weight: bold;">
+            <span class="statusSpan header">
                 Status
             </span> 
             
             {% for p in productsList %}
-                <span style="text-align: left; width:49%; display: inline-block; vertical-align: top;">
-                    <a href="{{p.get_absolute_url}}">{{p.name}}</a>
+                <span class="itemSpan">
+                    <a class="itemDetail" href="{{p.get_absolute_url}}">{{p.name}}</a>
                 </span>
-                <span style="text-align: left; width:25%;  display: inline-block;  vertical-align: top;">
+                <span class="priceSpan">
                     {{p.price}}
                 </span>
-                <span style="text-align: left; width:25%;  display: inline-block;  vertical-align: top;">
+                <span class="statusSpan">
                     {{p.status}}
                 </span>
             {% endfor %}
@@ -137,23 +155,23 @@
     {{ productType.description }}
     <br><br>
     <div style="padding-left:40px">
-        <span style="text-align: left; width:49%; display: inline-block; vertical-align: top; font-weight: bold;">
+        <span class="itemSpan header">
             Items
         </span>
-        <span style="text-align: left; width:25%;  display: inline-block; vertical-align: top; font-weight: bold;">
+        <span class="priceSpan header">
             Price
         </span>
-        <span style="text-align: left; width:25%;  display: inline-block; vertical-align: top; font-weight: bold;">
+        <span class="statusSpan header">
             Status
         </span>
         {% for p in productsList %}
-            <span style="text-align: left; width:49%; display: inline-block; vertical-align: top;">
-                <a href="{{p.get_absolute_url}}">{{p.name}}</a>
+            <span class="itemSpan">
+                <a class="itemDetail" href="{{p.get_absolute_url}}">{{p.name}}</a>
             </span>
-            <span style="text-align: left; width:25%;  display: inline-block;  vertical-align: top;">
+            <span class="priceSpan">
                 {{p.price}}
             </span>
-            <span style="text-align: left; width:25%;  display: inline-block;  vertical-align: top;">
+            <span class="statusSpan">
                 {{p.status}}
             </span>
         {% endfor %}
@@ -161,6 +179,5 @@
 </ul>
 <br><hr>
 {% endfor %}
-
 
 {% endblock %}

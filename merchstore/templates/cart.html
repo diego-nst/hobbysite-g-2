@@ -13,69 +13,80 @@
         font-weight: 200 1000;
     }
 
-        a {
-            text-decoration: none;
-            font-family: "Nunito Sans";
-            color: black;
-        }
-        
-        a:hover{
-            font-style: italic;
-            color: #C46BAE;
-        }
+    a {
+        text-decoration: none;
+        font-family: "Nunito Sans";
+        color: black;
+    }
+    
+    a:hover{
+        font-style: italic;
+        color: #C46BAE;
+    }
 
-        a.menu {
-            text-decoration: none; 
-            color: #FFFFE8;
-        }
+    a.menu {
+        text-decoration: none; 
+        color: #FFFFE8;
+    }
 
-        a.menu:hover {
-            font-style: italic;
-            color: #FFFFE8
-        }
+    a.menu:hover {
+        font-style: italic;
+        color: #FFFFE8
+    }
 
-        body {
-            font-family: "Nunito Sans";
-            background-color: #FFFFE8;
-            margin: 3rem;
-            color: black;
-        }
+    body {
+        font-family: "Nunito Sans";
+        background-color: #FFFFE8;
+        margin: 3rem;
+        color: black;
+    }
 
-        button.bottomNav {
-            color: #FFFFE8;
-            background-color: #434D20;
-            font-weight: 600;
-            padding: 10px;
-            border-radius: 8px;
-            border: none;
-            width: 200px;
-        }
+    button.bottomNav {
+        color: #FFFFE8;
+        background-color: #434D20;
+        font-weight: 600;
+        padding: 10px;
+        border-radius: 8px;
+        border: none;
+        width: 200px;
+    }
 
-        .stickyMenu {
-            position: sticky;
-            top: 0;
-            display: flex;
-            flex-direction: row;
-            flex-wrap: nowrap;
-            justify-content: space-evenly;
-            padding-top: 4px;
-            padding-bottom: 4px;
+    .stickyMenu {
+        position: sticky;
+        top: 0;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-evenly;
+        padding-top: 4px;
+        padding-bottom: 4px;
 
-            background: #434D20;
-            color: #FFFFE8;
-            /* 
-                references: 
-                https://www.w3schools.com/HOWTO/howto_js_sticky_header.asp 
-                https://www.w3schools.com/css/css3_flexbox_container.asp
-            */
-        }
+        background: #434D20;
+        color: #FFFFE8;
+        /* 
+            references: 
+            https://www.w3schools.com/HOWTO/howto_js_sticky_header.asp 
+            https://www.w3schools.com/css/css3_flexbox_container.asp
+        */
+    }
 
-        .pageTitle {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: nowrap;
-            justify-content: space-between;
-        }
+    .itemSpan {
+        text-align: left;
+        width: 59%;
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    .priceSpan, .quantitySpan {
+        text-align: left;
+        width: 20%;
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    .heading {
+        font-weight: bold;
+    }
 
 </style>
 {% endblock %}
@@ -100,23 +111,23 @@
     <b> Owner: {{ owner.display_name }} </b>
     <br><br>
     <div style="padding-left:20px">
-        <span style="text-align: left; width:59%; display: inline-block; vertical-align: top; font-weight: bold;">
+        <span class="itemSpan heading" style="font-weight: bold">
             Items
         </span>
-        <span style="text-align: right; width:20%;  display: inline-block; vertical-align: top; font-weight: bold;">
+        <span class="priceSpan heading">
             Price per piece
         </span>
-        <span style="text-align: right; width:20%;  display: inline-block; vertical-align: top; font-weight: bold;">
+        <span class="quantitySpan heading">
             Quantity
         </span>
         {% for t in transactions %}
-            <span style="text-align: left; width:59%; display: inline-block; vertical-align: top;">
+            <span class="itemSpan" style="vertical-align: top;">
                 <a href="{{t.product.get_absolute_url}}">{{t.product.name}}</a>
             </span>
-            <span style="text-align: right; width:20%;  display: inline-block;  vertical-align: top;">
+            <span class="priceSpan" style="vertical-align: top;">
                 {{t.product.price}}
             </span>
-            <span style="text-align: right; width:20%;  display: inline-block;  vertical-align: top;">
+            <span class="priceSpan" style="vertical-align: top;">
                 {{t.amount}}
             </span>
         {% endfor %}

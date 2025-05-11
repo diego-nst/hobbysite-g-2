@@ -73,11 +73,16 @@
         */
     }
 
-    .pageTitle {
+    form.product {
         display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        justify-content: space-between;
+        flex-direction: column;
+        
+        background-color: #F8BBD0;
+        padding: 20px;
+        max-width: 80%;
+        margin: 50px auto;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
     </style>
@@ -94,41 +99,18 @@
 </div>
 
 <body>
-
     <br>
-    Owner: {{ user.username }}
-    <form method="POST" enctype="multipart/form-data">
+    <form class="product" method="POST" enctype="multipart/form-data" style="text-align: left;">
         {% csrf_token %}
-        {{ form }}
-        <!-- <label for="price">
-            <span>Price: </span>
-            <input type="number" id="price" name="price" min="1">
-        </label>
-        <label for="stock">
-            <span>Stock: </span>
-            <input type="number" id="stock" name="stock" min="1">
-        </label> -->
+        {{ form.as_div }}
         <input type="hidden" name="owner" value=user>
         <button type="submit">Submit</button>
     </form>
-
-    <!-- <form method="post">
-        {% csrf_token %}
-        <label for="price">
-            <span>Pricec: </span>
-            <input type="number" id="price" name="price" min="1">
-        </label>
-        <label for="stock">
-            <span>Stock: </span>
-            <input type="number" id="stock" name="stock" min="1">
-        </label>
-    </form> -->
 
     <br><br><br>
     <button type="submit" class="bottomNav">
         <p><a class="menu" href="{% url 'merchstore:product-list' %}">{{"Back to full item list"}}</a></p>
     </button>
-
 </body>
 
 {% endblock %}
