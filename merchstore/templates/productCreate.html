@@ -16,50 +16,69 @@
             font-weight: 200 1000;
         }
 
-        a {
-            text-decoration: none;
-            font-family: "Nunito Sans";
-            color: black;
-        }
+    a {
+        text-decoration: none;
+        font-family: "Nunito Sans";
+        color: black;
+    }
+    
+    a:hover{
+        font-style: italic;
+        color: #C46BAE;
+    }
 
-        a:visited {
-            color: black;
-        }
+    a.menu {
+        text-decoration: none; 
+        color: #FFFFE8;
+    }
 
-        a:hover {
-            font-style: italic;
-        }
+    a.menu:hover {
+        font-style: italic;
+        color: #FFFFE8
+    }
 
-        a.menu:hover {
-            font-style: italic;
-            color: black
-        }
+    body {
+        font-family: "Nunito Sans";
+        background-color: #FFFFE8;
+        margin: 3rem;
+        color: black;
+    }
 
-        body {
-            font-family: "Nunito Sans";
-            background-color: whitesmoke;
-            margin: 3rem;
-            color: black;
-        }
+    button.bottomNav {
+        color: #FFFFE8;
+        background-color: #434D20;
+        font-weight: 600;
+        padding: 10px;
+        border-radius: 8px;
+        border: none;
+        width: 200px;
+    }
 
-        .stickyMenu {
-            position: sticky;
-            top: 0;
-            display: flex;
-            flex-direction: row;
-            flex-wrap: nowrap;
-            justify-content: space-evenly;
-            padding-top: 4px;
-            padding-bottom: 4px;
+    .stickyMenu {
+        position: sticky;
+        top: 0;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-evenly;
+        padding-top: 4px;
+        padding-bottom: 4px;
 
-            background: #CDE990;
-            color: black;
-            /* 
-                references: 
-                https://www.w3schools.com/HOWTO/howto_js_sticky_header.asp 
-                https://www.w3schools.com/css/css3_flexbox_container.asp
-            */
-        }
+        background: #434D20;
+        color: #FFFFE8;
+        /* 
+            references: 
+            https://www.w3schools.com/HOWTO/howto_js_sticky_header.asp 
+            https://www.w3schools.com/css/css3_flexbox_container.asp
+        */
+    }
+
+    .pageTitle {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+    }
 
     </style>
     {% endblock %}
@@ -106,8 +125,8 @@
     </form> -->
 
     <br><br><br>
-    <button type="submit">
-        <p><a href="{% url 'merchstore:product-list' %}">{{"Back to full item list"}}</a></p>
+    <button type="submit" class="bottomNav">
+        <p><a class="menu" href="{% url 'merchstore:product-list' %}">{{"Back to full item list"}}</a></p>
     </button>
 
 </body>

@@ -77,6 +77,13 @@
         justify-content: space-between;
     }
 
+    .listContent {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+    }
+
 </style>
 {% endblock %}
 
@@ -96,34 +103,39 @@
     <b> Buyer: {{ buyer.display_name }} </b>
     <br><br>
 
-    <div style="padding-left:20px">
-        <span style="text-align: left; width:39%; display: inline-block; vertical-align: top; font-weight: bold;">
-            Items
-        </span>
-        <span style="text-align: left; width:20%;  display: inline-block; vertical-align: top; font-weight: bold;">
-            Price per piece
-        </span>
-        <span style="text-align: left; width:20%;  display: inline-block; vertical-align: top; font-weight: bold;">
-            Quantity
-        </span>
-        <span style="text-align: left; width:20%;  display: inline-block; vertical-align: top; font-weight: bold;">
-            Start of transaction
-        </span>
-        {% for transaction in transactionList %}
-        <span style="text-align: left; width:39%; display: inline-block; vertical-align: top;">
-            <a href="{{transaction.product.get_absolute_url}}">{{transaction.product.name}}</a>
-        </span>
-        <span style="text-align: left; width:20%;  display: inline-block;  vertical-align: top;">
-            {{transaction.product.price}}
-        </span>
-        <span style="text-align: left; width:20%;  display: inline-block;  vertical-align: top;">
-            {{transaction.amount}}
-        </span>
-        <span style="text-align: left; width:20%;  display: inline-block;  vertical-align: top;">
-            {{transaction.created_on}}
-        </span>
-        {% endfor %}
-    <br>
+    <div style="padding-left: 20px; max-width: 95%; margin:auto;">
+        <div class="listContent">
+            <div>
+                <b>Items</b>
+                {% for transaction in transactionList %}
+                <br><a href="{{transaction.get_absolute_url}}">{{transaction.product.name}}</a>
+                {% endfor %}
+            </div>
+            <div>
+                <b>Price per piece</b>
+                {% for transaction in transactionList %}
+                <br>{{transaction.product.price}}
+                {% endfor %}
+            </div>
+            <div>
+                <b>Quantity</b>
+                {% for transaction in transactionList %}
+                <br>{{transaction.amount}}
+                {% endfor %}
+            </div>
+            <div>
+                <b>Start of transaction</b>
+                {% for transaction in transactionList %}
+                <br>{{transaction.created_on}}
+                {% endfor %}
+            </div>
+            <div>
+                <b>Status</b>
+                {% for transaction in transactionList %}
+                <br>{{transaction.status}}
+                {% endfor %}
+            </div>
+        </div>
     </div>
     <br>
     <hr>

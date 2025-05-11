@@ -7,7 +7,7 @@ from django.urls import reverse
 from django.shortcuts import redirect
 
 from .models import Product, ProductType, Transaction
-from .forms import CreateTransactionForm, CreateProductForm, UpdateProductForm
+from .forms import CreateTransactionForm, CreateProductForm, UpdateProductForm, UpdateTransactionStatusForm
 from user_management.models import Profile
 
 
@@ -72,7 +72,7 @@ class ProductDetailView(DetailView):
             t = form.save(commit=False)
             t.buyer = self.request.user.profile
             t.product = Product.objects.get(pk=pk)
-            t.status = 'IN_CART'
+            t.status = 'AVAILABLE'
             if ((t.amount <= 0)):
                 print('Error. At least one item must be added to cart.')
             if ((t.product.stock - t.amount) < 0):
@@ -147,11 +147,10 @@ class CartView(LoginRequiredMixin, ListView):
 
 class TransactionListView(LoginRequiredMixin, ListView):
     model = Transaction
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['form'] = UpdateTransactionStatusForm
         seller_transactions = dict()
-
         if self.request.user.is_authenticated:
             for transaction in Transaction.objects.all():
                 if transaction.product.owner==self.request.user.profile:
@@ -163,3 +162,26 @@ class TransactionListView(LoginRequiredMixin, ListView):
         return context
 
     template_name = 'transactionList.html'
+
+class TransactionDetailView(LoginRequiredMixin, UpdateView):
+    model = Transaction
+    template_name = 'transactionDetail.html'
+    form_class = UpdateTransactionStatusForm
+
+    def get_context_data(self, **kwargs):
+        pk = self.kwargs['pk']
+        context = super().get_context_data(**kwargs)
+        context['pk'] = pk
+        context['form'] = UpdateTransactionStatusForm()
+        context['transaction'] = Transaction.objects.get(pk=pk)
+        context['status_options'] = Transaction.STATUS_CHOICES
+        return context
+    
+    def post(self, request, *args, **kwargs):
+        pk = self.kwargs['pk']
+        form = UpdateTransactionStatusForm(request.POST, instance=Transaction.objects.get(pk=pk))
+
+        t = form.save(commit=False)
+        t.status = request.POST.get('status')
+        t.save()
+        return redirect(reverse('merchstore:transactions-list'))

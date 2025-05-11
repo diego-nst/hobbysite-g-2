@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<html>
+
+<head>
+
+    <title>{% block title %} Product {{object.name}}{% endblock %}</title>
+
+    {% block styles %}
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+
+        @font-face {
+            font-family: "Nunito Sans", sans-serif;
+            src: url("nunito-sans.woff2") format("woff2 supports variations"),
+                url("nunito-sans.woff2") format("woff2-variations");
+            font-weight: 200 1000;
+        }
+
+        a {
+            text-decoration: underline;
+            font-family: "Nunito Sans";
+            color: #434D20;
+        }
+        
+        a:hover{
+            font-style: italic;
+            color: #434D20;
+        }
+
+        a.menu {
+            text-decoration: none; 
+            color: #FFFFE8;
+        }
+
+        a.menu:hover {
+            font-style: italic;
+            color: #FFFFE8
+        }
+
+        body {
+            font-family: "Nunito Sans";
+            background-color: #FFFFE8;
+            margin: 3rem;
+            color: black;
+        }
+
+        button.bottomNav {
+            color: #FFFFE8;
+            background-color: #434D20;
+            font-weight: 600;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            width: 200px;
+        }
+
+        .stickyMenu {
+            position: sticky;
+            top: 0;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: space-evenly;
+            padding-top: 4px;
+            padding-bottom: 4px;
+
+            background: #434D20;
+            color: #FFFFE8;
+            /* 
+                references: 
+                https://www.w3schools.com/HOWTO/howto_js_sticky_header.asp 
+                https://www.w3schools.com/css/css3_flexbox_container.asp
+            */
+        }
+
+        .pageTitle {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+        }
+
+    </style>
+{% endblock %}
+
+</head>
+
+<body>
+
+    {% block content %}
+    <br>
+    <div class="stickyMenu">
+        {% if user.is_authenticated %}
+            <div><a class="menu" href="{% url 'merchstore:create-product' %}">{{"Add a product"}}</a></div>
+            <div><a class="menu" href="{% url 'merchstore:cart' %}">{{"View cart"}}</a></div>
+            <div><a class="menu" href="{% url 'merchstore:transactions-list' %}">{{"View transactions"}}</a></div>
+        {% endif %}
+    </div>
+
+    <div class="pageTitle">
+        <div>
+            <h1> {{ transaction.product.name }} </h1>
+        </div>
+    </div>
+    <hr>
+
+    <br>
+    <span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
+        Buyer:
+    </span>
+    <span style="text-align: left; width:70%;  display: inline-block;">
+        {{transaction.buyer}}
+    </span>
+    <span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
+        Quantity:
+    </span>
+    <span style="text-align: left; width:70%;  display: inline-block;">
+        {{transaction.amount}}
+    </span>
+    <span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
+        Price:
+    </span>
+    <span style="text-align: left; width:70%;  display: inline-block;">
+        {{transaction.product.price}}
+    </span>
+
+    <span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
+        Stock:
+    </span>
+    <span style="text-align: left; width:70%;  display: inline-block;">
+        {{transaction.product.stock}}
+    </span>
+
+    <br>
+
+    <div>
+        <form method="post">
+            {% csrf_token %}
+                <span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
+                    <label for="status">
+                        Status:
+                    </label>
+                </span>
+                <span style="text-align: left; width:70%;  display: inline-block;">
+                    <select name="status" id="status">
+                        {% for skey, svalue in status_options.items %}
+                            <option value="{{skey}}">{{svalue}}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="submit" value="Update status">
+                </span>
+        </form>
+    </div>
+
+    <br><hr><br>
+    <button class="bottomNav" type="submit">
+        <p><a class="menu" href="{% url 'merchstore:transactions-list' %}">{{"Back to full transactions list"}}</a></p>
+    </button>
+    {% endblock %}
+
+</body>
+
+</html>

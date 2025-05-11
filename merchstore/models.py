@@ -82,9 +82,13 @@ class Transaction(models.Model):
         'TO_RECEIVE': 'To receive',
         'DELIVERED': 'Delivered'
     }
+
     status = models.CharField(max_length=255,
                               choices=STATUS_CHOICES,
                               null=True)
+    
+    def get_absolute_url(self):
+        return reverse('merchstore:transaction', args=[str(self.pk)])
     
     class Meta:
         ordering = ['buyer', 'created_on']

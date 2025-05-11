@@ -1,6 +1,5 @@
 from django import forms
 from .models import Product, ProductType, Transaction
-from django.core.validators import MinValueValidator
 
 class CreateTransactionForm(forms.ModelForm):
     class Meta:
@@ -28,4 +27,12 @@ class UpdateProductForm(forms.ModelForm):
         widgets = {
             'productType': forms.Select(choices=ProductType.objects.all,),
             'status': forms.Select(choices=Product.STATUS_CHOICES,)
+        }
+
+class UpdateTransactionStatusForm(forms.ModelForm):
+    class Meta:
+        model = Transaction
+        fields = ['status']
+        widgets = {
+            'status': forms.Select(choices=Transaction.STATUS_CHOICES,),
         }
