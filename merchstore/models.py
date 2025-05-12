@@ -82,7 +82,6 @@ class Transaction(models.Model):
         'To receive': 'To receive',
         'Delivered': 'Delivered'
     }
-
     status = models.CharField(max_length=255,
                               choices=STATUS_CHOICES,
                               null=True)
@@ -93,3 +92,4 @@ class Transaction(models.Model):
     class Meta:
         ordering = ['buyer', 'created_on']
         verbose_name = 'Transaction'
+    

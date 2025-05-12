@@ -71,9 +71,14 @@ class ProductDetailView(DetailView):
         form = CreateTransactionForm(request.POST)
         if form.is_valid():
             t = form.save(commit=False)
+
+            if not self.request.user.is_authenticated:
+                return redirect('login')
+
             t.buyer = self.request.user.profile
             t.product = Product.objects.get(pk=pk)
-            t.status = 'Available'
+            t.status = 'On cart'
+
             if ((t.amount <= 0)):
                 print('Error. At least one item must be added to cart.')
             if ((t.product.stock - t.amount) < 0):
@@ -82,9 +87,18 @@ class ProductDetailView(DetailView):
                 t.product.stock = t.product.stock - t.amount
                 if (t.product.stock == 0):
                     t.product.status = 'Out of stock'
-            t.product.save()
+                t.product.save()
+
+                userTransactions = t.buyer.transactions.all()
+                for ut in userTransactions:
+                    if ((ut.product==t.product) and (ut.status=='On cart')):
+                        t.product.stock = t.product.stock - t.amount
+                        ut.amount += int(request.POST.get('amount'))
+                        ut.save()
+                        return redirect(reverse('merchstore:cart'))
             t.save()
             return redirect(reverse('merchstore:cart'))
+        
         else:
             print('The Transaction form submission was invalid.')
             print(form.errors)
@@ -92,7 +106,6 @@ class ProductDetailView(DetailView):
             context = self.get_context_data(**kwargs)
             context['form'] = form
             return self.render_to_response(context)
-
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
@@ -137,6 +150,8 @@ class CartView(LoginRequiredMixin, ListView):
     model = Transaction
 
     def get_context_data(self, **kwargs):
+        user_has_transactions = False
+
         context = super().get_context_data(**kwargs)
         user_cart = dict()
         if self.request.user.is_authenticated:
@@ -145,7 +160,9 @@ class CartView(LoginRequiredMixin, ListView):
                     user_cart[transaction.product.owner].append(transaction)
                 else:
                     user_cart[transaction.product.owner] = [transaction]
+                    user_has_transactions = True
 
+        context['user_has_transactions'] = user_has_transactions
         context['user_cart'] = user_cart
         return context
 
@@ -156,17 +173,21 @@ class TransactionListView(LoginRequiredMixin, ListView):
     model = Transaction
 
     def get_context_data(self, **kwargs):
+        user_has_transactions = False
+
         context = super().get_context_data(**kwargs)
         context['form'] = UpdateTransactionStatusForm
         seller_transactions = dict()
         if self.request.user.is_authenticated:
             for transaction in Transaction.objects.all():
                 if transaction.product.owner == self.request.user.profile:
+                    user_has_transactions = True
                     if transaction.buyer in seller_transactions:
                         seller_transactions[transaction.buyer].append(
                             transaction)
                     else:
                         seller_transactions[transaction.buyer] = [transaction]
+        context['user_has_transactions'] = user_has_transactions
         context['seller_transactions'] = seller_transactions
         context['status_choices'] = Transaction.STATUS_CHOICES
         return context
