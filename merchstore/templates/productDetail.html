@@ -93,16 +93,12 @@
 
 </head>
 
-<body>
-
-    {% block content %}
+{% block content %}
     <br>
     <div class="stickyMenu">
-        {% if user.is_authenticated %}
-            <div><a class="menu" href="{% url 'merchstore:create-product' %}">{{"Add a product"}}</a></div>
-            <div><a class="menu" href="{% url 'merchstore:cart' %}">{{"View cart"}}</a></div>
-            <div><a class="menu" href="{% url 'merchstore:transactions-list' %}">{{"View transactions"}}</a></div>
-        {% endif %}
+        <div><a class="menu" href="{% url 'merchstore:create-product' %}">{{"Add a product"}}</a></div>
+        <div><a class="menu" href="{% url 'merchstore:cart' %}">{{"View cart"}}</a></div>
+        <div><a class="menu" href="{% url 'merchstore:transactions-list' %}">{{"View transactions"}}</a></div>
     </div>
     <h1> {{ object.name }} </h1>
     <hr>
@@ -113,11 +109,11 @@
     {% elif object.stock == 0 or object.stock < 0 %}
         <br> Sorry, this product is currently out of stock.
     {% else %}
-        <br>    
-        {% csrf_token %}    
-        <form method="post"></form>
+        <br>        
+        <form method="post">
+            {% csrf_token %}
             <label for="amount">
-                <span>Amount: </span>
+                <span> Amount: </span>
                 <input type="number" id="amount" name="amount" min="1" max={{object.stock}}>
             </label>
             <input type="submit" value="Add to cart">
@@ -172,8 +168,6 @@
     </button>
 
     <br><br>
-    {% endblock %}
-
-</body>
+{% endblock %}
 
 </html>
