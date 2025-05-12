@@ -25,7 +25,7 @@
         font-family: Nunito Sans;
     }
     body{
-        background-color: #C5E7E2;
+        background-color: #FFFFE8;
     }
     </style>
 {% endblock %}
@@ -37,7 +37,7 @@
             {{ form.as_p }}
             <h2>Job: </h2>
             {{ job_form.as_p }}
-            <button type="submit" name="commission-create" value="commission-create" >Create</button>
+            <div style="padding: 15px;"><button type="submit" name="commission-create" value="commission-create" class="btn btn-primary" role="button" type ="submit" style="background-color: #006992; color: #FFFFE8;">Make Job</button></div>
         </form>
-    <div style="padding: 15px;"><a class="btn btn-primary" href="/commissions/list" role="button" style="background-color: #006992;">Return to the Commission List</a></div>
+    <div style="padding: 15px;"><a class="btn btn-primary" href="/commissions/list" role="button" style="background-color: #006992; color: #FFFFE8;">Return to the Commission List</a></div>
 {% endblock %}
