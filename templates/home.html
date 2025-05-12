@@ -55,11 +55,11 @@ button{
     <p>Welcome to Our Hobbysite!</p>
     <h1>Explore!</h1>
     <div class="buttons">
-        <a href="{% url 'wiki:wiki_create' %}"> <button type="Submit">Merchandise</button></a>
+        <a href="{% url 'merchstore:product-list' %}"> <button type="Submit">Merchandise</button></a>
         <a href="{% url 'wiki:wiki_list' %}"> <button type="Submit">Wiki</button></a>
-        <a href="{% url 'wiki:wiki_create' %}"> <button type="Submit">Blog</button></a>
-        <a href="{% url 'wiki:wiki_create' %}"> <button type="Submit">Forum</button></a>
-        <a href="{% url 'wiki:wiki_create' %}"> <button type="Submit">Commision</button></a>
+        <a href="{% url 'blog:article_list' %}"> <button type="Submit">Blog</button></a>
+        <a href="{% url 'forum:thread_list' %}"> <button type="Submit">Forum</button></a>
+        <a href="{% url 'commissions:commission-list' %}"> <button type="Submit">Commission</button></a>
     </div>
 
 </div>
@@ -68,8 +68,8 @@ button{
     <h2>Merchandise</h2>
     <hr class="newhr2">
     <div class="threadscontent">
-        {% for article in latest_wikis %}
-            <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
+        {% for article in latest_products %}
+            <li><a href="{{ article.get_absolute_url }}">{{ article.name }}</a></li>
         {% empty %}
             <li>No posted wikis yet.</li>
         {% endfor %}
@@ -90,7 +90,7 @@ button{
     <h2>Blog</h2>
     <hr class="newhr2">
     <div class="threadscontent">
-        {% for article in latest_wikis %}
+        {% for article in latest_blogs %}
             <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
         {% empty %}
             <li>No posted wikis yet.</li>
@@ -102,7 +102,7 @@ button{
     <h2>Forum</h2>
     <hr class="newhr2"><br>
     <div class="threadscontent">
-        {% for article in latest_wikis %}
+        {% for article in latest_threads %}
             <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
         {% empty %}
             <li>No posted wikis yet.</li>
@@ -112,7 +112,7 @@ button{
     <h2>Commision</h2>
     <hr class="newhr2">
     <div class="threadscontent">
-        {% for article in latest_wikis %}
+        {% for article in latest_commisions %}
             <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
         {% empty %}
             <li>No posted wikis yet.</li>
