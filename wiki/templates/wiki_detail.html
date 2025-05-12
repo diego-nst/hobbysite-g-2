@@ -1,84 +1,274 @@
 {% extends 'base.html' %}
-{% load static %}
+
+{% block styles %}
+<style>
+
+h5{
+    font-family: Nunito Sans;
+    font-size:0.75rem; 
+    font-weight: 500; 
+    color:#4C2E05;
+    }
+h3{
+    color:#434d20;
+}
+h2,h4,h5, p{
+    color:#4C2E05;
+}
+
+
+.headcontent{
+    background-color:#434D20;
+    padding:1rem 1.5rem 1rem;  
+  
+}
+
+
+.header_image {
+    margin: 2rem auto; 
+}
+
+.header_image img {
+    display: block;
+    margin: auto;
+    border-radius: 1rem;
+    max-width: 50%;
+    height: auto;
+    box-shadow: 4px 4px 5px #9FA881;
+}
+
+h1{
+    color:#FFFFE8;
+}
+
+.content{
+    margin: 0rem 3rem 2rem;   
+    padding: 1rem;
+    background-color:#F8DEDF;
+    border-radius: 1rem;
+    box-shadow: 4px 4px 5px #9FA881;
+    gap: 20px;
+}
+p, h4, h5{
+
+    text-align: left;
+    color: #434D20;
+}
+
+.headcontent p{
+    font-size: 0.7rem;
+    color:#FFFFE8;
+}
+
+.gallery {
+    display: block;
+    margin: 1rem auto; /* Reduced vertical spacing */
+    background-color: #F8DEDF;
+    border-radius: 1rem;
+    box-shadow: 0 6px 12px #9FA881;
+    max-width: 90%;
+    padding: 2rem;
+}
+
+.gallery h3 {
+    text-align: center;
+    font-size: 2rem;
+    margin: 0 0 1.5rem 0; /* Removed top margin, kept bottom margin */
+    color: #333333;
+}
+
+.gallery_image {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+.gallery_image img {
+    width: 250px;
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.75rem;
+    object-fit: cover;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.author_controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8dedf;
+  border-radius: 1rem;
+  box-shadow: 4px 4px 5px #9fa881;
+  padding: 2rem;
+  margin: 2rem auto;
+  gap: 1rem;
+  max-width: 500px;
+  width: 90%;
+}
+
+.image_form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  width: 100%;
+}
+
+.author_controls a button,
+.image_form input[type="submit"] {
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  background-color: #d48b90;
+  border: none;
+  border-radius: 0.5rem;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.author_controls a button:hover,
+.image_form input[type="submit"]:hover {
+  background-color: #b26c6f;
+}
+
+.comment p{
+    font-size:0.7rem;
+    color:#434D20;
+}
+.comment{
+    background-color:#F8DEDF;
+    padding: 1rem;
+    border-radius: 1rem;
+    margin: 0rem 3rem 2rem;   
+    box-shadow: 4px 4px 5px #9FA881;
+}
+.category{
+    background-color:#FFFFE8;
+    border-radius: 1rem;
+    width: 20%;
+}
+.category>h5{
+    text-align: center;
+}
+.similarthreads{
+    margin:1rem 1.5rem 0.3rem;   
+}
+
+</style>
+{% endblock %}
 
 {% block title %} {{ article.title }} {% endblock %}
 
 
 {% block content %}
-
-<header>
-    <img src="{{ article.header_image.url }}">
+<div class="headcontent">
     <h1>{{ article.title }}</h1> 
-    <section class = 'category'>
-        <h4> Category: {{ article.category }} </h4>
-        <p> {{ article.category.description }} </p>
-    </section>
-    <section class = 'author'>
-        <h4> Created by {{ article.author.display_name }} on {{ article.created_on }}</h4>
-        <p> Last Updated: {{ article.updated_on }} </p>
-    </section>
-</header>
+    <div class="category">
+    <h5 style="padding:0.5rem; width:100%;"><b> {{ article.category }} </b></h5>
+    </div>
+    <p>
+    By:
+    {% if object.author %}
+         {{ object.author.display_name }}
+    {% endif %}
+    <br>
+        Created on: {{ article.created_on }}<br>
+        Last Updated: {{ article.updated_on }}
+    </p>
+</div>
 
-<main>
-    <article>
-        <section class = 'article'>
-            <p> {{ article.entry }} </p>
-            {% if user.profile == article.author %}
-            <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                {{ image_form.as_p }}
-                <input type="submit" value="Submit">
-                </form>
-            {% endif %}
-        </section>
+<br>
+<br>
 
-        <section class = 'comment_entry'>
-            <h3> Leave a comment! </h3>
-            {% if user.is_authenticated %}
-                <form method="post">
-                {% csrf_token %}
-                {{ comment_form.as_p }}
-                <input type="submit" value="Submit">
-                </form>
-            {% else %}
-                <p> Login to leave a comment.</p>
-            {% endif %}
-        </section>
-        
-        <section class="comments_display">
-            <h3>Comments:</h3>
-            <div class="comments_row">
-                {% for comment in comments %}
-                    <div class="comments">
-                        <h4>{{ comment.author }} at {{ comment.created_on }} </h4>
-                        <p>{{ comment.entry }}</p>
-                    </div>
-                {% empty %}
-                    <p>No comments yet.</p>
-                {% endfor %}
-            </div>
-        </section>
+{% if article.header_image %}
+    <div class = 'header_image'>
+        <img src="{{ article.header_image.url }}">
+    </div>
+{% endif %}
 
-        <h2 style="color: #4C2E05; margin-top: 20px;">Read more:</h2>
-        <section class = 'others'>
-                <ol>
-                    {% for article in read_more %}
-                        <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
-                    {% endfor %}
-                </ol>
-        </section>
+<div class="content">
+    <p> {{ article.entry }} </p>
+</div>
 
-        <aside>
-            {% if user.profile == article.author %}
-                <a href="{% url 'wiki:wiki_list' %}">
-                <button type="Submit"><p>Back to List</p></button></a>
-                <a href="{% url 'wiki:wiki_update' article.pk%}">
-                <button type="Submit"><p>Update Information</p></button></a>
-            {% else %}
-                <a href="{% url 'wiki:wiki_list' %}">
-                <button type="Submit"><p>Back to List</p></button></a>   
-            {% endif %}
-        </aside>
+<div class="gallery">
+    <h3> Image Gallery: </h3>
+    <div class="gallery_image">
+        {% for image in article.wiki_images.all %}
+            <img src="{{ image.image.url }}" alt="Gallery image">
+        {% endfor %}
+    </div>
+</div>
+
+{% if user.is_authenticated %}
+    {% if user.profile == article.author %}
+<div class="author_controls">
+    <h3> Author Controls: </h3>
+    <a href="{% url 'wiki:wiki_update' article.pk %}">
+    <button type="button">Edit the Article</button>
+    </a>
+    <h3> Add an image to the gallery: </h3>
+    <form class="image_form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ image_form }}
+        <input type="submit" value="Submit">
+    </form>
+</div>
+    {% endif %}
+{% endif %}
+
+<br>
+<br>
+
+<hr class="newhr2">
+<h3 style="margin: 1.5rem;">Comments</h3>
+<div class="comment">
+    
+{% if article.wiki_comment.all %}
+        {% for comment in comments %}
+            <h4>{{ comment.author.display_name }}</h4>
+            <h5>{{ comment.entry }}</h5>
+            <p>
+            Created on: {{ comment.created_on }}
+            <br>
+            Updated on: {{ comment.updated_on }}</p><br><hr class="newhr2">
+    {% endfor %}
+{% else %}
+    <h5>No comments yet</h5>
+    <hr class="newhr2">
+{% endif %}
+{% if user.is_authenticated %}
+    <h3>Leave a reply</h3>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ comment_form }}
+    <br>
+    <button type="submit" value="Submit">Submit</button>
+{% endif %}
+</form>
+</div>
+
+<div class="buttons">
+    <form method="POST" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit">Logout</button>
+    </form>
+    <a href="{% url 'wiki:wiki_list' %}">
+        <button type="Submit">Home</button></a><br>  
+</div>
+
+<br>
+
+<hr class="newhr2">
+<div class="similarthreads">
+    <h3>Similar articles you may like:</h3>
+        {% for article in read_more %}
+            <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
+        {% endfor %}
+</div>
+
+
 
 </main>
 {% endblock %}
