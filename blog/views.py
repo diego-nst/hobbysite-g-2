@@ -2,8 +2,6 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
 from .models import Article, ArticleCategory
 from .forms import BlogForm, CommentForm, ArticleImageForm
 from django.urls import reverse_lazy
@@ -95,12 +93,11 @@ class BlogCreateView(LoginRequiredMixin, CreateView):
         form.instance.author = self.request.user.profile
         return super().form_valid(form)
 
-    
-@login_required
-def BlogUpdateView(request, pk):
-    template_name = 'blog_update.html'
-    article = Article.objects.get(pk=pk)
-    form = BlogForm
 
-    ctx = {'form': form, 'article': article}
-    return render(request, template_name, ctx)
+class BlogUpdateView(LoginRequiredMixin, UpdateView):
+    model = Article
+    template_name = "blog_update.html"
+    form_class = BlogForm
+
+    def get_success_url(self):
+        return reverse_lazy('blog:article_detail', kwargs={'pk': self.get_object().pk})

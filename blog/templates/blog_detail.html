@@ -196,9 +196,9 @@
 <section class="comments_post">
     {% if user.is_authenticated %}
         <h2>Leave a Comment!</h2>
-            <form class=comment_form, method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
+            <form class="comment_form" method="post">
+                {% csrf_token %}
+                {{ comment_form }}
             <input type="submit" value="Submit">
             </form>
     {% else %}
