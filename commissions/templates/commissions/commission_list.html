@@ -3,46 +3,14 @@
 {% block title %} Threads {% endblock %}
 
 {% block styles %}
-<style>
-    @import
-      url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
-     @font-face {
-  font-family: "Nunito Sans", sans-serif;
-  src: url("nunito-sans.woff2") format("woff2 supports variations"),
-       url("nunito-sans.woff2") format("woff2-variations");
-  font-weight: 200 1000;
-}  
-a{
-    text-decoration:none;
-    font-family: Nunito Sans;
-    color: black;
-}
-a:visited{
-    color:black;
-}
-a:hover{
-    color:#006992;
-}
-a:focus{
-    color:black;
-}
-a:active{
-    color:black;
-}
-body{
-    background-color: #C5E7E2;
-}
-h2,h4{
-    font-family: Nunito Sans;
-    color: black;
-}
-.threadslist{
-    width: 100%;
-    margin: 2rem;
-    color: black;
+
     
-}
-</style>
+    <style>
+        
+        body{
+            background-color: #FFFFE8;;
+        } 
+    </style>
 
 {% endblock %}
 
@@ -61,7 +29,12 @@ h2,h4{
             ({{commission.get_status_display}})
         </span></a><br>
         {% endfor %}
-        <button><a href="/commissions/add">Create</a></button>
+        {% if not created_commissions %}
+            <span style="text-align: left; width:70%;  display: inline-block;">
+            No Commissions
+            </span></a><br>
+        {% endif %}
+        <button><a href="/commissions/add" style="color:#FFFFE8">Create</a></button>
         <h2>Commissions Applied to:</h4>
         {% for commission in applied_commissions %}
         <br><a href="{{commission.get_absolute_url}}"><span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
@@ -71,6 +44,11 @@ h2,h4{
             ({{commission.get_status_display}})
         </span></a><br>
         {% endfor %}
+        {% if not applied_commissions %}
+            <span style="text-align: left; width:70%;  display: inline-block;">
+            No Commissions
+            </span></a><br>
+        {% endif %}
         <hr>
 
         <div style="display:flex; justify-content:center">
@@ -89,5 +67,6 @@ h2,h4{
         </span></a><br>
         {% endfor %}
     </div>
+    <hr>
     <iframe style="border-radius:12px" src="https://open.spotify.com/embed/episode/5qqkDY0gge1iPKsRBgRI0j?utm_source=generator&t=484" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
 {% endblock %}
