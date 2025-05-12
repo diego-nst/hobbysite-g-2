@@ -171,7 +171,7 @@
     <p> Image Gallery: </p>
     <div class="gallery_image">
         {% for image in article.blog_images.all %}
-            <img src="{{ image.url }}" alt="Gallery image">
+            <img src="{{ image.image.url }}" alt="Gallery image">
         {% endfor %}
     </div>
 </div>
