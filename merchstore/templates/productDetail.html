@@ -19,38 +19,75 @@
         }
 
         a {
-            text-decoration: none;
+            text-decoration: underline;
             font-family: "Nunito Sans";
-            color: black;
+            color: #434D20;
         }
-
-        a:visited {
-            color: black;
-        }
-
-        a:hover {
+        
+        a:hover{
             font-style: italic;
+            color: #434D20;
         }
 
-        a:focus {
-            color: black;
+        a.menu {
+            text-decoration: none; 
+            color: #FFFFE8;
         }
 
-        a:active {
-            color: black;
+        a.menu:hover {
+            font-style: italic;
+            color: #FFFFE8
         }
 
         body {
             font-family: "Nunito Sans";
-            background-color: whitesmoke;
+            background-color: #FFFFE8;
             margin: 3rem;
             color: black;
         }
 
-        button {
-            background-color: grey;
-            color: black;
+        button.bottomNav {
+            color: #FFFFE8;
+            background-color: #434D20;
+            font-weight: 600;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            width: 200px;
         }
+
+        .stickyMenu {
+            position: sticky;
+            top: 0;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: space-evenly;
+            padding-top: 4px;
+            padding-bottom: 4px;
+
+            background: #434D20;
+            color: #FFFFE8;
+            /* 
+                references: 
+                https://www.w3schools.com/HOWTO/howto_js_sticky_header.asp 
+                https://www.w3schools.com/css/css3_flexbox_container.asp
+            */
+        }
+        
+        .labelSpan {
+            text-align: left;
+            width: 29%;
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .infoSpan {
+            text-align: left;
+            width: 70%;
+            display: inline-block;
+        }
+
     </style>
     {% endblock %}
 
@@ -59,90 +96,80 @@
 <body>
 
     {% block content %}
-
-    <h1>
-        {{ object.name }}
-        <hr>
-    </h1>
-
-    <form method="post">
-        {% csrf_token %}
-        <label for="amount">
-            <span>Amount: </span>
-            <input type="number" id="amount" name="amount" min="1">
-        </label>
-        {% if user.profile == object.owner %}
-            <input type="submit" value="Add to cart" disabled="True">
-            <br> You are the owner of this product. 
-        {% elif object.stock == 0 or object.stock < 0 %}
-            <input type="submit" value="Add to cart" disabled="True">
-            <br> Sorry, this product is currently out of stock.
-        {% else %}
-            <input type="submit" value="Add to cart">
+    <br>
+    <div class="stickyMenu">
+        {% if user.is_authenticated %}
+            <div><a class="menu" href="{% url 'merchstore:create-product' %}">{{"Add a product"}}</a></div>
+            <div><a class="menu" href="{% url 'merchstore:cart' %}">{{"View cart"}}</a></div>
+            <div><a class="menu" href="{% url 'merchstore:transactions-list' %}">{{"View transactions"}}</a></div>
         {% endif %}
-    </form>
-    
+    </div>
+    <h1> {{ object.name }} </h1>
+    <hr>
 
-    <span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
-        Price:
-    </span>
-    <span style="text-align: left; width:70%;  display: inline-block;">
+    {% if request.user.profile == object.owner %}
+        <br>You are the owner of this product. 
+        <br>Click <a href="{% url 'merchstore:update-product' pk=object.pk %}">{{"here"}}</a> to update your product listing.
+    {% elif object.stock == 0 or object.stock < 0 %}
+        <br> Sorry, this product is currently out of stock.
+    {% else %}
+        <br>    
+        {% csrf_token %}    
+        <form method="post"></form>
+            <label for="amount">
+                <span>Amount: </span>
+                <input type="number" id="amount" name="amount" min="1" max={{object.stock}}>
+            </label>
+            <input type="submit" value="Add to cart">
+        </form>
+    {% endif %}
+    
+    <br><br>
+    <span class="labelSpan">
+        Price: </span>
+    <span class="infoSpan">
         {{object.price}}
     </span>
 
-    <span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
+    <span class="labelSpan">
         Product Type:
     </span>
-    <span style="text-align: left; width:70%;  display: inline-block;">
+    <span class="infoSpan">
         {{object.productType}}
     </span>
 
-    <span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
+    <span class="labelSpan">
         Stock:
     </span>
-    <span style="text-align: left; width:70%;  display: inline-block;">
+    <span class="infoSpan">
         {{object.stock}}
     </span>
 
-    <span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
+    <span class="labelSpan">
         Status:
     </span>
-    <span style="text-align: left; width:70%;  display: inline-block;">
+    <span class="infoSpan">
         {{object.status}}
     </span>
 
-    <span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
+    <span class="labelSpan">
         Description:
     </span>
-    <span style="text-align: left; width:70%;  display: inline-block;">
+    <span class="infoSpan">
         {{object.description}}
     </span>
 
-    <span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
+    <span class="labelSpan">
         Seller:
     </span>
-    <span style="text-align: left; width:70%;  display: inline-block;">
+    <span class="infoSpan">
         {{object.owner}}
     </span>
 
-    <!--
-        The code snippet above makes use of
-        https://stackoverflow.com/questions/12438339/how-may-i-align-text-to-the-left-and-text-to-the-right-in-the-same-line
-        for formatting purposes.
-    -->
-
-    <br><br>
-    <button type="submit">
-        <p><a href="{% url 'merchstore:product-list' %}">{{"Back to full item list"}}</a></p>
+    <br><br><hr><br>
+    <button class="bottomNav" type="submit">
+        <p><a class="menu" href="{% url 'merchstore:product-list' %}">{{"Back to full item list"}}</a></p>
     </button>
-
-
-    {% if user.profile == object.owner %}
-    <br><br>
-    <button type="submit">
-        <p><a href="{% url 'merchstore:update-product' pk=object.pk %}">{{"Update your product listing"}}</a></p>
-    </button>
-    {% endif %}
 
     <br><br>
     {% endblock %}

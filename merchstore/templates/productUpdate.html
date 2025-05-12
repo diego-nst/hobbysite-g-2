@@ -5,7 +5,7 @@
 
     <title>{% block title %} Update Product {{object.name}}{% endblock %}</title>
 
-    {% block styles %}
+{% block styles %}
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
 
@@ -21,52 +21,95 @@
             font-family: "Nunito Sans";
             color: black;
         }
-
-        a:visited {
+        
+        a:hover{
             color: black;
+            font-style: italic
         }
 
-        a:hover {
+        a.menu {
+            color: #FFFFE8;
+        }
+
+        a.menu:hover {
             font-style: italic;
-        }
-
-        a:focus {
-            color: black;
-        }
-
-        a:active {
-            color: black;
+            color: #FFFFE8
         }
 
         body {
             font-family: "Nunito Sans";
-            background-color: whitesmoke;
+            background-color: #FFFFE8;
             margin: 3rem;
             color: black;
         }
 
-        button {
-            background-color: grey;
-            color: black;
+        button.bottomNav {
+            color: #FFFFE8;
+            background-color: #434D20;
+            font-weight: 600;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            width: 200px;
         }
+
+        .stickyMenu {
+            position: sticky;
+            top: 0;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: space-evenly;
+            padding-top: 4px;
+            padding-bottom: 4px;
+
+            background: #434D20;
+            color: #FFFFE8;
+            /* 
+                references: 
+                https://www.w3schools.com/HOWTO/howto_js_sticky_header.asp 
+                https://www.w3schools.com/css/css3_flexbox_container.asp
+            */
+        }
+
+        form.product {
+            display: flex;
+            flex-direction: column;
+            
+            background-color: #F8BBD0;
+            padding: 20px;
+            max-width: 80%;
+            margin: 50px auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
     </style>
-    {% endblock %}
+{% endblock %}
 
 </head>
 
 {% block content %}
+<br>
+<div class="stickyMenu">
+        <div><a class="menu" href="{% url 'merchstore:create-product' %}">{{"Add a product"}}</a></div>
+        <div><a class="menu" href="{% url 'merchstore:cart' %}">{{"View cart"}}</a></div>
+        <div><a class="menu" href="{% url 'merchstore:transactions-list' %}">{{"View transactions"}}</a></div>
+</div>
 
 <body>
-
-    <form method="POST" enctype="multipart/form-data">
+    <br>
+    <div>
+        <form class="product" method="POST" enctype="multipart/form-data" style="text-align: left;">
         {% csrf_token %}
-        {{ form }}
+        {{ form.as_div }}
         <button type="submit">Submit</button>
-    </form>
+        </form>
+    </div>
 
     <br><br><br>
-    <button type="submit">
-        <p><a href="{% url 'merchstore:product-list' %}">{{"Back to full item list"}}</a></p>
+    <button class="bottomNav" type="submit">
+        <p><a class="menu" href="{{object.get_absolute_url}}">{{"Back to detail view"}}</a></p>
     </button>
 
 </body>

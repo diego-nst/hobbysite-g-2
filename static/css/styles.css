@@ -8,7 +8,6 @@
     font-family: 'Nunito Sans', sans-serif;
 }
 
-/*
 nav ul {
     list-style: none;
     background-color: #F8BBD0;
@@ -54,7 +53,7 @@ header h1{
     color: #FFFFE8;
 }
 
- .category{
+.category{
     margin:0px;
     text-align: center;
     color: #4C2E05;
@@ -72,7 +71,7 @@ header img{
     margin-top: 30px;
     max-width: 90%;
     height: auto;
-} */
+}
 button{
     background-color:#434D20;
     color:#FFFFE8;
@@ -132,7 +131,7 @@ footer h4{
     color: #FFFFE8;
 }
 
-/* .list {
+.list {
     background-color: #FFFFE8;
     border-radius: 16px;
     border: #A5D6A7;
@@ -222,14 +221,14 @@ footer h4{
     flex-wrap: wrap; 
     gap: 5px; 
     justify-content: center; 
-} */
+}
 
 .buttons{
     display:flex;
     gap:0.5rem;
 }
 
-/* .comments{
+.comments{
     width: 300px;
     background-color: #FFFFE8;
     border-radius: 16px;
@@ -302,20 +301,13 @@ aside button{
 aside button:hover{
     background-color: #d990b2;
     cursor: pointer;
-} */
+}
 
-/* textarea {
+textarea {
     background-color: #F8DEDF;
     padding: 1rem 1rem;
     width: 90%;
-    color:#434d20;
-    margin: 10px;
-  } */
-
-textarea {
-    background-color: #FFFFE8;
-    padding: 1rem 1rem;
-    width: 90%;
+    /* height: 100px; */
     color:#434d20;
     margin: 10px;
   }
@@ -332,8 +324,8 @@ label{
 input{
     padding: 0.4rem 0.5rem;
     border-radius: 4px;
-    border:1px dotted black;
-    color: #434d20;
-    background-color:#FFFFE8;
+    border:1px dotted white;
+    color: #FFFFE8;
+    background-color:#434d20;
 }
 

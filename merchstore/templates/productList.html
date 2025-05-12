@@ -13,145 +13,171 @@
         font-weight: 200 1000;
     }
 
-    a {
+    a.itemDetail {
         text-decoration: none;
         font-family: "Nunito Sans";
         color: black;
     }
 
-    a:visited {
+    a.itemDetail:visited {
         color: black;
     }
 
-    a:hover {
-        font-style: italic
+    a.itemDetail:hover {
+        font-style: italic;
+        color: #C46BAE;
     }
 
-    a:focus {
-        color: black;
+
+    a.menu {
+        text-decoration: none; 
+        color: #FFFFE8;
     }
 
-    a:active {
-        color: black;
+    a.menu:hover {
+        font-style: italic;
+        color: #FFFFE8
     }
 
     body {
         font-family: "Nunito Sans";
-        background-color: whitesmoke;
+        background-color: #FFFFE8;
         margin: 3rem;
-        color: black;
+        color: black; 
     }
 
-    /* button {
-        background-color: orange;
-        color: black;
-    } */
+    .stickyMenu {
+        position: sticky;
+        top: 0;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-evenly;
+        padding-top: 4px;
+        padding-bottom: 4px;
+
+        background: #434D20;
+        color: #FFFFE8;
+        /* 
+            references: 
+            https://www.w3schools.com/HOWTO/howto_js_sticky_header.asp 
+            https://www.w3schools.com/css/css3_flexbox_container.asp
+        */
+    }
+
+    .itemSpan {
+        text-align: left;
+        width: 49%;
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    .priceSpan, .statusSpan {
+        text-align: left;
+        width: 25%;
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    .header {
+        font-weight: bold;
+    }
+    
 </style>
 {% endblock %}
 
 {% block content %}
 
-{% if user.is_authenticated%}
-
-<h2>
-    Your Products:
-</h2>
-
-{% if user_is_selling %}
-
-<ul style="padding-left: 0;">
-    {% for productType, productsList in owned_by_user.items %}
-    <b> {{ productType.name }} </b>
-    <br>
-    {{ productType.description }}
-    <br><br>
-
-    <div style="padding-left:20px">
-        <span style="text-align: left; width:49%; display: inline-block; vertical-align: top; font-weight: bold;">
-            Items
-        </span>
-        <span style="text-align: left; width:25%;  display: inline-block; vertical-align: top; font-weight: bold;">
-            Price
-        </span>
-        <span style="text-align: left; width:25%;  display: inline-block; vertical-align: top; font-weight: bold;">
-            Status
-        </span>
-        
-        {% for p in productsList %}
-            <span style="text-align: left; width:49%; display: inline-block; vertical-align: top;">
-                <a href="{{p.get_absolute_url}}">{{p.name}}</a>
-            </span>
-            <span style="text-align: left; width:25%;  display: inline-block;  vertical-align: top;">
-                {{p.price}}
-            </span>
-            <span style="text-align: left; width:25%;  display: inline-block;  vertical-align: top;">
-                {{p.price}}
-            </span>
-        {% endfor %}
-        <br>
-    </div>
-    <br>
-    <hr>
-    <br>
-    {% endfor %}
-</ul>
-{% else %}
-You have not put up any products for sale.
-{% endif %}
-
 <br>
-<button type="submit">
-    <p><a href="{% url 'merchstore:create-product' %}">{{"Add a product"}}</a></p>
-</button>
+<div class="stickyMenu">
+    {% if user.is_authenticated %}
+        <div><a class="menu" href="{% url 'merchstore:create-product' %}">{{"Add a product"}}</a></div>
+        <div><a class="menu" href="{% url 'merchstore:cart' %}">{{"View cart"}}</a></div>
+        <div><a class="menu" href="{% url 'merchstore:transactions-list' %}">{{"View transactions"}}</a></div>
+    {% else %}
+        <div>Welcome to the Merchandise Store!</div>
+    {% endif %}
+</div>
 
+{% if user.is_authenticated %}
+
+    <h2>Your Products: </h2>
+
+    {% if user_is_selling %}
+
+    {% for productType, productsList in owned_by_user.items %}
+    <ul style="padding-left: 0;">
+
+        <b> {{ productType.name }} </b>
+        <br>
+        {{ productType.description }}
+        <br><br>
+
+        <div style="padding-left:40px">
+            <span class="itemSpan header">
+                Items
+            </span>
+            <span class="priceSpan header">
+                Price
+            </span>
+            <span class="statusSpan header">
+                Status
+            </span> 
+            
+            {% for p in productsList %}
+                <span class="itemSpan">
+                    <a class="itemDetail" href="{{p.get_absolute_url}}">{{p.name}}</a>
+                </span>
+                <span class="priceSpan">
+                    {{p.price}}
+                </span>
+                <span class="statusSpan">
+                    {{p.status}}
+                </span>
+            {% endfor %}
+            <br>
+        </div>
+    </ul>
+    <br><hr>
+    {% endfor %}
+    {% else %}
+        You have not put up any products for sale.
+    {% endif %}
 {% endif %}
 
 <h2>
     Available products:
 </h2>
-
+{% for productType, productsList in user_can_buy.items %}
 <ul style="padding-left: 0;">
-    {% for productType, productsList in user_can_buy.items %}
     <b> {{ productType.name }} </b>
     <br>
     {{ productType.description }}
     <br><br>
-    <div style="padding-left:20px">
-        <span style="text-align: left; width:49%; display: inline-block; vertical-align: top; font-weight: bold;">
+    <div style="padding-left:40px">
+        <span class="itemSpan header">
             Items
         </span>
-        <span style="text-align: left; width:25%;  display: inline-block; vertical-align: top; font-weight: bold;">
+        <span class="priceSpan header">
             Price
         </span>
-        <span style="text-align: left; width:25%;  display: inline-block; vertical-align: top; font-weight: bold;">
+        <span class="statusSpan header">
             Status
         </span>
         {% for p in productsList %}
-            <span style="text-align: left; width:49%; display: inline-block; vertical-align: top;">
-                <a href="{{p.get_absolute_url}}">{{p.name}}</a>
+            <span class="itemSpan">
+                <a class="itemDetail" href="{{p.get_absolute_url}}">{{p.name}}</a>
             </span>
-            <span style="text-align: left; width:25%;  display: inline-block;  vertical-align: top;">
+            <span class="priceSpan">
                 {{p.price}}
             </span>
-            <span style="text-align: left; width:25%;  display: inline-block;  vertical-align: top;">
-                {{p.price}}
+            <span class="statusSpan">
+                {{p.status}}
             </span>
         {% endfor %}
     </div>
-    <br>
-    <hr>
-    <br>
-    {% endfor %}
 </ul>
-
-{% if user.is_authenticated %}
-<button type="submit">
-    <p><a href="{% url 'merchstore:cart' %}">{{"View your cart"}}</a></p>
-</button>
-
-<button type="submit">
-    <p><a href="{% url 'merchstore:transactions-list' %}">{{"View your seller transactions"}}</a></p>
-</button>
-{% endif %}
+<br><hr>
+{% endfor %}
 
 {% endblock %}
