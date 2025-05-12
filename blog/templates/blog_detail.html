@@ -52,32 +52,37 @@
         height:10%;
         border-radius: 1rem;
     }
-    .gallery{
+    .gallery {
+        display: block;
+        margin: 1rem auto; /* Reduced vertical spacing */
         background-color: #F8DEDF;
         border-radius: 1rem;
-        box-shadow: 4px 4px 5px #9FA881;
+        box-shadow: 0 6px 12px #9FA881;
+        max-width: 90%;
+        padding: 2rem;
     }
-    
-    .gallery p{
+
+    .gallery h3 {
         text-align: center;
-        padding: 20px;
-        font-size: 30px;
+        font-size: 2rem;
+        margin: 0 0 1.5rem 0; /* Removed top margin, kept bottom margin */
+        color: #333333;
     }
-    
-    .gallery_image{
+
+    .gallery_image {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        margin: 0rem 3rem 1rem;   
-        padding: 0.5rem;
+        gap: 1.5rem;
     }
-    
+
     .gallery_image img {
         width: 250px;
+        max-width: 100%;
         height: auto;
-        margin: 1%;
-        border-radius: 0.5rem;
+        border-radius: 0.75rem;
         object-fit: cover;
+        box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
     }
     
     .comment p{
@@ -112,6 +117,31 @@
     .similarthreads{
         margin:1rem 1.5rem 0.3rem;   
     }
+    .author_controls {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: #f8dedf;
+        border-radius: 1rem;
+        box-shadow: 4px 4px 5px #9fa881;
+        padding: 2rem;
+        margin: 2rem auto;
+        gap: 1rem;
+        max-width: 500px;
+        width: 90%;
+    }
+    .author_controls a button,
+        .image_form input[type="submit"] {
+        padding: 0.6rem 1.2rem;
+        font-size: 1rem;
+        background-color: #d48b90;
+        border: none;
+        border-radius: 0.5rem;
+        color: white;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
     </style>
 
 
@@ -137,34 +167,36 @@
     </p>
 </div>
 
-<a href="{% url 'blog:article_list' %}">
-<button type="Submit"><p>Back</p></button></a>
-
-{% if user.profile == article.author %}
-    <a href="{% url 'blog:article_update' article.pk%}">
-    <button type="Submit"><p>Update Information</p></button></a>
-{% endif %}
-
 <div class="gallery">
     <p> Image Gallery: </p>
     <div class="gallery_image">
-        {% for image in article.images.all %}
-            <img src="{{ image.blog_images.url }}" alt="Gallery image">
+        {% for image in article.blog_images.all %}
+            <img src="{{ image.url }}" alt="Gallery image">
         {% endfor %}
     </div>
-    {% if user.profile == article.author %}
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ image_form.as_p }}
-            <input type="submit" value="Submit">
-            </form>
-    {% endif %}
 </div>
+
+{% if user.is_authenticated %}
+    {% if user.profile == article.author %}
+        <div class="author_controls">
+            <h3> Author Controls: </h3>
+            <a href="{% url 'blog:article_update' article.pk %}">
+            <button type="button">Edit the Article</button>
+            </a>
+            <h3> Add an image to the gallery: </h3>
+            <form class="image_form" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ image_form }}
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+    {% endif %}
+{% endif %}
 
 <section class="comments_post">
     {% if user.is_authenticated %}
         <h2>Leave a Comment!</h2>
-            <form method="post">
+            <form class=comment_form, method="post">
             {% csrf_token %}
             {{ form.as_p }}
             <input type="submit" value="Submit">
@@ -190,6 +222,7 @@
     </div>
 </section>
 
+<hr class="newhr2">
 
 <section class="other_articles">
     <div>

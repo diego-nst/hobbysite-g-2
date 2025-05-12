@@ -56,7 +56,8 @@ class BlogDetailView(DetailView):
         ctx = super().get_context_data(**kwargs)
         ctx['read_more'] = Article.objects.filter(
             author=self.object.author).exclude(pk=self.object.pk)
-        ctx['form'] = CommentForm
+        ctx['comment_form'] = CommentForm
+        ctx['image_form'] = ArticleImageForm
         return ctx
     
 
@@ -88,7 +89,7 @@ class BlogCreateView(LoginRequiredMixin, CreateView):
     form_class = BlogForm
 
     def get_success_url(self):
-        return reverse_lazy('blog"article_list')
+        return reverse_lazy('blog:article_list')
     
     def form_valid(self, form):
         form.instance.author = self.request.user.profile
