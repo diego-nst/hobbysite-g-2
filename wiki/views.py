@@ -30,7 +30,7 @@ class WikiListView(ListView):
             category_dict = dict()
             for category in ArticleCategory.objects.all():
                 articles = []
-                for article in category.articles.all():
+                for article in category.wikis.all():
                     articles.append(article)
                 category_dict[category] = articles
             ctx['other_articles'] = category_dict
