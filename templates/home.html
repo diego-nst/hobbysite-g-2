@@ -2,26 +2,111 @@
 
 {% block title %}Homepage{% endblock %}
 
+{% block content %}
 <style>
-.greeting h1{
-    text-align: center;
-    color: black;
+.header{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
+
+.header p{
+    font-size: 100px;
+}
+
+.buttons{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.threadscontent {
+    padding: 0rem 1rem;
+}
+
+.threadslist {
+    padding: 2rem;
+    background-color: #F8DEDF;
+    border-radius: 2rem;
+    margin: 1rem 3.5rem;
+    box-shadow: 4px 4px 5px #9FA881;
+}
+.threadslist > h2, h3, p {
+    color: #434d20;
+    text-align: left;
+}
+.threadscontent {
+    padding: 0rem 1rem;
+}
+
 </style>
 
-{% block content %}
-<div class="greeting">
-    <h1>Welcome to Our Homepage!</h1>
-</header>
+<div class="header">
+    <p>Welcome to Our Hobbysite!</p>
+    <h1>Explore Our Categories</h1>
+    <div class="buttons">
+        <a href="{% url 'wiki:wiki_create' %}"> <button type="Submit">Merchandise</button></a>
+        <a href="{% url 'wiki:wiki_list' %}"> <button type="Submit">Wiki</button></a>
+        <a href="{% url 'wiki:wiki_create' %}"> <button type="Submit">Blog</button></a>
+        <a href="{% url 'wiki:wiki_create' %}"> <button type="Submit">Forum</button></a>
+        <a href="{% url 'wiki:wiki_create' %}"> <button type="Submit">Commision</button></a>
+    </div>
 
-<main>
-    <section class="category">
-        <h2>Explore Our Categories</h2>
-        <div class="list">
-            <h3>Latest Articles:</h3>
-            <ol>
-            </ol>
-        </div>
-    </section>
-</main>
+</div>
+
+<section class="threadslist">
+    <h2>Merchandise</h2>
+    <hr class="newhr2">
+    <div class="threadscontent">
+        {% for article in latest_wikis %}
+            <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
+        {% empty %}
+            <li>No posted wikis yet.</li>
+        {% endfor %}
+    </div>
+
+    <br>
+
+    <h2>Wiki</h2>
+    <hr class="newhr2"><br>
+    <div class="threadscontent">
+        {% for article in latest_wikis %}
+            <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
+        {% empty %}
+            <li>No posted wikis yet.</li>
+        {% endfor %}
+    </div>
+
+    <h2>Blog</h2>
+    <hr class="newhr2">
+    <div class="threadscontent">
+        {% for article in latest_wikis %}
+            <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
+        {% empty %}
+            <li>No posted wikis yet.</li>
+        {% endfor %}
+    </div>
+
+    <br>
+
+    <h2>Forum</h2>
+    <hr class="newhr2"><br>
+    <div class="threadscontent">
+        {% for article in latest_wikis %}
+            <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
+        {% empty %}
+            <li>No posted wikis yet.</li>
+        {% endfor %}
+    </div>
+
+    <h2>Commision</h2>
+    <hr class="newhr2">
+    <div class="threadscontent">
+        {% for article in latest_wikis %}
+            <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
+        {% empty %}
+            <li>No posted wikis yet.</li>
+        {% endfor %}
+    </div>
+</section>
 {% endblock %}
