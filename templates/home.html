@@ -39,11 +39,21 @@
     padding: 0rem 1rem;
 }
 
+button{
+    background-color:#434D20;
+    color:#FFFFE8;
+    font-weight: 680;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    width: auto;
+    padding: 0.35rem;
+    border:none;
+}
 </style>
 
 <div class="header">
     <p>Welcome to Our Hobbysite!</p>
-    <h1>Explore Our Categories</h1>
+    <h1>Explore!</h1>
     <div class="buttons">
         <a href="{% url 'wiki:wiki_create' %}"> <button type="Submit">Merchandise</button></a>
         <a href="{% url 'wiki:wiki_list' %}"> <button type="Submit">Wiki</button></a>
