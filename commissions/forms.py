@@ -1,14 +1,13 @@
 from django import forms
-from .models import Commission, Job, JobApplication
-
-
-class JobApplicationForm(forms.ModelForm):
-    class Meta:
-        model = JobApplication
-        fields = []
-
+from .models import Commission, Job
 
 class CommissionForm(forms.ModelForm):
+    '''
+    Form for the Commission Model
+    
+    Only contains title, description and status as the rest of the fields should be added automatically
+    '''
+
     class Meta:
         model = Commission
         fields = ['title', 'description', 'status']
@@ -29,6 +28,11 @@ class CommissionForm(forms.ModelForm):
 
 
 class JobForm(forms.ModelForm):
+    '''
+    Form for the Job Model
+    
+    Only contains role and manpowerRequired as the rest of the fields should be added automatically
+    '''
     class Meta:
         model = Job
         fields = ['role', 'manpowerRequired']

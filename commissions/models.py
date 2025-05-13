@@ -5,6 +5,12 @@ from user_management.models import Profile
 
 
 class Commission(models.Model):
+    '''
+    Represents a commission/task with jobs
+
+    connected to a Profile model to represent the author of the commission
+    '''
+    # status - character from A-D - represents Open, Full, Completed, or Discontinued - alphabetical characters used for easy ordering
     OPEN = "A"
     FULL = "B"
     COMPLETED = "C"
@@ -36,6 +42,13 @@ class Commission(models.Model):
 
 
 class Job(models.Model):
+    '''
+    Represents a job users can apply to
+
+    connected to a commission model as the job is posted under a commission
+    '''
+    # status - character A or B - represents Open or Full - alphabetical characters used for easy ordering
+    
     OPEN = "A"
     FULL = "B"
     STATUS_CHOICES = {
@@ -59,6 +72,12 @@ class Job(models.Model):
 
 
 class JobApplication(models.Model):
+    '''
+    Represents a user's application for a job posted under commission
+
+    connected to the Job model as the job the applicant is applying to and the Profile model as the user who applied
+    '''
+    # status - character from A-C - represents Pending, Accepted, or Rejected - alphabetical characters used for easy ordering
     PENDING = "A"
     ACCEPTED = "B"
     REJECTED = "C"
