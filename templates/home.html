@@ -105,25 +105,27 @@ button{
 
     <br>
 
-    {% comment %} <h2>Wiki</h2>
-    <hr class="newhr2"><br>
-    <div class="threadscontent">
-        {% for article in latest_wikis %}
-            <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
+    <h2>Wiki</h2>
+    <hr class="newhr2">
+    <div class="content">
+        {% for wiki in latest_wikis %}
+            <p><a href="{{ wiki.get_absolute_url }}">{{ wiki.title }}</a></p>
         {% empty %}
-            <li>No posted wikis yet.</li>
+            <p>No posted wikis yet.</p>
         {% endfor %}
     </div>
 
+    <br>
+
     <h2>Blog</h2>
     <hr class="newhr2">
-    <div class="threadscontent">
-        {% for article in latest_blogs %}
-            <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
+    <div class="content">
+        {% for blog in latest_blogs %}
+            <p><a href="{{ blog.get_absolute_url }}">{{ blog.title }}</a></p>
         {% empty %}
-            <li>No posted wikis yet.</li>
+            <p>No posted blogs yet.</p>
         {% endfor %}
-    </div> {% endcomment %}
+    </div>
 
     <br>
 
