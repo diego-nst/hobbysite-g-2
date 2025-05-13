@@ -21,6 +21,7 @@
     <div style="padding-left: 15px; padding-top: 15px;" class="headcontent">
         <h1>{{commission.title}}</h1>
         <h1> Edit the Article: </h1>
+        {% if request.user.is_authenticated and user.profile == commission.author%}
         <div class="content">
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
@@ -32,7 +33,12 @@
         <p>Open Manpower: {{openManpower}}</p>
         <p>Created on: {{commission.created}}</p>
         <p>Updated on: {{commission.updated}}</p>
+        {% else %}
+        <h1> Edit the Article: </h1>
+        {% endif %}
+
     </div>
+    {% if request.user.is_authenticated and user.profile == commission.author%}
     <hr>
     <h2 style="padding-left: 15px;">Jobs:</h2>
     <div class="content">
@@ -62,8 +68,8 @@
                             <button type="submit" name="job-accept" value="job-accept" class="btn btn-primary" role="button" type ="submit" style="background-color: #006992; color: #FFFFE8;">Accept</button> <button type="submit" name="job-reject" value="job-reject" class="btn btn-primary" role="button" style="background-color: #006992; color: #FFFFE8; padding-left: 15px;">Reject</button>
                         </form>
                         {% endif %}
-                    </div>
                     {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>
@@ -77,6 +83,7 @@
             <div style="padding: 15px;"><button type="submit" name="job-create" value="job-create" class="btn btn-primary" role="button" type ="submit" style="background-color: #006992; color: #FFFFE8;">Make Job</button></div>
         </form>
     </div>
+    {% endif %}
     
     <div style="padding: 15px;"><a class="btn btn-primary" href="{% url 'commissions:commission-detail' commission.pk %}" role="button" style="background-color: #006992; color: #FFFFE8;">Return to the Commission</a></div>
 {% endblock %}
