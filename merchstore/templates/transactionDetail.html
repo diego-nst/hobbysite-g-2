@@ -101,67 +101,72 @@
         {% endif %}
     </div>
 
-    <body>
-        <div style="margin: 2rem;">
-
-        <div>
-            <h1> {{ transaction.product.name }} </h1>
-        </div>
-
-        <hr>
-            <br>
-            <span class=" labelSpan">
-                Buyer:
-            </span>
-            <span class="infoSpan">
-                {{transaction.buyer}}
-            </span>
-            <span class=" labelSpan">
-                Quantity:
-            </span>
-            <span class="infoSpan">
-                {{transaction.amount}}
-            </span>
-            <span class=" labelSpan">
-                Price:
-            </span>
-            <span class="infoSpan">
-                {{transaction.product.price}}
-            </span>
-
-            <span class=" labelSpan">
-                Stock:
-            </span>
-            <span class="infoSpan">
-                {{transaction.product.stock}}
-            </span>
-
-            <br>
+    {% if request.user.um_profile == transaction.product.owner %}
+        <body>
+            <div style="margin: 2rem;">
 
             <div>
-                <form method="post">
-                    {% csrf_token %}
-                        <span class=" labelSpan">
-                            <label for="status">
-                                Status:
-                            </label>
-                        </span>
-                        <span class="infoSpan">
-                            <select name="status" id="status">
-                                {% for skey, svalue in status_choices.items %}
-                                    <option value="{{skey}}">{{svalue}}</option>
-                                {% endfor %}
-                            </select>
-                            <input type="submit" value="Update status">
-                        </span>
-                </form>
+                <h1> {{ transaction.product.name }} </h1>
             </div>
 
-            <br><hr><br>
-            <button class="bottomNav" type="submit">
-                <p><a class="menu" href="{% url 'merchstore:transactions-list' %}">{{"Back to full transactions list"}}</a></p>
-            </button>
-        </div>
-    </body>
+            <hr>
+                <br>
+                <span class=" labelSpan">
+                    Buyer:
+                </span>
+                <span class="infoSpan">
+                    {{transaction.buyer}}
+                </span>
+                <span class=" labelSpan">
+                    Quantity:
+                </span>
+                <span class="infoSpan">
+                    {{transaction.amount}}
+                </span>
+                <span class=" labelSpan">
+                    Price:
+                </span>
+                <span class="infoSpan">
+                    {{transaction.product.price}}
+                </span>
+
+                <span class=" labelSpan">
+                    Stock:
+                </span>
+                <span class="infoSpan">
+                    {{transaction.product.stock}}
+                </span>
+
+                <br>
+
+                <div>
+                    <form method="post">
+                        {% csrf_token %}
+                            <span class=" labelSpan">
+                                <label for="status">
+                                    Status:
+                                </label>
+                            </span>
+                            <span class="infoSpan">
+                                <select name="status" id="status">
+                                    {% for skey, svalue in status_choices.items %}
+                                        <option value="{{skey}}">{{svalue}}</option>
+                                    {% endfor %}
+                                </select>
+                                <input type="submit" value="Update status">
+                            </span>
+                    </form>
+                </div>
+
+                <br><hr><br>
+                <button class="bottomNav" type="submit">
+                    <p><a class="menu" href="{% url 'merchstore:transactions-list' %}">{{"Back to full transactions list"}}</a></p>
+                </button>
+            </div>
+        </body>
+    {% else %}
+        <br>
+        You are not the seller of this transaction.
+    {% endif %}
 {% endblock %}
 </html>

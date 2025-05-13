@@ -11,6 +11,9 @@ from .forms import CreateTransactionForm, CreateProductForm, UpdateProductForm, 
 
 
 class ProductListView(ListView):
+    '''
+    This view lists all existing products.
+    '''
     model = ProductType
     template_name = 'productList.html'
 
@@ -54,6 +57,11 @@ class ProductListView(ListView):
 
 
 class ProductDetailView(DetailView):
+    '''
+    This view displays the information on a particular product.
+    If the logged-in user is not the buyer, and if the product is not out of stock, 
+    the user can add the product to their cart.
+    '''
     model = Product
     template_name = 'productDetail.html'
     form_class = CreateTransactionForm
@@ -103,7 +111,6 @@ class ProductDetailView(DetailView):
                         return redirect(reverse('merchstore:cart'))
                 t.save()
                 return redirect(reverse('merchstore:cart'))
-            
         else:
             print('The Transaction form submission was invalid.')
             print(form.errors)
@@ -113,6 +120,9 @@ class ProductDetailView(DetailView):
             return self.render_to_response(context)
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
+    '''
+    This view allows a logged-in user to create a new product listing.
+    '''
     model = Product
     template_name = 'productCreate.html'
     form_class = CreateProductForm
@@ -130,6 +140,9 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
         # used https://stackoverflow.com/questions/65733442/in-django-how-to-add-username-to-a-model-automatically-when-the-form-is-submit
 
 class ProductUpdateView(LoginRequiredMixin, UpdateView):
+    '''
+    This view allows a logged-in user to edit one of their product listings.
+    '''
     model = Product
     template_name = 'productUpdate.html'
     form_class = UpdateProductForm
@@ -152,8 +165,10 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class CartView(LoginRequiredMixin, ListView):
+    '''
+    This view lists the buyer transactions of the logged-in user. 
+    '''
     model = Transaction
-
     def get_context_data(self, **kwargs):
         user_has_transactions = False
 
@@ -175,8 +190,10 @@ class CartView(LoginRequiredMixin, ListView):
 
 
 class TransactionListView(LoginRequiredMixin, ListView):
+    '''
+    This view lists all the seller transactions of the logged-in user.
+    '''
     model = Transaction
-
     def get_context_data(self, **kwargs):
         user_has_transactions = False
 
@@ -201,6 +218,10 @@ class TransactionListView(LoginRequiredMixin, ListView):
 
 
 class TransactionDetailView(LoginRequiredMixin, UpdateView):
+    '''
+    This view displays the information on a particular transaction.
+    It allows the seller to update the transaction's status.
+    '''
     model = Transaction
     template_name = 'transactionDetail.html'
     form_class = UpdateTransactionStatusForm

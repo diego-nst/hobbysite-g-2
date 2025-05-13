@@ -4,6 +4,9 @@ from user_management.models import Profile
 
 
 class ProductType(models.Model):
+    '''
+    The class represents a category or type of product.
+    '''
     name = models.CharField(max_length=255)
     description = models.TextField()
 
@@ -22,6 +25,10 @@ class ProductType(models.Model):
 
 
 class Product(models.Model):
+    '''
+    The class represents a product available for sale.
+    It has foreign keys to its corresponding owner and product type.
+    '''
     name = models.CharField(max_length=255)
     description = models.TextField()
     price = models.DecimalField(max_digits=100,
@@ -64,6 +71,10 @@ class Product(models.Model):
 
 
 class Transaction(models.Model):
+    '''
+    The class represents the transaction of certain product between owner and buyer.
+    It has foreign keys to the product being sold and the interested buyer.
+    '''
     buyer = models.ForeignKey(Profile,
                               null=True,
                               on_delete=models.SET_NULL,

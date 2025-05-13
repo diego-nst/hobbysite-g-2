@@ -3,6 +3,11 @@ from .models import Product, ProductType, Transaction
 
 
 class CreateTransactionForm(forms.ModelForm):
+    '''
+    The class represents the form used when transactions are made.
+    It asks the buyer for the amount of product they wish to transact.
+    It is used in the ProductDetailView of the merchstore app's views.
+    '''
     class Meta:
         model = Transaction
         fields = ['amount']
@@ -12,6 +17,11 @@ class CreateTransactionForm(forms.ModelForm):
 
 
 class CreateProductForm(forms.ModelForm):
+    '''
+    The class represents the form filled out by the user when creating a new product.
+    It asks the user for all fields except owner, which is automatically attributed to the user.
+    It is used in the ProductCreateView of the merchstore app's views.
+    '''
     class Meta:
         model = Product
         fields = ['name', 'description', 'price',
@@ -25,6 +35,11 @@ class CreateProductForm(forms.ModelForm):
 
 
 class UpdateProductForm(forms.ModelForm):
+    '''
+    The class represents the form filled out by the user to edit an existing product.
+    It allows the user to edit all fields except owner.
+    It is used in the ProductUpdateView of the merchstore app's views.
+    '''
     class Meta:
         model = Product
         fields = ['name', 'description', 'price',
@@ -36,6 +51,11 @@ class UpdateProductForm(forms.ModelForm):
 
 
 class UpdateTransactionStatusForm(forms.ModelForm):
+    '''
+    The class represents the form filled out by a product's seller to edit an existing transaction.
+    It allows the owner to edit a transaction's status.
+    It is used in the TransactionDetailView of the merchstore app's views.
+    '''
     class Meta:
         model = Transaction
         fields = ['status']
