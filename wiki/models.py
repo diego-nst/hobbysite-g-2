@@ -90,6 +90,5 @@ class ArticleImage(models.Model):
                                 related_name="wiki_images")
 
     class Meta:
-        ordering = ['-created_on']
         verbose_name = 'Gallery Image'
         verbose_name_plural = 'Gallery Images'
