@@ -18,13 +18,13 @@
             font-weight: 200 1000;
         }
 
-        a {
+        a.editLink {
             text-decoration: underline;
             font-family: "Nunito Sans";
             color: #434D20;
         }
         
-        a:hover{
+        a.editLink:hover{
             font-style: italic;
             color: #434D20;
         }
@@ -42,7 +42,6 @@
         body {
             font-family: "Nunito Sans";
             background-color: #FFFFE8;
-            margin: 3rem;
             color: black;
         }
 
@@ -94,80 +93,82 @@
 </head>
 
 {% block content %}
-    <br>
     <div class="stickyMenu">
         <div><a class="menu" href="{% url 'merchstore:create-product' %}">{{"Add a product"}}</a></div>
         <div><a class="menu" href="{% url 'merchstore:cart' %}">{{"View cart"}}</a></div>
         <div><a class="menu" href="{% url 'merchstore:transactions-list' %}">{{"View transactions"}}</a></div>
     </div>
-    <h1> {{ object.name }} </h1>
-    <hr>
 
-    {% if request.user.um_profile == object.owner %}
-        <br>You are the owner of this product. 
-        <br>Click <a href="{% url 'merchstore:update-product' pk=object.pk %}">{{"here"}}</a> to update your product listing.
-    {% elif object.stock == 0 or object.stock < 0 %}
-        <br> Sorry, this product is currently out of stock.
-    {% else %}
-        <br>        
-        <form method="post">
-            {% csrf_token %}
-            <label for="amount">
-                <span> Amount: </span>
-                <input type="number" id="amount" name="amount" min="1" max={{object.stock}}>
-            </label>
-            <input type="submit" value="Add to cart">
-        </form>
-    {% endif %}
-    
-    <br><br>
-    <span class="labelSpan">
-        Price: </span>
-    <span class="infoSpan">
-        {{object.price}}
-    </span>
+    <div style="margin: 2rem;">
+        <h1> {{ object.name }} </h1>
+        <hr>
 
-    <span class="labelSpan">
-        Product Type:
-    </span>
-    <span class="infoSpan">
-        {{object.productType}}
-    </span>
+        {% if request.user.um_profile == object.owner %}
+            <br>You are the owner of this product. 
+            <br>Click <a class="editLink" href="{% url 'merchstore:update-product' pk=object.pk %}">{{"here"}}</a> to update your product listing.
+        {% elif object.stock == 0 or object.stock < 0 %}
+            <br> Sorry, this product is currently out of stock.
+        {% else %}
+            <br>        
+            <form method="post">
+                {% csrf_token %}
+                <label for="amount">
+                    <span> Amount: </span>
+                    <input type="number" id="amount" name="amount" min="1" max={{object.stock}}>
+                </label>
+                <input type="submit" value="Add to cart">
+            </form>
+        {% endif %}
+        
+        <br><br>
+        <span class="labelSpan">
+            Price: </span>
+        <span class="infoSpan">
+            {{object.price}}
+        </span>
 
-    <span class="labelSpan">
-        Stock:
-    </span>
-    <span class="infoSpan">
-        {{object.stock}}
-    </span>
+        <span class="labelSpan">
+            Product Type:
+        </span>
+        <span class="infoSpan">
+            {{object.productType}}
+        </span>
 
-    <span class="labelSpan">
-        Status:
-    </span>
-    <span class="infoSpan">
-        {{object.status}}
-    </span>
+        <span class="labelSpan">
+            Stock:
+        </span>
+        <span class="infoSpan">
+            {{object.stock}}
+        </span>
 
-    <span class="labelSpan">
-        Description:
-    </span>
-    <span class="infoSpan">
-        {{object.description}}
-    </span>
+        <span class="labelSpan">
+            Status:
+        </span>
+        <span class="infoSpan">
+            {{object.status}}
+        </span>
 
-    <span class="labelSpan">
-        Seller:
-    </span>
-    <span class="infoSpan">
-        {{object.owner}}
-    </span>
+        <span class="labelSpan">
+            Description:
+        </span>
+        <span class="infoSpan">
+            {{object.description}}
+        </span>
 
-    <br><br><hr><br>
-    <button class="bottomNav" type="submit">
-        <p><a class="menu" href="{% url 'merchstore:product-list' %}">{{"Back to full item list"}}</a></p>
-    </button>
+        <span class="labelSpan">
+            Seller:
+        </span>
+        <span class="infoSpan">
+            {{object.owner}}
+        </span>
 
-    <br><br>
+        <br><br><hr><br>
+        <button class="bottomNav" type="submit">
+            <p><a class="menu" href="{% url 'merchstore:product-list' %}">{{"Back to full item list"}}</a></p>
+        </button>
+
+        <br><br>
+    </div>
+
 {% endblock %}
-
 </html>

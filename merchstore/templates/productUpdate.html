@@ -39,7 +39,6 @@
         body {
             font-family: "Nunito Sans";
             background-color: #FFFFE8;
-            margin: 3rem;
             color: black;
         }
 
@@ -90,28 +89,28 @@
 </head>
 
 {% block content %}
-<br>
 <div class="stickyMenu">
         <div><a class="menu" href="{% url 'merchstore:create-product' %}">{{"Add a product"}}</a></div>
         <div><a class="menu" href="{% url 'merchstore:cart' %}">{{"View cart"}}</a></div>
         <div><a class="menu" href="{% url 'merchstore:transactions-list' %}">{{"View transactions"}}</a></div>
 </div>
 
-<body>
-    <br>
-    <div>
-        <form class="product" method="POST" enctype="multipart/form-data" style="text-align: left;">
-        {% csrf_token %}
-        {{ form.as_div }}
-        <button type="submit">Submit</button>
-        </form>
-    </div>
+<div style="margin: 2rem;">
+    <body>
+        <br>
+        <div>
+            <form class="product" method="POST" enctype="multipart/form-data" style="text-align: left;">
+            {% csrf_token %}
+            {{ form.as_div }}
+            <button type="submit">Submit</button>
+            </form>
+        </div>
 
-    <br><br><br>
-    <button class="bottomNav" type="submit">
-        <p><a class="menu" href="{{object.get_absolute_url}}">{{"Back to detail view"}}</a></p>
-    </button>
+        <br><br><br>
+        <button class="bottomNav" type="submit">
+            <p><a class="menu" href="{{object.get_absolute_url}}">{{"Back to detail view"}}</a></p>
+        </button>
 
-</body>
-
+    </body>
+</div>
 {% endblock %}

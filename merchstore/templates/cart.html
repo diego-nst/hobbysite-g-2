@@ -13,13 +13,17 @@
         font-weight: 200 1000;
     }
 
-    a {
+    a.itemDetail {
         text-decoration: none;
         font-family: "Nunito Sans";
         color: black;
     }
-    
-    a:hover{
+
+    a.itemDetail:visited {
+        color: black;
+    }
+
+    a.itemDetail:hover {
         font-style: italic;
         color: #C46BAE;
     }
@@ -37,7 +41,6 @@
     body {
         font-family: "Nunito Sans";
         background-color: #FFFFE8;
-        margin: 3rem;
         color: black;
     }
 
@@ -92,63 +95,62 @@
 {% endblock %}
 
 {% block content %}
-
-    <br>
     <div class="stickyMenu">
             <div><a class="menu" href="{% url 'merchstore:create-product' %}">{{"Add a product"}}</a></div>
             <div><a class="menu" href="{% url 'merchstore:cart' %}">{{"View cart"}}</a></div>
             <div><a class="menu" href="{% url 'merchstore:transactions-list' %}">{{"View transactions"}}</a></div>
     </div>
 
-    <h2>
-        Your Cart:
-    </h2>
+    <div style="margin: 2rem">
+        <h2>
+            Your Cart:
+        </h2>
 
-    {% if user.is_authenticated%}
-
-        {% if user_has_transactions %}
+        {% if user.is_authenticated%}
+            {% if user_has_transactions %}
                 <ul style="padding-left: 0;">
-            {% for owner, transactions in user_cart.items %}
-            <b> Owner: {{ owner.display_name }} </b>
-            <br><br>
-            <div style="padding-left:20px">
-                <span class="itemSpan heading" style="font-weight: bold">
-                    Items
-                </span>
-                <span class="priceSpan heading">
-                    Price per piece
-                </span>
-                <span class="quantitySpan heading">
-                    Quantity
-                </span>
-                {% for t in transactions %}
-                    <span class="itemSpan" style="vertical-align: top;">
-                        <a href="{{t.product.get_absolute_url}}">{{t.product.name}}</a>
-                    </span>
-                    <span class="priceSpan" style="vertical-align: top;">
-                        {{t.product.price}}
-                    </span>
-                    <span class="priceSpan" style="vertical-align: top;">
-                        {{t.amount}}
-                    </span>
-                {% endfor %}
-                <br>
-            </div>
-            <br>
-            <hr>
-            <br>
-            {% endfor %}
-        </ul>
+                    {% for owner, transactions in user_cart.items %}
+                        <b> Owner: {{ owner.display_name }} </b>
+                        <br><br>
+                        <div style="padding-left:20px">
+                            <span class="itemSpan heading" style="font-weight: bold">
+                                Items
+                            </span>
+                            <span class="priceSpan heading">
+                                Price per piece
+                            </span>
+                            <span class="quantitySpan heading">
+                                Quantity
+                            </span>
+                            {% for t in transactions %}
+                                <span class="itemSpan" style="vertical-align: top;">
+                                    <a class="itemDetail" href="{{t.product.get_absolute_url}}">{{t.product.name}}</a>
+                                </span>
+                                <span class="priceSpan" style="vertical-align: top;">
+                                    {{t.product.price}}
+                                </span>
+                                <span class="priceSpan" style="vertical-align: top;">
+                                    {{t.amount}}
+                                </span>
+                            {% endfor %}
+                            <br>
+                        </div>
+                        <br>
+                        <hr>
+                        <br>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p style="text-align: left;">You have not added anything to cart.</p>
+            {% endif %}
+
         {% else %}
-            <p style="text-align: left;">You have not added anything to cart.</p>
+            Please login to view your cart.
         {% endif %}
 
-    {% else %}
-        Please login to view your cart.
-    {% endif %}
-
-<button type="submit" class="bottomNav">
-    <p><a class="menu" href="{% url 'merchstore:product-list' %}">{{"Back to full item list"}}</a></p>
-</button>
-
+        <button type="submit" class="bottomNav">
+            <p><a class="menu" href="{% url 'merchstore:product-list' %}">{{"Back to full item list"}}</a></p>
+        </button>
+    </div>
+    
 {% endblock %}

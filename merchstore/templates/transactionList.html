@@ -37,7 +37,6 @@
     body {
         font-family: "Nunito Sans";
         background-color: #FFFFE8;
-        margin: 3rem;
         color: black;
     }
 
@@ -81,70 +80,67 @@
 {% endblock %}
 
 {% block content %}
-
-    <br>
     <div class="stickyMenu">
             <div><a class="menu" href="{% url 'merchstore:create-product' %}">{{"Add a product"}}</a></div>
             <div><a class="menu" href="{% url 'merchstore:cart' %}">{{"View cart"}}</a></div>
             <div><a class="menu" href="{% url 'merchstore:transactions-list' %}">{{"View transactions"}}</a></div>
     </div>
 
-    {% if user.is_authenticated%}
-
-        {% if user_has_transactions%}
-            <ul style="padding-left: 0;">
-                <h2>Your Transactions:</h2>
-                
-                {% for buyer, transactionList in seller_transactions.items %}
-                    <b> Buyer: {{ buyer.display_name }} </b>
-                    <br><br>
-
-                    <div style="padding-left: 20px; margin:auto;">
-                        <div class="listContent">
-                            <div>
-                                <b>Items</b>
-                                {% for transaction in transactionList %}
-                                <br><a class="transactionDetail" href="{{transaction.get_absolute_url}}">{{transaction.product.name}}</a>
-                                {% endfor %}
-                            </div>
-                            <div>
-                                <b>Price per piece</b>
-                                {% for transaction in transactionList %}
-                                <br>{{transaction.product.price}}
-                                {% endfor %}
-                            </div>
-                            <div>
-                                <b>Quantity</b>
-                                {% for transaction in transactionList %}
-                                <br>{{transaction.amount}}
-                                {% endfor %}
-                            </div>
-                            <div>
-                                <b>Start of transaction</b>
-                                {% for transaction in transactionList %}
-                                <br>{{transaction.created_on}}
-                                {% endfor %}
-                            </div>
-                            <div>
-                                <b>Status</b>
-                                {% for transaction in transactionList %}
-                                <br>{{transaction.status}}
-                                {% endfor %}
+    <div style="margin: 2rem;">
+        {% if user.is_authenticated%}
+            {% if user_has_transactions%}
+                <ul style="padding-left: 0;">
+                    <h2>Your Transactions:</h2>
+                    {% for buyer, transactionList in seller_transactions.items %}
+                        <b> Buyer: {{ buyer.display_name }} </b>
+                        <br><br>
+                        <div style="padding-left: 20px; margin:auto;">
+                            <div class="listContent">
+                                <div>
+                                    <b>Items</b>
+                                    {% for transaction in transactionList %}
+                                    <br><a class="transactionDetail" href="{{transaction.get_absolute_url}}">{{transaction.product.name}}</a>
+                                    {% endfor %}
+                                </div>
+                                <div>
+                                    <b>Price per piece</b>
+                                    {% for transaction in transactionList %}
+                                    <br>{{transaction.product.price}}
+                                    {% endfor %}
+                                </div>
+                                <div>
+                                    <b>Quantity</b>
+                                    {% for transaction in transactionList %}
+                                    <br>{{transaction.amount}}
+                                    {% endfor %}
+                                </div>
+                                <div>
+                                    <b>Start of transaction</b>
+                                    {% for transaction in transactionList %}
+                                    <br>{{transaction.created_on}}
+                                    {% endfor %}
+                                </div>
+                                <div>
+                                    <b>Status</b>
+                                    {% for transaction in transactionList %}
+                                    <br>{{transaction.status}}
+                                    {% endfor %}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <br>
-                    <hr>
-                    <br>
-                {% endfor %}
-            </ul>    
-        {% else %}
-            <p style="text-align: left;">You have no seller transactions.</p>
-        {% endif %}
+                        <br>
+                        <hr>
+                        <br>
+                    {% endfor %}
+                </ul>    
+            {% else %}
+                <p style="text-align: left;">You have no seller transactions.</p>
+            {% endif %}
 
-    {% else %}
-        Please log in to view your seller transactions.
-    {% endif %}
+        {% else %}
+            Please log in to view your seller transactions.
+        {% endif %}
+    </div>
 
     <button type="submit" class="bottomNav">
         <p><a class="menu" href="{% url 'merchstore:product-list' %}">{{"Back to full item list"}}</a></p>
