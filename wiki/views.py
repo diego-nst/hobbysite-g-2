@@ -15,6 +15,8 @@ class WikiListView(ListView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
 
+        ctx['wiki_categories'] = ArticleCategory.objects.all()
+
         if self.request.user.is_authenticated:
             category_dict = dict()
             for category in ArticleCategory.objects.all():
@@ -50,9 +52,7 @@ class WikiDetailView(DetailView):
             category=self.object.category).exclude(pk=self.object.pk)
         ctx['image_form'] = ArticleImageForm
         ctx['comment_form'] = CommentForm
-        comments = self.object.wiki_comment.all()
-        limit = 10
-        ctx['comments'] = comments[:limit]
+        ctx['comments'] = self.object.wiki_comment.all()
         return ctx
 
     def post(self, request, *args, **kwargs):
@@ -96,4 +96,3 @@ class WikiUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('wiki:wiki_detail', kwargs={'pk': self.get_object().pk})
-
