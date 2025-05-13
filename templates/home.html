@@ -1,41 +1,51 @@
 {% extends 'base.html' %}
 
-{% block title %}Homepage{% endblock %}
+{% block title %}Home{% endblock %}
 
 {% block content %}
 <style>
+p{
+    color: #434d20;
+}
 .header{
     display: flex;
     flex-direction: column;
     align-items: center;
+    color: #FFFFE8;
+    background-color: #434d20;
+   
+    
 }
 
-.header p{
-    font-size: 100px;
+.header h1{
+    font-size: 4rem;
+    text-align: center;
+   color: #FFFFE8;
+    font-weight: 700;
 }
 
-.buttons{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+.header h3{
+    font-weight: 600;
+    font-size: 1.5rem;
+    color: #FFFFE8;
 }
 
 .threadscontent {
     padding: 0rem 1rem;
 }
 
-.threadslist {
+.contentlist {
     padding: 2rem;
     background-color: #F8DEDF;
     border-radius: 2rem;
     margin: 1rem 3.5rem;
     box-shadow: 4px 4px 5px #9FA881;
 }
-.threadslist > h2, h3, p {
+.contentlist > h2, h3, p {
     color: #434d20;
     text-align: left;
 }
-.threadscontent {
+.content {
     padding: 0rem 1rem;
 }
 
@@ -45,39 +55,57 @@ button{
     font-weight: 680;
     font-size: 1rem;
     border-radius: 0.5rem;
-    width: auto;
+    width: 100%;
     padding: 0.35rem;
     border:none;
 }
+.navigation{
+    display: flex;
+    width: 100%;
+    flex-flow: row wrap;
+    gap: 1.5rem;
+    position: sticky;
+    top: 0;
+    background-color: #434d20;
+    border-bottom: 2px dashed #9FA881;
+    padding: 10px;
+    border-bottom-right-radius: 1.5rem;
+    border-bottom-left-radius: 1.5rem;
+  }
+  .navigation a{
+    flex-shrink: 1;
+    flex-grow: 1;
+}
+   
 </style>
 
 <div class="header">
-    <p>Welcome to Our Hobbysite!</p>
-    <h1>Explore!</h1>
-    <div class="buttons">
+    <h1>Welcome to Our Hobbysite!</h1>
+    <h3>Explore!</h3>
+</div>
+<div class="navigation">
         <a href="{% url 'merchstore:product-list' %}"> <button type="Submit">Merchandise</button></a>
         <a href="{% url 'wiki:wiki_list' %}"> <button type="Submit">Wiki</button></a>
         <a href="{% url 'blog:article_list' %}"> <button type="Submit">Blog</button></a>
         <a href="{% url 'forum:thread_list' %}"> <button type="Submit">Forum</button></a>
         <a href="{% url 'commissions:commission-list' %}"> <button type="Submit">Commission</button></a>
-    </div>
-
 </div>
+<br>
 
-<section class="threadslist">
+<section class="contentlist">
     <h2>Merchandise</h2>
     <hr class="newhr2">
-    <div class="threadscontent">
-        {% for article in latest_products %}
-            <li><a href="{{ article.get_absolute_url }}">{{ article.name }}</a></li>
+    <div class="content">
+        {% for product in latest_products %}
+            <p><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></p>
         {% empty %}
-            <li>No posted wikis yet.</li>
+            <p>No posted products yet.</p>
         {% endfor %}
     </div>
 
     <br>
 
-    <h2>Wiki</h2>
+    {% comment %} <h2>Wiki</h2>
     <hr class="newhr2"><br>
     <div class="threadscontent">
         {% for article in latest_wikis %}
@@ -95,27 +123,27 @@ button{
         {% empty %}
             <li>No posted wikis yet.</li>
         {% endfor %}
-    </div>
+    </div> {% endcomment %}
 
     <br>
 
     <h2>Forum</h2>
-    <hr class="newhr2"><br>
-    <div class="threadscontent">
-        {% for article in latest_threads %}
-            <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
+    <hr class="newhr2">
+    <div class="content">
+        {% for thread in latest_threads %}
+            <p><a href="{{ thread.get_absolute_url }}">{{ thread.title }}</a></p>
         {% empty %}
-            <li>No posted wikis yet.</li>
+            <p>No posted threads yet.</p>
         {% endfor %}
-    </div>
+    </div><br>
 
     <h2>Commision</h2>
     <hr class="newhr2">
-    <div class="threadscontent">
-        {% for article in latest_commisions %}
-            <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
+    <div class="content">
+        {% for commission in latest_commisions %}
+            <p><a href="{{ commission.get_absolute_url }}">{{ commission.title }}</a></p>
         {% empty %}
-            <li>No posted wikis yet.</li>
+            <p>No posted commissions yet.</p>
         {% endfor %}
     </div>
 </section>
