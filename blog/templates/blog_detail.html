@@ -48,7 +48,7 @@
     .header_image img{
         display: block;
         margin: auto;
-        width: 100%;
+        max-width: 50%;
         height:10%;
         border-radius: 1rem;
     }
@@ -89,18 +89,15 @@
         font-size:0.7rem;
         color:#434D20;
     }
+    .comment h4{
+        color: #434D20;
+    }
     .comment{
         background-color:#F8DEDF;
         padding: 1rem;
         border-radius: 1rem;
         margin: 0rem 3rem 2rem;   
         box-shadow: 4px 4px 5px #9FA881;
-    }
-    .comments_post h2{
-        color:#434D20;
-    }
-    .comments_display h2{
-        color:#434D20;
     }
     .other_articles h2, h3{
         color:#434D20;
@@ -193,34 +190,31 @@
     {% endif %}
 {% endif %}
 
-<section class="comments_post">
-    {% if user.is_authenticated %}
-        <h2>Leave a Comment!</h2>
-            <form class="comment_form" method="post">
-                {% csrf_token %}
-                {{ comment_form }}
-            <input type="submit" value="Submit">
-            </form>
-    {% else %}
-        <h3> Login to post a comment!</h3>
-    {% endif %}
-</section>
+<hr class="newhr2">
+<h3 style="margin: 1.5rem;">Comments</h3>
+<div class="comment">
+{% for comment in article.blog_comments.all %}
+        <h4>{{ comment.author.display_name }}</h4>
+        <h5>{{ comment.entry }}</h5>
+        <p>
+        Created on: {{ comment.created_on }}
+        <br>
+            Updated on: {{ comment.updated_on }}</p><br><hr class="newhr2">
+    {% empty %}
+    <h5>No comments yet</h5>
+    <hr class="newhr2">
+    {% endfor %}
+{% if user.is_authenticated %}
+    <h3>Leave a reply</h3>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ comment_form }}
+    <br>
+    <button type="submit" value="Submit">Submit</button>
+{% endif %}
+</form>
+</div>
 
-
-<section class="comments_display">
-    <h2>Comments</h2>
-    <div class="comments_row">
-        {% for comment in article.blog_comments.all %}
-            <div class="comments">
-                <p>{{ comment.author }} at {{ comment.created_on }} <p>
-                <hr>
-                <p>{{ comment.entry }}</p>
-            </div>
-        {% empty %}
-            <p>No comments yet.</p>
-        {% endfor %}
-    </div>
-</section>
 
 <hr class="newhr2">
 
