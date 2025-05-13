@@ -8,7 +8,6 @@ from django.shortcuts import redirect
 
 from .models import Product, ProductType, Transaction
 from .forms import CreateTransactionForm, CreateProductForm, UpdateProductForm, UpdateTransactionStatusForm
-from user_management.models import Profile
 
 
 class ProductListView(ListView):
@@ -29,7 +28,7 @@ class ProductListView(ListView):
                 user_products_dict[pt] = list()
 
                 for product in pt.get_products():
-                    if (product.owner == self.request.user.profile):
+                    if (product.owner == self.request.user.um_profile):
                         user_products_dict[pt] += [product]
                     else:
                         products_dict[pt] += [product]
@@ -72,10 +71,16 @@ class ProductDetailView(DetailView):
         if form.is_valid():
             t = form.save(commit=False)
 
-            if not self.request.user.is_authenticated:
-                return redirect('login')
+            if not self.request.user.is_authenticated:                
+                url = (reverse('login') + '?next=' + reverse('merchstore:item', args=[pk])
+                        + '&amount=' + str(self.request.POST.get('amount'))
+                       )
+                # references for query parameters:
+                # https://djangocentral.com/capturing-query-parameters-of-requestget-in-django/#accessing-query-parameters-in-django
+                # https://medium.com/@averydcs/understanding-path-variables-and-query-parameters-in-http-requests-232248b71a8
+                return redirect(url)
 
-            t.buyer = self.request.user.profile
+            t.buyer = self.request.user.um_profile
             t.product = Product.objects.get(pk=pk)
             t.status = 'On cart'
 
@@ -92,13 +97,13 @@ class ProductDetailView(DetailView):
                 userTransactions = t.buyer.transactions.all()
                 for ut in userTransactions:
                     if ((ut.product==t.product) and (ut.status=='On cart')):
-                        t.product.stock = t.product.stock - t.amount
+                        t.product.stock -= t.amount
                         ut.amount += int(request.POST.get('amount'))
                         ut.save()
                         return redirect(reverse('merchstore:cart'))
-            t.save()
-            return redirect(reverse('merchstore:cart'))
-        
+                t.save()
+                return redirect(reverse('merchstore:cart'))
+            
         else:
             print('The Transaction form submission was invalid.')
             print(form.errors)
@@ -120,7 +125,7 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
         return context
 
     def form_valid(self, form):
-        form.instance.owner = self.request.user.profile
+        form.instance.owner = self.request.user.um_profile
         return super().form_valid(form)
         # used https://stackoverflow.com/questions/65733442/in-django-how-to-add-username-to-a-model-automatically-when-the-form-is-submit
 
@@ -155,7 +160,7 @@ class CartView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         user_cart = dict()
         if self.request.user.is_authenticated:
-            for transaction in self.request.user.profile.transactions.all():
+            for transaction in self.request.user.um_profile.transactions.all():
                 if transaction.product.owner in user_cart:
                     user_cart[transaction.product.owner].append(transaction)
                 else:
@@ -180,7 +185,7 @@ class TransactionListView(LoginRequiredMixin, ListView):
         seller_transactions = dict()
         if self.request.user.is_authenticated:
             for transaction in Transaction.objects.all():
-                if transaction.product.owner == self.request.user.profile:
+                if transaction.product.owner == self.request.user.um_profile:
                     user_has_transactions = True
                     if transaction.buyer in seller_transactions:
                         seller_transactions[transaction.buyer].append(

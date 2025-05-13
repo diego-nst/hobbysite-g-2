@@ -1,9 +1,9 @@
 from django.urls import path
-from .views import WikiListView, WikiDetailView
+from . import views
 
 
 urlpatterns = [
-    
+    path('', views.index, name='index'),
 ]
 
-app_name = "wiki"
+app_name = "user_management"
