@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     'forum',
     'commissions',
     'user_management',
-    'dashboard'
 ]
 
 MIDDLEWARE = [

@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.views.generic import TemplateView
 from django.views.generic import UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -31,6 +32,9 @@ class UpdateProfile(UpdateView, LoginRequiredMixin):
     form = ProfileForm
     template_name = "user_management/profile.html"
     fields = ['display_name', 'email']
+
+    def get_success_url(self):
+        return reverse_lazy('user_management:dashboard')
 
 
 
