@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     'forum',
     'commissions',
     'user_management',
-    'wiki',
     'dashboard'
 ]
 

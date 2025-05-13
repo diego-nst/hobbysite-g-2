@@ -13,12 +13,12 @@
 
 <nav>
     <ul>
-        <li><a class="active" href="#home">Home</a></li>
-        <li><a href="#news">Merchandise</a></li>
-        <li><a href="#contact">Wiki</a></li>
-        <li><a href="#about">Blog</a></li>
-        <li><a href="#about">Forum</a></li>
-        <li><a href="#about">Commission</a></li>
+        <li><a href='{% url 'user_management:index' %}'>Home</a></li>
+        <li><a href='{% url 'merchstore:product-list' %}'>Merchandise</a></li>
+        <li><a href='{% url 'wiki:wiki_list' %}'>Wiki</a></li>
+        <li><a href='{% url 'blog:article_list' %}'>Blog</a></li>
+        <li><a href='{% url 'forum:thread_list' %}'>Forum</a></li>
+        <li><a href='{% url 'commissions:commission-list' %}'>Commission</a></li>
     {% if user.is_authenticated %}
     <form method="POST" action="{% url 'logout' %}">
         {% csrf_token %}
@@ -37,7 +37,6 @@
 <body>
 	{% block content %}
 	{% endblock %}
-
 </body>
 
 </html>

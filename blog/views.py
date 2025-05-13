@@ -3,7 +3,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Article, ArticleCategory
-from .forms import BlogForm, CommentForm
+from .forms import BlogForm, CommentForm, ArticleImageForm
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
 
@@ -25,7 +25,7 @@ class BlogListView(LoginRequiredMixin, ListView):
             category_dict = dict()
             for category in ArticleCategory.objects.all():
                 articles = []
-                for article in category.article_set.exclude(author=self.request.user.profile):
+                for article in category.blog.exclude(author=self.request.user.profile):
                     articles.append(article)
                 category_dict[category] = articles
             ctx['user_articles'] = Article.objects.filter(
@@ -54,22 +54,30 @@ class BlogDetailView(DetailView):
         ctx = super().get_context_data(**kwargs)
         ctx['read_more'] = Article.objects.filter(
             author=self.object.author).exclude(pk=self.object.pk)
-        ctx['form'] = CommentForm
+        ctx['comment_form'] = CommentForm
+        ctx['image_form'] = ArticleImageForm
         return ctx
     
 
     def post(self, request, *args, **kwargs):
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            form.instance.author = self.request.user.profile
-            form.instance.article = self.get_object()
-            form.save()
+        comment_form = CommentForm(request.POST)
+        image_form = ArticleImageForm(request.POST, request.FILES)
+        if comment_form.is_valid() or image_form.is_valid:
+            if comment_form.is_valid():
+                comment_form.instance.author = self.request.user.profile
+                comment_form.instance.article = self.get_object()
+                comment_form.save()
+            if image_form.is_valid():
+                article_image = image_form.save(commit=False)
+                article_image.article = self.get_object()
+                article_image.save()
             return redirect(self.get_success_url())
         else:
-            print("FORM IN NOT VALID")
+            self.object_list = self.get_queryset(**kwargs)
             ctx = self.get_context_data(**kwargs)
-            ctx['form'] = form
-            return self.render_to_response(ctx)
+            comment_form = CommentForm(request.POST)
+            image_form = ArticleImageForm(request.POST, request.FILES)
+            return self.render_to_response(ctx) 
 
 
 
@@ -85,9 +93,10 @@ class BlogCreateView(LoginRequiredMixin, CreateView):
         form.instance.author = self.request.user.profile
         return super().form_valid(form)
 
-class BlogUpdateView(LoginRequiredMixin, CreateView):
+
+class BlogUpdateView(LoginRequiredMixin, UpdateView):
     model = Article
-    template_name = 'blog_update.html'
+    template_name = "blog_update.html"
     form_class = BlogForm
 
     def get_success_url(self):

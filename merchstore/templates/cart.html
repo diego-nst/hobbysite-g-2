@@ -18,40 +18,89 @@
         font-family: "Nunito Sans";
         color: black;
     }
-
-    a:visited {
-        color: black;
+    
+    a:hover{
+        font-style: italic;
+        color: #C46BAE;
     }
 
-    a:hover {
-        font-style: italic
+    a.menu {
+        text-decoration: none; 
+        color: #FFFFE8;
     }
 
-    a:focus {
-        color: black;
-    }
-
-    a:active {
-        color: black;
+    a.menu:hover {
+        font-style: italic;
+        color: #FFFFE8
     }
 
     body {
         font-family: "Nunito Sans";
-        background-color: whitesmoke;
+        background-color: #FFFFE8;
         margin: 3rem;
         color: black;
     }
 
-    /* button {
-        background-color: orange;
-        color: black;
-    } */
+    button.bottomNav {
+        color: #FFFFE8;
+        background-color: #434D20;
+        font-weight: 600;
+        padding: 10px;
+        border-radius: 8px;
+        border: none;
+        width: 200px;
+    }
+
+    .stickyMenu {
+        position: sticky;
+        top: 0;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-evenly;
+        padding-top: 4px;
+        padding-bottom: 4px;
+
+        background: #434D20;
+        color: #FFFFE8;
+        /* 
+            references: 
+            https://www.w3schools.com/HOWTO/howto_js_sticky_header.asp 
+            https://www.w3schools.com/css/css3_flexbox_container.asp
+        */
+    }
+
+    .itemSpan {
+        text-align: left;
+        width: 59%;
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    .priceSpan, .quantitySpan {
+        text-align: left;
+        width: 20%;
+        display: inline-block;
+        vertical-align: top;
+    }
+
+    .heading {
+        font-weight: bold;
+    }
+
 </style>
 {% endblock %}
 
 {% block content %}
 
 {% if user.is_authenticated%}
+
+<br>
+<div class="stickyMenu">
+        <div><a class="menu" href="{% url 'merchstore:create-product' %}">{{"Add a product"}}</a></div>
+        <div><a class="menu" href="{% url 'merchstore:cart' %}">{{"View cart"}}</a></div>
+        <div><a class="menu" href="{% url 'merchstore:transactions-list' %}">{{"View transactions"}}</a></div>
+</div>
 
 <h2>
     Your Cart:
@@ -62,23 +111,23 @@
     <b> Owner: {{ owner.display_name }} </b>
     <br><br>
     <div style="padding-left:20px">
-        <span style="text-align: left; width:59%; display: inline-block; vertical-align: top; font-weight: bold;">
+        <span class="itemSpan heading" style="font-weight: bold">
             Items
         </span>
-        <span style="text-align: right; width:20%;  display: inline-block; vertical-align: top; font-weight: bold;">
+        <span class="priceSpan heading">
             Price per piece
         </span>
-        <span style="text-align: right; width:20%;  display: inline-block; vertical-align: top; font-weight: bold;">
+        <span class="quantitySpan heading">
             Quantity
         </span>
         {% for t in transactions %}
-            <span style="text-align: left; width:59%; display: inline-block; vertical-align: top;">
+            <span class="itemSpan" style="vertical-align: top;">
                 <a href="{{t.product.get_absolute_url}}">{{t.product.name}}</a>
             </span>
-            <span style="text-align: right; width:20%;  display: inline-block;  vertical-align: top;">
+            <span class="priceSpan" style="vertical-align: top;">
                 {{t.product.price}}
             </span>
-            <span style="text-align: right; width:20%;  display: inline-block;  vertical-align: top;">
+            <span class="priceSpan" style="vertical-align: top;">
                 {{t.amount}}
             </span>
         {% endfor %}
@@ -89,8 +138,12 @@
     <br>
     {% endfor %}
 </ul>
+{% else %}
+    Please login to view your cart.
 {% endif %}
-<button type="submit">
-    <p><a href="{% url 'merchstore:product-list' %}">{{"Back to full item list"}}</a></p>
+
+<button type="submit" class="bottomNav">
+    <p><a class="menu" href="{% url 'merchstore:product-list' %}">{{"Back to full item list"}}</a></p>
 </button>
+
 {% endblock %}

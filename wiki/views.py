@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Article, ArticleCategory, ArticleImage
 from .forms import WikiForm, CommentForm, ArticleImageForm
 from django.urls import reverse_lazy
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 
 
 class WikiListView(ListView):
@@ -19,7 +19,7 @@ class WikiListView(ListView):
             category_dict = dict()
             for category in ArticleCategory.objects.all():
                 articles = []
-                for article in category.articles.exclude(author=self.request.user.profile):
+                for article in category.wikis.exclude(author=self.request.user.profile):
                     articles.append(article)
                 category_dict[category] = articles
             ctx['user_articles'] = Article.objects.filter(
@@ -30,7 +30,7 @@ class WikiListView(ListView):
             category_dict = dict()
             for category in ArticleCategory.objects.all():
                 articles = []
-                for article in category.articles.all():
+                for article in category.wikis.all():
                     articles.append(article)
                 category_dict[category] = articles
             ctx['other_articles'] = category_dict
@@ -50,7 +50,7 @@ class WikiDetailView(DetailView):
             category=self.object.category).exclude(pk=self.object.pk)
         ctx['image_form'] = ArticleImageForm
         ctx['comment_form'] = CommentForm
-        comments = self.object.comment.all()
+        comments = self.object.wiki_comment.all()
         limit = 10
         ctx['comments'] = comments[:limit]
         return ctx

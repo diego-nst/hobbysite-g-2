@@ -21,10 +21,10 @@ class ArticleCategory(models.Model):
 
 class Article(models.Model):
     title = models.CharField(max_length=255)
-    author = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True)
+    author = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True, related_name='wikis')
     category = models.ForeignKey(ArticleCategory,
                                  on_delete=models.SET_NULL,
-                                 null=True, related_name='articles')
+                                 null=True, related_name='wikis')
     entry = models.TextField()
     header_image = models.ImageField(upload_to='header/', null=True)
     created_on = models.DateTimeField(auto_now_add=True)
@@ -43,10 +43,10 @@ class Article(models.Model):
 
 
 class Comment(models.Model):
-    author = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True)
+    author = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True, related_name='author_comment')
     article = models.ForeignKey(Article,
                                 on_delete=models.CASCADE,
-                                null=True, related_name='comment')
+                                null=True, related_name='wiki_comment')
     entry = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
@@ -65,4 +65,4 @@ class ArticleImage(models.Model):
     description = models.TextField(max_length=255)
     article = models.ForeignKey(Article,
                                on_delete=models.CASCADE,
-                               related_name="images")
+                               related_name="wiki_images")

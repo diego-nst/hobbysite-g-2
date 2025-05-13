@@ -1,0 +1,97 @@
+h5{
+    font-family: Nunito Sans;
+    font-size:0.75rem; 
+    font-weight: 500; 
+    color:#4C2E05;
+    }
+h3{
+    color:#434d20;
+}
+h2,h4,h5, p{
+    color:#4C2E05;
+}
+
+
+.headcontent{
+    background-color:#434D20;
+    padding:1rem 1.5rem 1rem;  
+  
+}
+h1{
+    color:#FFFFE8;
+}
+
+.content{
+    margin: 0rem 3rem 2rem;   
+    padding: 1rem;
+    background-color:#F8DEDF;
+    border-radius: 1rem;
+    box-shadow: 4px 4px 5px #9FA881;
+
+}
+p, h4, h5{
+    text-align: left;
+    color: #434D20;
+}
+
+.content img{
+    display: block;
+    margin: auto;
+    width:50%;
+    height:50%
+}
+.headcontent p{
+    font-size: 0.7rem;
+    color:#FFFFE8;
+}
+
+.gallery{
+    background-color: #F8DEDF;
+    border-radius: 1rem;
+    box-shadow: 4px 4px 5px #9FA881;
+}
+
+.gallery p{
+    text-align: center;
+    padding: 20px;
+    font-size: 30px;
+}
+
+.gallery_image{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 0rem 3rem 2rem;   
+    padding: 1rem;
+}
+
+.gallery img {
+    width: 250px;
+    height: auto;
+    margin: 10px;
+    border-radius: 0.5rem;
+    object-fit: cover;
+}
+
+.comment p{
+    font-size:0.7rem;
+    color:#434D20;
+}
+.comment{
+    background-color:#F8DEDF;
+    padding: 1rem;
+    border-radius: 1rem;
+    margin: 0rem 3rem 2rem;   
+    box-shadow: 4px 4px 5px #9FA881;
+}
+.category{
+    background-color:#FFFFE8;
+    border-radius: 1rem;
+    width: 20%;
+}
+.category>h5{
+    text-align: center;
+}
+.similarthreads{
+    margin:1rem 1.5rem 0.3rem;   
+}

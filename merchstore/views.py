@@ -3,12 +3,11 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-# remove these?
-from django.urls import reverse_lazy, reverse
-from django.shortcuts import render, redirect
+from django.urls import reverse
+from django.shortcuts import redirect
 
 from .models import Product, ProductType, Transaction
-from .forms import CreateTransactionForm, CreateProductForm, UpdateProductForm
+from .forms import CreateTransactionForm, CreateProductForm, UpdateProductForm, UpdateTransactionStatusForm
 from user_management.models import Profile
 
 
@@ -32,10 +31,8 @@ class ProductListView(ListView):
                 for product in pt.get_products():
                     if (product.owner == self.request.user.profile):
                         user_products_dict[pt] += [product]
-                        print('user_products_dict was appended with ' + product.name)
                     else:
                         products_dict[pt] += [product]
-                        print('products_dict was appended with ' + product.name)
 
                 if len(user_products_dict[pt]) == 0:
                     del user_products_dict[pt]
@@ -56,6 +53,7 @@ class ProductListView(ListView):
         context['form'] = CreateTransactionForm()
         return context
 
+
 class ProductDetailView(DetailView):
     model = Product
     template_name = 'productDetail.html'
@@ -75,7 +73,7 @@ class ProductDetailView(DetailView):
             t = form.save(commit=False)
             t.buyer = self.request.user.profile
             t.product = Product.objects.get(pk=pk)
-            t.status = 'IN_CART'
+            t.status = 'Available'
             if ((t.amount <= 0)):
                 print('Error. At least one item must be added to cart.')
             if ((t.product.stock - t.amount) < 0):
@@ -83,7 +81,7 @@ class ProductDetailView(DetailView):
             else:
                 t.product.stock = t.product.stock - t.amount
                 if (t.product.stock == 0):
-                    t.product.status = 'NO_STOCK'
+                    t.product.status = 'Out of stock'
             t.product.save()
             t.save()
             return redirect(reverse('merchstore:cart'))
@@ -101,42 +99,42 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
     template_name = 'productCreate.html'
     form_class = CreateProductForm
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = CreateProductForm
+        context['product_types'] = ProductType.objects.all()
+        context['status_choices'] = Product.STATUS_CHOICES
+        return context
+
     def form_valid(self, form):
         form.instance.owner = self.request.user.profile
         return super().form_valid(form)
         # used https://stackoverflow.com/questions/65733442/in-django-how-to-add-username-to-a-model-automatically-when-the-form-is-submit
-
 
 class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     template_name = 'productUpdate.html'
     form_class = UpdateProductForm
 
+    def get_context_data(self, **kwargs):
+        pk = self.kwargs['pk']
+        context = super().get_context_data(**kwargs)
+        context['pk'] = pk
+        context['product'] = Product.objects.get(pk=pk)
+        context['product_types'] = ProductType.objects.all()
+        context['status_choices'] = Product.STATUS_CHOICES
+        return context
+
     def form_valid(self, form):
         if form.instance.stock <= 0:
-            form.instance.status = 'NO_STOCK'
+            form.instance.status = 'Out of stock'
         else:
-            form.instance.status = 'AVAILABLE'
+            form.instance.status = 'Available'
         return super().form_valid(form)
 
 
 class CartView(LoginRequiredMixin, ListView):
     model = Transaction
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        user_cart = dict()
-        products_in_cart = dict()
-        if self.request.user.is_authenticated:
-            for transaction in self.request.user.profile.transactions.all():
-                if transaction.product.owner in user_cart:
-                    user_cart[transaction.product.owner].append(transaction)
-                else:
-                    user_cart[transaction.product.owner] = [transaction]
-                products_in_cart.add(transaction.product)
-
-        context['user_cart'] = user_cart
-        return context
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -159,16 +157,43 @@ class TransactionListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['form'] = UpdateTransactionStatusForm
         seller_transactions = dict()
-
         if self.request.user.is_authenticated:
             for transaction in Transaction.objects.all():
-                if transaction.product.owner==self.request.user.profile:
+                if transaction.product.owner == self.request.user.profile:
                     if transaction.buyer in seller_transactions:
-                        seller_transactions[transaction.buyer].append(transaction)
+                        seller_transactions[transaction.buyer].append(
+                            transaction)
                     else:
                         seller_transactions[transaction.buyer] = [transaction]
         context['seller_transactions'] = seller_transactions
+        context['status_choices'] = Transaction.STATUS_CHOICES
         return context
 
     template_name = 'transactionList.html'
+
+
+class TransactionDetailView(LoginRequiredMixin, UpdateView):
+    model = Transaction
+    template_name = 'transactionDetail.html'
+    form_class = UpdateTransactionStatusForm
+
+    def get_context_data(self, **kwargs):
+        pk = self.kwargs['pk']
+        context = super().get_context_data(**kwargs)
+        context['pk'] = pk
+        context['form'] = UpdateTransactionStatusForm()
+        context['transaction'] = Transaction.objects.get(pk=pk)
+        context['status_choices'] = Transaction.STATUS_CHOICES
+        return context
+
+    def post(self, request, *args, **kwargs):
+        pk = self.kwargs['pk']
+        form = UpdateTransactionStatusForm(
+            request.POST, instance=Transaction.objects.get(pk=pk))
+
+        t = form.save(commit=False)
+        t.status = request.POST.get('status')
+        t.save()
+        return redirect(reverse('merchstore:transactions-list'))

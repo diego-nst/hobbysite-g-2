@@ -15,20 +15,18 @@ class ArticleCategory(models.Model):
 
     class Meta:
         ordering = ['name']
-        verbose_name = 'Article Category'
-        verbose_name_plural = 'Article Categories'
+        verbose_name = 'Blog Category'
+        verbose_name_plural = 'Blog Categories'
 
 
 class Article(models.Model):
     title = models.CharField(max_length=255)
+    author = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True, related_name='blog')
     category = models.ForeignKey(ArticleCategory,
                                  on_delete=models.SET_NULL,
-                                 null=True)
-    author = models.ForeignKey(Profile,
-                               on_delete=models.SET_NULL,
-                               null=True)
+                                 null=True, related_name='blog')
     entry = models.TextField()
-    header_image = models.ImageField(upload_to='images/', null=True)
+    header_image = models.ImageField(upload_to='header/', null=True)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
 
@@ -40,17 +38,15 @@ class Article(models.Model):
 
     class Meta:
         ordering = ['-created_on']
-        verbose_name = 'Article'
-        verbose_name_plural = 'Articles'
+        verbose_name = 'Blog'
+        verbose_name_plural = 'Blogs'
+
 
 class Comment(models.Model):
-    author = models.ForeignKey(Profile,
-                               on_delete=models.SET_NULL,
-                               null=True)
+    author = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True, related_name='blog_comments')
     article = models.ForeignKey(Article,
                                 on_delete=models.CASCADE,
-                                null=True,
-                                related_name='articles')
+                                null=True, related_name='blog_comments')
     entry = models.TextField()
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
@@ -62,3 +58,12 @@ class Comment(models.Model):
         ordering = ['-created_on']
         verbose_name = 'Comment'
         verbose_name_plural = 'Comments'
+
+
+class ArticleImage(models.Model):
+    image = models.ImageField(upload_to='images/', null=True)
+    description = models.TextField(max_length=255)
+    article = models.ForeignKey(Article,
+                               on_delete=models.CASCADE,
+                               related_name="blog_images")
+    
