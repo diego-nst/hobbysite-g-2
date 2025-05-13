@@ -1,6 +1,30 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>{% block title %}User Dashboard{% endblock %}</title>
+<link rel="stylesheet" href="{% static 'css/styles.css' %}" type="text/css">
+</head>
+<style>
+    section{
+        background-color: #F8DEDF;
+        padding: 4rem;
+        border-radius: 5rem;
+        box-shadow: 4px 4px 5px #9FA881;
+        width:40%;
+        transform: translate(75%, 30%);
+    }
+    h1{
+        color: #434D20;
+    }
+</style>
+
 <body>
-    {{form}}
+    <section>
+    <h1>Profile</h1>
+    {{form.as_p}}
+    </section>
 </body>
 </html>

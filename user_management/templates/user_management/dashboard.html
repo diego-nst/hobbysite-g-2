@@ -1,11 +1,54 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>{% block title %}User Dashboard{% endblock %}</title>
+<link rel="stylesheet" href="{% static 'css/styles.css' %}" type="text/css">
+</head>
+
+<style>
+   
+    section{
+        padding: 2rem;
+        background-color:#FFFFE8;
+        background-color: #F8DEDF;
+        border-radius: 2rem;
+        margin:1rem 3.5rem;
+        box-shadow: 4px 4px 5px #9FA881;
+    }
+    .newhr1{
+    border: 1.5px dashed #9FA881;
+    }
+    .newhr2{
+    border: 0.5px dashed #9FA881;
+    }
+
+    .content{
+        background-color:#FFFFE8;
+        margin: 1rem;
+        padding: 1rem;
+        color: #434d20;
+        border-radius: 1rem;
+        border-style: dotted;
+        border-color: #434d20;
+    }
+    .subcontent{
+        padding: 0rem 1rem;
+    }
+
+</style>
 <body>
 
+    <section>
+    <div class="content">
+    <h1>Transactions</h1>
+    <div class="subcontent">
     {% for buyer, transactionList in seller_transactions.items %}
     <b> Buyer: {{ buyer.display_name }} </b>
     <br><br>
-
+    
     <div style="padding-left:20px">
         <span style="text-align: left; width:39%; display: inline-block; vertical-align: top; font-weight: bold;">
             Items
@@ -36,10 +79,13 @@
         <br>
     </div>
     <br>
-    <hr>
+    <hr class="newhr2"> 
     <br>
-    {% endfor %}
+    {% endfor %}</div>
+     
     
+    <h1>Products</h1>
+     <div class="subcontent">
     {% for owner, transactions in user_cart.items %}
     <b> Owner: {{ owner.display_name }} </b>
     <br><br>
@@ -67,50 +113,77 @@
         <br>
     </div>
     <br>
-    <hr>
-    <br>
+    <hr class="newhr2"> 
     {% endfor %}
+    </div>
+    </div>
 
+    <br>
+  
+    <div class="content">
+    <h1>Wiki Articles</h1>
+     <div class="subcontent">
     {% for category, article in other_articles.items %} 
         <strong>{{ category.name }}</strong>
-        <ol>
             {% for article in article %}
-                <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
+                <p><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></p>
             {% endfor %}
-        </ol>
-    {% endfor %}
+    {% empty %}
+        <p>No posted articles yet.</p>
+    {% endfor %}</div>
+    </div><br>
 
+    <div class="content">
+    <h1>Threads</h1>
+     <div class="subcontent">
     {% for thread in user_threads %}
     <a href="{{ thread.get_absolute_url }}">{{ thread.title }}</a><br><br>
+      {% empty %}
+            <p>No posted threads yet.</p>
     {% endfor %}
+    </div>
+    </div><br>
 
+    <div class="content">
+    <h1>Blog Article</h1>
+     <div class="subcontent">
     {% for category, article in other_articles.items %} 
         <strong>{{ category.name }}</strong>
-        <ol>
-            {% for article in article %}
-                <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
+        {% for article in article %}
+            <p><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></p>
             {% endfor %}
-        </ol>
-    {% endfor %}
-
+    {% empty %}
+            <p>No posted blog articles yet.</p>
+    {% endfor %}</div>
+    </div><br>
+    
+    <div class="content">
     <h2>Commissions Created:</h4>
+    <div class="subcontent">
     {% for commission in created_commissions %}
-        <br><a href="{{commission.get_absolute_url}}"><span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
+        <a href="{{commission.get_absolute_url}}"><span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
             {{commission.title}} - Created on {{commission.created}}
         </span>
         <span style="text-align: left; width:70%;  display: inline-block;">
-            ({{commission.get_status_display}})
+            <b>({{commission.get_status_display}})</b>
         </span></a><br>
-    {% endfor %}
+        {% empty %}
+            <p>No commissions created yet.</p>
+    {% endfor %}</div>
 
     <h2>Commissions Applied to:</h4>
+         <div class="subcontent">
     {% for commission in applied_commissions %}
-        <br><a href="{{commission.get_absolute_url}}"><span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
+        <a href="{{commission.get_absolute_url}}"><span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
             {{commission.title}} - Created on {{commission.created}}
         </span>
         <span style="text-align: left; width:70%;  display: inline-block;">
-            ({{commission.get_status_display}})
+            <b>({{commission.get_status_display}})</b>
         </span></a><br>
-    {% endfor %}
+    {% empty %}
+        <p>No commissions applied to yet.</p>
+    {% endfor %}</div>
+    </div>
+    </section>
 </body>
 </html>
