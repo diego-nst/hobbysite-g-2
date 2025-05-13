@@ -6,6 +6,7 @@ from .models import Profile
 
 class ProfileInline(admin.StackedInline):
     model = Profile
+    prepopulated_fields = {"slug": ("display_name",)}
     can_delete = False
 
 
