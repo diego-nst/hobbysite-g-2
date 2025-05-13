@@ -42,8 +42,7 @@
         body {
             font-family: "Nunito Sans";
             background-color: #FFFFE8;
-            margin: 3rem;
-            color: black;
+                color: black;
         }
 
         button.bottomNav {
@@ -75,83 +74,99 @@
             */
         }
 
+        .labelSpan {
+            text-align: left;
+            width: 29%;
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .infoSpan {
+            text-align: left;
+            width: 70%;
+            display: inline-block;
+        }
+
     </style>
 {% endblock %}
 
 </head>
 
 {% block content %}
-<br>
-<div class="stickyMenu">
-    {% if user.is_authenticated %}
-        <div><a class="menu" href="{% url 'merchstore:create-product' %}">{{"Add a product"}}</a></div>
-        <div><a class="menu" href="{% url 'merchstore:cart' %}">{{"View cart"}}</a></div>
-        <div><a class="menu" href="{% url 'merchstore:transactions-list' %}">{{"View transactions"}}</a></div>
+    <div class="stickyMenu">
+        {% if user.is_authenticated %}
+            <div><a class="menu" href="{% url 'merchstore:create-product' %}">{{"Add a product"}}</a></div>
+            <div><a class="menu" href="{% url 'merchstore:cart' %}">{{"View cart"}}</a></div>
+            <div><a class="menu" href="{% url 'merchstore:transactions-list' %}">{{"View transactions"}}</a></div>
+        {% endif %}
+    </div>
+
+    {% if request.user.um_profile == transaction.product.owner %}
+        <body>
+            <div style="margin: 2rem;">
+
+            <div>
+                <h1> {{ transaction.product.name }} </h1>
+            </div>
+
+            <hr>
+                <br>
+                <span class=" labelSpan">
+                    Buyer:
+                </span>
+                <span class="infoSpan">
+                    {{transaction.buyer}}
+                </span>
+                <span class=" labelSpan">
+                    Quantity:
+                </span>
+                <span class="infoSpan">
+                    {{transaction.amount}}
+                </span>
+                <span class=" labelSpan">
+                    Price:
+                </span>
+                <span class="infoSpan">
+                    {{transaction.product.price}}
+                </span>
+
+                <span class=" labelSpan">
+                    Stock:
+                </span>
+                <span class="infoSpan">
+                    {{transaction.product.stock}}
+                </span>
+
+                <br>
+
+                <div>
+                    <form method="post">
+                        {% csrf_token %}
+                            <span class=" labelSpan">
+                                <label for="status">
+                                    Status:
+                                </label>
+                            </span>
+                            <span class="infoSpan">
+                                <select name="status" id="status">
+                                    {% for skey, svalue in status_choices.items %}
+                                        <option value="{{skey}}">{{svalue}}</option>
+                                    {% endfor %}
+                                </select>
+                                <input type="submit" value="Update status">
+                            </span>
+                    </form>
+                </div>
+
+                <br><hr><br>
+                <button class="bottomNav" type="submit">
+                    <p><a class="menu" href="{% url 'merchstore:transactions-list' %}">{{"Back to full transactions list"}}</a></p>
+                </button>
+            </div>
+        </body>
+    {% else %}
+        <br>
+        You are not the seller of this transaction.
     {% endif %}
-</div>
-
-<div class="pageTitle">
-    <div>
-        <h1> {{ transaction.product.name }} </h1>
-    </div>
-</div>
-<hr>
-
-<body>
-    <br>
-    <span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
-        Buyer:
-    </span>
-    <span style="text-align: left; width:70%;  display: inline-block;">
-        {{transaction.buyer}}
-    </span>
-    <span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
-        Quantity:
-    </span>
-    <span style="text-align: left; width:70%;  display: inline-block;">
-        {{transaction.amount}}
-    </span>
-    <span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
-        Price:
-    </span>
-    <span style="text-align: left; width:70%;  display: inline-block;">
-        {{transaction.product.price}}
-    </span>
-
-    <span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
-        Stock:
-    </span>
-    <span style="text-align: left; width:70%;  display: inline-block;">
-        {{transaction.product.stock}}
-    </span>
-
-    <br>
-
-    <div>
-        <form method="post">
-            {% csrf_token %}
-                <span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
-                    <label for="status">
-                        Status:
-                    </label>
-                </span>
-                <span style="text-align: left; width:70%;  display: inline-block;">
-                    <select name="status" id="status">
-                        {% for skey, svalue in status_choices.items %}
-                            <option value="{{skey}}">{{svalue}}</option>
-                        {% endfor %}
-                    </select>
-                    <input type="submit" value="Update status">
-                </span>
-        </form>
-    </div>
-
-    <br><hr><br>
-    <button class="bottomNav" type="submit">
-        <p><a class="menu" href="{% url 'merchstore:transactions-list' %}">{{"Back to full transactions list"}}</a></p>
-    </button>
-    {% endblock %}
-
-</body>
-
+{% endblock %}
 </html>

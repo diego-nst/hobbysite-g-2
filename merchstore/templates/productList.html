@@ -3,181 +3,176 @@
 <title>{% block title %}Product List{% endblock %}</title>
 
 {% block styles %}
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
 
-    @font-face {
-        font-family: "Nunito Sans", sans-serif;
-        src: url("nunito-sans.woff2") format("woff2 supports variations"),
-            url("nunito-sans.woff2") format("woff2-variations");
-        font-weight: 200 1000;
-    }
+        @font-face {
+            font-family: "Nunito Sans", sans-serif;
+            src: url("nunito-sans.woff2") format("woff2 supports variations"),
+                url("nunito-sans.woff2") format("woff2-variations");
+            font-weight: 200 1000;
+        }
 
-    a.itemDetail {
-        text-decoration: none;
-        font-family: "Nunito Sans";
-        color: black;
-    }
+        a.itemDetail {
+            text-decoration: none;
+            font-family: "Nunito Sans";
+            color: black;
+        }
 
-    a.itemDetail:visited {
-        color: black;
-    }
+        a.itemDetail:visited {
+            color: black;
+        }
 
-    a.itemDetail:hover {
-        font-style: italic;
-        color: #C46BAE;
-    }
+        a.itemDetail:hover {
+            font-style: italic;
+            color: #C46BAE;
+        }
 
+        a.menu {
+            text-decoration: none; 
+            color: #FFFFE8;
+        }
 
-    a.menu {
-        text-decoration: none; 
-        color: #FFFFE8;
-    }
+        a.menu:hover {
+            font-style: italic;
+            color: #FFFFE8
+        }
 
-    a.menu:hover {
-        font-style: italic;
-        color: #FFFFE8
-    }
+        body {
+            font-family: "Nunito Sans";
+            background-color: #FFFFE8;
+            color: black; 
+        }
 
-    body {
-        font-family: "Nunito Sans";
-        background-color: #FFFFE8;
-        margin: 3rem;
-        color: black; 
-    }
+        .stickyMenu {
+            position: sticky;
+            top: 0;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: space-evenly;
+            padding-top: 4px;
+            padding-bottom: 4px;
 
-    .stickyMenu {
-        position: sticky;
-        top: 0;
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        justify-content: space-evenly;
-        padding-top: 4px;
-        padding-bottom: 4px;
+            background: #434D20;
+            color: #FFFFE8;
+            /* 
+                references: 
+                https://www.w3schools.com/HOWTO/howto_js_sticky_header.asp 
+                https://www.w3schools.com/css/css3_flexbox_container.asp
+            */
+        }
 
-        background: #434D20;
-        color: #FFFFE8;
-        /* 
-            references: 
-            https://www.w3schools.com/HOWTO/howto_js_sticky_header.asp 
-            https://www.w3schools.com/css/css3_flexbox_container.asp
-        */
-    }
+        .itemSpan {
+            text-align: left;
+            width: 49%;
+            display: inline-block;
+            vertical-align: top;
+        }
 
-    .itemSpan {
-        text-align: left;
-        width: 49%;
-        display: inline-block;
-        vertical-align: top;
-    }
+        .priceSpan, .statusSpan {
+            text-align: left;
+            width: 25%;
+            display: inline-block;
+            vertical-align: top;
+        }
 
-    .priceSpan, .statusSpan {
-        text-align: left;
-        width: 25%;
-        display: inline-block;
-        vertical-align: top;
-    }
-
-    .header {
-        font-weight: bold;
-    }
-    
-</style>
+        .header {
+            font-weight: bold;
+        }
+        
+    </style>
 {% endblock %}
 
 {% block content %}
+    <div class="stickyMenu">
+        {% if user.is_authenticated %}
+            <div><a class="menu" href="{% url 'merchstore:create-product' %}">{{"Add a product"}}</a></div>
+            <div><a class="menu" href="{% url 'merchstore:cart' %}">{{"View cart"}}</a></div>
+            <div><a class="menu" href="{% url 'merchstore:transactions-list' %}">{{"View transactions"}}</a></div>
+        {% else %}
+            <div>Welcome to the Merchandise Store!</div>
+        {% endif %}
+    </div>
 
-<br>
-<div class="stickyMenu">
     {% if user.is_authenticated %}
-        <div><a class="menu" href="{% url 'merchstore:create-product' %}">{{"Add a product"}}</a></div>
-        <div><a class="menu" href="{% url 'merchstore:cart' %}">{{"View cart"}}</a></div>
-        <div><a class="menu" href="{% url 'merchstore:transactions-list' %}">{{"View transactions"}}</a></div>
-    {% else %}
-        <div>Welcome to the Merchandise Store!</div>
-    {% endif %}
-</div>
+        <div style="margin: 2rem">
+            <h2>Your Products: </h2>
 
-{% if user.is_authenticated %}
+            {% if user_is_selling %}
+                {% for productType, productsList in owned_by_user.items %}
+                    <ul style="padding-left: 0;">
 
-    <h2>Your Products: </h2>
+                        <b> {{ productType.name }} </b>
+                        <br>
+                        {{ productType.description }}
+                        <br><br>
 
-    {% if user_is_selling %}
+                        <div style="padding-left:40px">
+                            <span class="itemSpan header">
+                                Items
+                            </span>
+                            <span class="priceSpan header">
+                                Price
+                            </span>
+                            <span class="statusSpan header">
+                                Status
+                            </span> 
+                            
+                            {% for p in productsList %}
+                                <span class="itemSpan">
+                                    <a class="itemDetail" href="{{p.get_absolute_url}}">{{p.name}}</a>
+                                </span>
+                                <span class="priceSpan">
+                                    {{p.price}}
+                                </span>
+                                <span class="statusSpan">
+                                    {{p.status}}
+                                </span>
+                            {% endfor %}
+                            <br>
+                        </div>
+                    </ul>
+                    <br><hr>
+                {% endfor %}
+            {% else %}
+                You have not put up any products for sale.
+            {% endif %}
+        {% endif %}
 
-    {% for productType, productsList in owned_by_user.items %}
-    <ul style="padding-left: 0;">
-
-        <b> {{ productType.name }} </b>
-        <br>
-        {{ productType.description }}
-        <br><br>
-
-        <div style="padding-left:40px">
-            <span class="itemSpan header">
-                Items
-            </span>
-            <span class="priceSpan header">
-                Price
-            </span>
-            <span class="statusSpan header">
-                Status
-            </span> 
-            
-            {% for p in productsList %}
-                <span class="itemSpan">
-                    <a class="itemDetail" href="{{p.get_absolute_url}}">{{p.name}}</a>
-                </span>
-                <span class="priceSpan">
-                    {{p.price}}
-                </span>
-                <span class="statusSpan">
-                    {{p.status}}
-                </span>
-            {% endfor %}
-            <br>
-        </div>
-    </ul>
-    <br><hr>
-    {% endfor %}
-    {% else %}
-        You have not put up any products for sale.
-    {% endif %}
-{% endif %}
-
-<h2>
-    Available products:
-</h2>
-{% for productType, productsList in user_can_buy.items %}
-<ul style="padding-left: 0;">
-    <b> {{ productType.name }} </b>
-    <br>
-    {{ productType.description }}
-    <br><br>
-    <div style="padding-left:40px">
-        <span class="itemSpan header">
-            Items
-        </span>
-        <span class="priceSpan header">
-            Price
-        </span>
-        <span class="statusSpan header">
-            Status
-        </span>
-        {% for p in productsList %}
-            <span class="itemSpan">
-                <a class="itemDetail" href="{{p.get_absolute_url}}">{{p.name}}</a>
-            </span>
-            <span class="priceSpan">
-                {{p.price}}
-            </span>
-            <span class="statusSpan">
-                {{p.status}}
-            </span>
+        <h2>
+            Available products:
+        </h2>
+        {% for productType, productsList in user_can_buy.items %}
+            <ul style="padding-left: 0;">
+                <b> {{ productType.name }} </b>
+                <br>
+                {{ productType.description }}
+                <br><br>
+                <div style="padding-left:40px">
+                    <span class="itemSpan header">
+                        Items
+                    </span>
+                    <span class="priceSpan header">
+                        Price
+                    </span>
+                    <span class="statusSpan header">
+                        Status
+                    </span>
+                    {% for p in productsList %}
+                        <span class="itemSpan">
+                            <a class="itemDetail" href="{{p.get_absolute_url}}">{{p.name}}</a>
+                        </span>
+                        <span class="priceSpan">
+                            {{p.price}}
+                        </span>
+                        <span class="statusSpan">
+                            {{p.status}}
+                        </span>
+                    {% endfor %}
+                </div>
+            </ul>
+        <br><hr>
         {% endfor %}
     </div>
-</ul>
-<br><hr>
-{% endfor %}
-
 {% endblock %}

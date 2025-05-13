@@ -23,8 +23,7 @@
     }
     
     a:hover{
-        font-style: italic;
-        color: #C46BAE;
+        color: #9FA881;
     }
 
     a.menu {
@@ -40,7 +39,6 @@
     body {
         font-family: "Nunito Sans";
         background-color: #FFFFE8;
-        margin: 3rem;
         color: black;
     }
 
@@ -91,26 +89,27 @@
 </head>
 
 {% block content %}
-<br>
-<div class="stickyMenu">
+<body>
+    <div class="stickyMenu">
         <div><a class="menu" href="{% url 'merchstore:create-product' %}">{{"Add a product"}}</a></div>
         <div><a class="menu" href="{% url 'merchstore:cart' %}">{{"View cart"}}</a></div>
         <div><a class="menu" href="{% url 'merchstore:transactions-list' %}">{{"View transactions"}}</a></div>
-</div>
+    </div>
 
-<body>
     <br>
-    <form class="product" method="POST" enctype="multipart/form-data" style="text-align: left;">
-        {% csrf_token %}
-        {{ form.as_div }}
-        <input type="hidden" name="owner" value=user>
-        <button type="submit">Submit</button>
-    </form>
 
-    <br><br><br>
-    <button type="submit" class="bottomNav">
-        <p><a class="menu" href="{% url 'merchstore:product-list' %}">{{"Back to full item list"}}</a></p>
-    </button>
+    <div style="margin: 2rem;">
+        <form class="product" method="POST" enctype="multipart/form-data" style="text-align: left;">
+            {% csrf_token %}
+            {{ form.as_div }}
+            <input type="hidden" name="owner" value=user>
+            <button type="submit">Submit</button>
+        </form>
+
+        <br><br><br>
+        <button type="submit" class="bottomNav">
+            <p><a class="menu" href="{% url 'merchstore:product-list' %}">{{"Back to full item list"}}</a></p>
+        </button>
+    </div>
 </body>
-
 {% endblock %}

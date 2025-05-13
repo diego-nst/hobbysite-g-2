@@ -6,7 +6,7 @@ from django.dispatch import receiver
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='um_profile')
     display_name = models.CharField(max_length=63)
     email = models.EmailField()
 

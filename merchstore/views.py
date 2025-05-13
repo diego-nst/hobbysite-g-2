@@ -8,10 +8,12 @@ from django.shortcuts import redirect
 
 from .models import Product, ProductType, Transaction
 from .forms import CreateTransactionForm, CreateProductForm, UpdateProductForm, UpdateTransactionStatusForm
-from user_management.models import Profile
 
 
 class ProductListView(ListView):
+    '''
+    This view lists all existing products.
+    '''
     model = ProductType
     template_name = 'productList.html'
 
@@ -29,7 +31,7 @@ class ProductListView(ListView):
                 user_products_dict[pt] = list()
 
                 for product in pt.get_products():
-                    if (product.owner == self.request.user.profile):
+                    if (product.owner == self.request.user.um_profile):
                         user_products_dict[pt] += [product]
                     else:
                         products_dict[pt] += [product]
@@ -55,6 +57,11 @@ class ProductListView(ListView):
 
 
 class ProductDetailView(DetailView):
+    '''
+    This view displays the information on a particular product.
+    If the logged-in user is not the buyer, and if the product is not out of stock, 
+    the user can add the product to their cart.
+    '''
     model = Product
     template_name = 'productDetail.html'
     form_class = CreateTransactionForm
@@ -71,9 +78,20 @@ class ProductDetailView(DetailView):
         form = CreateTransactionForm(request.POST)
         if form.is_valid():
             t = form.save(commit=False)
-            t.buyer = self.request.user.profile
+
+            if not self.request.user.is_authenticated:                
+                url = (reverse('login') + '?next=' + reverse('merchstore:item', args=[pk])
+                        + '&amount=' + str(self.request.POST.get('amount'))
+                       )
+                # references for query parameters:
+                # https://djangocentral.com/capturing-query-parameters-of-requestget-in-django/#accessing-query-parameters-in-django
+                # https://medium.com/@averydcs/understanding-path-variables-and-query-parameters-in-http-requests-232248b71a8
+                return redirect(url)
+
+            t.buyer = self.request.user.um_profile
             t.product = Product.objects.get(pk=pk)
-            t.status = 'Available'
+            t.status = 'On cart'
+
             if ((t.amount <= 0)):
                 print('Error. At least one item must be added to cart.')
             if ((t.product.stock - t.amount) < 0):
@@ -82,9 +100,17 @@ class ProductDetailView(DetailView):
                 t.product.stock = t.product.stock - t.amount
                 if (t.product.stock == 0):
                     t.product.status = 'Out of stock'
-            t.product.save()
-            t.save()
-            return redirect(reverse('merchstore:cart'))
+                t.product.save()
+
+                userTransactions = t.buyer.transactions.all()
+                for ut in userTransactions:
+                    if ((ut.product==t.product) and (ut.status=='On cart')):
+                        t.product.stock -= t.amount
+                        ut.amount += int(request.POST.get('amount'))
+                        ut.save()
+                        return redirect(reverse('merchstore:cart'))
+                t.save()
+                return redirect(reverse('merchstore:cart'))
         else:
             print('The Transaction form submission was invalid.')
             print(form.errors)
@@ -93,8 +119,10 @@ class ProductDetailView(DetailView):
             context['form'] = form
             return self.render_to_response(context)
 
-
 class ProductCreateView(LoginRequiredMixin, CreateView):
+    '''
+    This view allows a logged-in user to create a new product listing.
+    '''
     model = Product
     template_name = 'productCreate.html'
     form_class = CreateProductForm
@@ -107,11 +135,14 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
         return context
 
     def form_valid(self, form):
-        form.instance.owner = self.request.user.profile
+        form.instance.owner = self.request.user.um_profile
         return super().form_valid(form)
         # used https://stackoverflow.com/questions/65733442/in-django-how-to-add-username-to-a-model-automatically-when-the-form-is-submit
 
 class ProductUpdateView(LoginRequiredMixin, UpdateView):
+    '''
+    This view allows a logged-in user to edit one of their product listings.
+    '''
     model = Product
     template_name = 'productUpdate.html'
     form_class = UpdateProductForm
@@ -134,18 +165,24 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class CartView(LoginRequiredMixin, ListView):
+    '''
+    This view lists the buyer transactions of the logged-in user. 
+    '''
     model = Transaction
-
     def get_context_data(self, **kwargs):
+        user_has_transactions = False
+
         context = super().get_context_data(**kwargs)
         user_cart = dict()
         if self.request.user.is_authenticated:
-            for transaction in self.request.user.profile.transactions.all():
+            for transaction in self.request.user.um_profile.transactions.all():
                 if transaction.product.owner in user_cart:
                     user_cart[transaction.product.owner].append(transaction)
                 else:
                     user_cart[transaction.product.owner] = [transaction]
+                    user_has_transactions = True
 
+        context['user_has_transactions'] = user_has_transactions
         context['user_cart'] = user_cart
         return context
 
@@ -153,20 +190,26 @@ class CartView(LoginRequiredMixin, ListView):
 
 
 class TransactionListView(LoginRequiredMixin, ListView):
+    '''
+    This view lists all the seller transactions of the logged-in user.
+    '''
     model = Transaction
-
     def get_context_data(self, **kwargs):
+        user_has_transactions = False
+
         context = super().get_context_data(**kwargs)
         context['form'] = UpdateTransactionStatusForm
         seller_transactions = dict()
         if self.request.user.is_authenticated:
             for transaction in Transaction.objects.all():
-                if transaction.product.owner == self.request.user.profile:
+                if transaction.product.owner == self.request.user.um_profile:
+                    user_has_transactions = True
                     if transaction.buyer in seller_transactions:
                         seller_transactions[transaction.buyer].append(
                             transaction)
                     else:
                         seller_transactions[transaction.buyer] = [transaction]
+        context['user_has_transactions'] = user_has_transactions
         context['seller_transactions'] = seller_transactions
         context['status_choices'] = Transaction.STATUS_CHOICES
         return context
@@ -175,6 +218,10 @@ class TransactionListView(LoginRequiredMixin, ListView):
 
 
 class TransactionDetailView(LoginRequiredMixin, UpdateView):
+    '''
+    This view displays the information on a particular transaction.
+    It allows the seller to update the transaction's status.
+    '''
     model = Transaction
     template_name = 'transactionDetail.html'
     form_class = UpdateTransactionStatusForm
