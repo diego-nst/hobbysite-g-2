@@ -23,7 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('user_management.urls', namespace="user_management")),
     path('', include('blog.urls', namespace='blog')),
-    path('', include('wiki.urls', namespace="wiki")),
+    path('wiki/', include('wiki.urls', namespace="wiki")),
     path('', include('merchstore.urls', namespace='merchstore')),
     path('', include('forum.urls', namespace='forum')),
     path('commissions/', include('commissions.urls', namespace='commissions')),

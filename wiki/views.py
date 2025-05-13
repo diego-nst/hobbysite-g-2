@@ -9,6 +9,14 @@ from django.shortcuts import redirect, render
 
 
 class WikiListView(ListView):
+    '''
+    List View for the Wiki Areticles
+
+    If logged in, this view displays the articles the user created and the other articles organized by category
+    Otherwise, it just lists all articles created
+
+    There is a button to create your own articles at the bottom
+    '''
     model = ArticleCategory
     template_name = 'wiki_list.html'
 
@@ -40,6 +48,12 @@ class WikiListView(ListView):
 
 
 class WikiDetailView(DetailView):
+    '''
+    Detail view for the Wiki Articles
+
+    Details include title, author, category, header image, entry, and comments.
+    Additionally, if you are the author, there is a button to lead to the updatye view and you can add images in the image gallery.
+    '''
     model = Article
     template_name = 'wiki_detail.html'
 
@@ -73,10 +87,15 @@ class WikiDetailView(DetailView):
             ctx = self.get_context_data(**kwargs)
             comment_form = CommentForm(request.POST)
             image_form = ArticleImageForm(request.POST, request.FILES)
-            return self.render_to_response(ctx)        
+            return self.render_to_response(ctx)
 
 
 class WikiCreateView(LoginRequiredMixin, CreateView):
+    '''
+    Create View for the Wiki Articles
+
+    The view that is responsible for users creating their own wiki .
+    '''
     model = Article
     template_name = 'wiki_create.html'
     form_class = WikiForm
@@ -90,10 +109,14 @@ class WikiCreateView(LoginRequiredMixin, CreateView):
 
 
 class WikiUpdateView(LoginRequiredMixin, UpdateView):
+    '''
+    Update View for the Wiki Articles
+
+    The view that is responsible for helping the authors update the information in the wikis that they published.
+    '''
     model = Article
     template_name = "wiki_update.html"
     form_class = WikiForm
 
     def get_success_url(self):
         return reverse_lazy('wiki:wiki_detail', kwargs={'pk': self.get_object().pk})
-

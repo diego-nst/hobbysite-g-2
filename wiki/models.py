@@ -4,6 +4,11 @@ from user_management.models import Profile
 
 
 class ArticleCategory(models.Model):
+    '''
+    This model is for the different categories of the articles.
+
+    Fields include name and description of the category.
+    '''
     name = models.CharField(max_length=255)
     description = models.TextField()
 
@@ -20,8 +25,14 @@ class ArticleCategory(models.Model):
 
 
 class Article(models.Model):
+    '''
+    This model is for the articles themselves.
+
+    Fields include title, author, category (foreign key to ArticleCategory), entry, header_image, created on, and updated on.
+    '''
     title = models.CharField(max_length=255)
-    author = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True, related_name='wikis')
+    author = models.ForeignKey(
+        Profile, on_delete=models.SET_NULL, null=True, related_name='wikis')
     category = models.ForeignKey(ArticleCategory,
                                  on_delete=models.SET_NULL,
                                  null=True, related_name='wikis')
@@ -43,7 +54,13 @@ class Article(models.Model):
 
 
 class Comment(models.Model):
-    author = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True, related_name='author_comment')
+    '''
+    This model is for the comments on the articles.
+
+    Fields include author, article(foreign key to Article), entry, created on, and updated on.
+    '''
+    author = models.ForeignKey(
+        Profile, on_delete=models.SET_NULL, null=True, related_name='author_comment')
     article = models.ForeignKey(Article,
                                 on_delete=models.CASCADE,
                                 null=True, related_name='wiki_comment')
@@ -61,8 +78,18 @@ class Comment(models.Model):
 
 
 class ArticleImage(models.Model):
+    '''
+    This model is for the images in the image gallery
+
+    Fields include image, description, and article(foreign key to Article).
+    '''
     image = models.ImageField(upload_to='images/', null=True)
     description = models.TextField(max_length=255)
     article = models.ForeignKey(Article,
-                               on_delete=models.CASCADE,
-                               related_name="wiki_images")
+                                on_delete=models.CASCADE,
+                                related_name="wiki_images")
+
+    class Meta:
+        ordering = ['-created_on']
+        verbose_name = 'Gallery Image'
+        verbose_name_plural = 'Gallery Images'
