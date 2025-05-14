@@ -11,29 +11,30 @@
 
 </head>
 
-<nav>
-    <ul>
-        <li><a href='{% url 'user_management:index' %}'>Home</a></li>
-        <li><a href='{% url 'merchstore:product-list' %}'>Merchandise</a></li>
-        <li><a href='{% url 'wiki:wiki_list' %}'>Wiki</a></li>
-        <li><a href='{% url 'blog:article_list' %}'>Blog</a></li>
-        <li><a href='{% url 'forum:thread_list' %}'>Forum</a></li>
-        <li><a href='{% url 'commissions:commission-list' %}'>Commission</a></li>
-    {% if user.is_authenticated %}
-        <li><a href="{% url 'user_management:dashboard'%}">Dashboard</a></li>
-    <form method="POST" action="{% url 'logout' %}">
-        {% csrf_token %}
-        <li><button type="submit">Logout</button></li>
-    </form>
-    {% else %}
-    <form method="POST" action="{% url 'login' %}">
-        {% csrf_token %}
-        <li><button type="submit">Login</button></li>
-    </form>
-    {% endif %}
-    <ul>
-</nav>
-
+{% block nav %}
+    <nav>
+        <ul>
+            <li><a href='{% url 'user_management:index' %}'>Home</a></li>
+            <li><a href='{% url 'merchstore:product-list' %}'>Merchandise</a></li>
+            <li><a href='{% url 'wiki:wiki_list' %}'>Wiki</a></li>
+            <li><a href='{% url 'blog:article_list' %}'>Blog</a></li>
+            <li><a href='{% url 'forum:thread_list' %}'>Forum</a></li>
+            <li><a href='{% url 'commissions:commission-list' %}'>Commission</a></li>
+        {% if user.is_authenticated %}
+            <li><a href="{% url 'user_management:dashboard'%}">Dashboard</a></li>
+        <form method="POST" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <li><button type="submit">Logout</button></li>
+        </form>
+        {% else %}
+        <form method="POST" action="{% url 'login' %}">
+            {% csrf_token %}
+            <li><button type="submit">Login</button></li>
+        </form>
+        {% endif %}
+        <ul>
+    </nav>
+{% endblock %}
 
 <body>
 	{% block content %}
