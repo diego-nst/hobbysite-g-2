@@ -62,7 +62,10 @@ class Product(models.Model):
 
     def save(self, *args, **kwargs):
         if self.stock <= 0:
-            self.STATUS_CHOICES = 'NO_STOCK'
+            self.status = 'Out of stock'
+        else:
+            if (not self.status=='On sale'):
+                self.status = 'Available'
         super(Product, self).save(*args, **kwargs)
 
     class Meta:

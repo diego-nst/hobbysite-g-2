@@ -114,7 +114,7 @@
                 {% csrf_token %}
                 <label for="amount">
                     <span> Amount: </span>
-                    <input type="number" id="amount" name="amount" min="1" max={{object.stock}}>
+                    <input type="number" id="amount" name="amount" min="1" max={{object.stock}} required>
                 </label>
                 <input type="submit" value="Add to cart">
             </form>

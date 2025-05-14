@@ -9,7 +9,7 @@
 
 nav ul {
     list-style: none;
-    background-color: #F8BBD0;
+    background-color: #F8DEDF;
     margin: 0;
     padding: 15px;
     display: flex;
@@ -32,8 +32,8 @@ nav a:hover {
 }
 
 nav button {
-    color: black;
-    background-color: #CDE990;
+    color: FFFFE8;
+    background-color: #434D20;
     font-weight: 600;
     padding: 10px;
     border-radius: 8px;
