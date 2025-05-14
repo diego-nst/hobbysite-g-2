@@ -76,6 +76,9 @@ class ProductDetailView(DetailView):
     def post(self, request, *args, **kwargs):
         pk = self.kwargs['pk']
         form = CreateTransactionForm(request.POST)
+        # if(form['amount'] <= 0):
+        #     print('Error. At least one item must be added to cart.')
+        
         if form.is_valid():
             t = form.save(commit=False)
 
@@ -91,7 +94,7 @@ class ProductDetailView(DetailView):
             t.buyer = self.request.user.profile
             t.product = Product.objects.get(pk=pk)
             t.status = 'On cart'
-
+            
             if ((t.amount <= 0)):
                 print('Error. At least one item must be added to cart.')
             if ((t.product.stock - t.amount) < 0):

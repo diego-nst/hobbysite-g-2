@@ -85,6 +85,9 @@
 {% endblock %}
 
 {% block content %}
+    <section style="display:flex; justify-content:center; background-color: #434D20; color:#FFFFE8">
+        <h2 style="font-size:2rem">Merchstore</h2>
+    </section>
     <div class="stickyMenu">
         {% if user.is_authenticated %}
             <div><a class="menu" href="{% url 'merchstore:create-product' %}">{{"Add a product"}}</a></div>
