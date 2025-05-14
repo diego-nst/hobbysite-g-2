@@ -35,10 +35,18 @@ class UpdateProfile(UpdateView, LoginRequiredMixin):
 
     def get_success_url(self):
         return reverse_lazy('user_management:dashboard')
+    
+    def get_context_data(self, **kwargs):
 
+        return super().get_context_data(**kwargs)
+    
+    def get_context_data(self, **kwargs):
+        slug = self.kwargs['slug']
+        context = super().get_context_data(**kwargs)
+        context['profile'] = Profile.objects.get(slug=slug)
+        return context
 
-
-class DashboardView(TemplateView):
+class DashboardView(TemplateView, LoginRequiredMixin):
     template_name = "user_management/dashboard.html"
 
     def get_context_data(self, **kwargs):

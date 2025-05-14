@@ -24,7 +24,12 @@
         <form method="POST">
         {% csrf_token %}
         {{form.as_p}}
-        <input type="submit" value="Submit">
+        <p style="font-weight: bold; color: #434D20">Email: {{ profile.email }}</p>
+        {% if request.user.profile == profile %}
+            <input type="submit" value="Submit">
+        {% else %}
+            <input type="submit" value="Submit" disabled="True"> 
+        {% endif %}
         </form>
     </section>
 {% endblock %}
