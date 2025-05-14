@@ -31,7 +31,7 @@ class ProductListView(ListView):
                 user_products_dict[pt] = list()
 
                 for product in pt.get_products():
-                    if (product.owner == self.request.user.um_profile):
+                    if (product.owner == self.request.user.profile):
                         user_products_dict[pt] += [product]
                     else:
                         products_dict[pt] += [product]
@@ -88,7 +88,7 @@ class ProductDetailView(DetailView):
                 # https://medium.com/@averydcs/understanding-path-variables-and-query-parameters-in-http-requests-232248b71a8
                 return redirect(url)
 
-            t.buyer = self.request.user.um_profile
+            t.buyer = self.request.user.profile
             t.product = Product.objects.get(pk=pk)
             t.status = 'On cart'
 
@@ -135,7 +135,7 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
         return context
 
     def form_valid(self, form):
-        form.instance.owner = self.request.user.um_profile
+        form.instance.owner = self.request.user.profile
         return super().form_valid(form)
         # used https://stackoverflow.com/questions/65733442/in-django-how-to-add-username-to-a-model-automatically-when-the-form-is-submit
 
@@ -175,7 +175,7 @@ class CartView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         user_cart = dict()
         if self.request.user.is_authenticated:
-            for transaction in self.request.user.um_profile.transactions.all():
+            for transaction in self.request.user.profile.transactions.all():
                 if transaction.product.owner in user_cart:
                     user_cart[transaction.product.owner].append(transaction)
                 else:
@@ -202,7 +202,7 @@ class TransactionListView(LoginRequiredMixin, ListView):
         seller_transactions = dict()
         if self.request.user.is_authenticated:
             for transaction in Transaction.objects.all():
-                if transaction.product.owner == self.request.user.um_profile:
+                if transaction.product.owner == self.request.user.profile:
                     user_has_transactions = True
                     if transaction.buyer in seller_transactions:
                         seller_transactions[transaction.buyer].append(
