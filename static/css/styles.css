@@ -296,10 +296,9 @@ aside button:hover{
 }
 
 textarea {
-    background-color: #F8DEDF;
+    background-color: #FFFFE8;
     padding: 1rem 1rem;
     width: 90%;
-    /* height: 100px; */
     color:#434d20;
     margin: 10px;
   }
