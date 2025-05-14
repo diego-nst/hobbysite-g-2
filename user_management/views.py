@@ -31,7 +31,7 @@ class UpdateProfile(UpdateView, LoginRequiredMixin):
     model = Profile
     form = ProfileForm
     template_name = "user_management/profile.html"
-    fields = ['display_name', 'email']
+    fields = ['display_name']
 
     def get_success_url(self):
         return reverse_lazy('user_management:dashboard')

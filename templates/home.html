@@ -81,6 +81,9 @@ button{
 
 <div class="header">
     <h1>Welcome to Our Hobbysite!</h1>
+    {% if user.is_authenticated %}
+        <h2> Hello {{ request.user.profile.display_name }}! </h2>
+    {% endif %}
     <h3>Explore!</h3>
 </div>
 <div class="navigation">
@@ -89,6 +92,9 @@ button{
         <a href="{% url 'blog:article_list' %}"> <button type="Submit">Blog</button></a>
         <a href="{% url 'forum:thread_list' %}"> <button type="Submit">Forum</button></a>
         <a href="{% url 'commissions:commission-list' %}"> <button type="Submit">Commission</button></a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'user_management:dashboard'%}"> <button type="Submit">Dashboard</button></a>
+        {% endif %}
 </div>
 <br>
 

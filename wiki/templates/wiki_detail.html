@@ -202,18 +202,18 @@ p, h4, h5{
 
 {% if user.is_authenticated %}
     {% if user.profile == article.author %}
-<div class="author_controls">
-    <h3> Author Controls: </h3>
-    <a href="{% url 'wiki:wiki_update' article.pk %}">
-    <button type="button">Edit the Article</button>
-    </a>
-    <h3> Add an image to the gallery: </h3>
-    <form class="image_form" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ image_form }}
-        <input type="submit" value="Submit">
-    </form>
-</div>
+        <div class="author_controls">
+            <h3> Author Controls: </h3>
+            <a href="{% url 'wiki:wiki_update' article.pk %}">
+            <button type="button">Edit the Article</button>
+            </a>
+            <h3> Add an image to the gallery: </h3>
+            <form class="image_form" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ image_form }}
+                <input type="submit" value="Submit">
+            </form>
+        </div>
     {% endif %}
 {% endif %}
 
@@ -224,6 +224,16 @@ p, h4, h5{
 <h3 style="margin: 1.5rem;">Comments</h3>
 <div class="comment">
     
+{% if user.is_authenticated %}
+    <h3>Leave a reply</h3>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ comment_form }}
+    <br>
+    <button type="submit" value="Submit">Submit</button>
+    </form>
+{% endif %}
+
 {% if article.wiki_comment.all %}
         {% for comment in comments %}
             <h4>{{ comment.author.display_name }}</h4>
@@ -237,15 +247,7 @@ p, h4, h5{
     <h5>No comments yet</h5>
     <hr class="newhr2">
 {% endif %}
-{% if user.is_authenticated %}
-    <h3>Leave a reply</h3>
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ comment_form }}
-    <br>
-    <button type="submit" value="Submit">Submit</button>
-{% endif %}
-</form>
+
 </div>
 
 <div class="buttons">
