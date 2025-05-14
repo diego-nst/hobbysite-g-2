@@ -61,6 +61,11 @@ class Product(models.Model):
         return reverse('merchstore:item', args=[str(self.pk)])
 
     def save(self, *args, **kwargs):
+        '''
+        The save() function is overrided
+        to automatically update the intance's status
+        based on changes in stock.
+        '''
         if self.stock <= 0:
             self.status = 'Out of stock'
         else:
