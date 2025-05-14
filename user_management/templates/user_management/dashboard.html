@@ -117,11 +117,8 @@
     <div class="content">
     <h1>Wiki Articles</h1>
      <div class="subcontent">
-    {% for category, article in other_articles.items %} 
-        <strong>{{ category.name }}</strong>
-            {% for article in article %}
-                <p><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></p>
-            {% endfor %}
+    {% for wiki in wiki_articles %} 
+        <a href="{{ wiki.get_absolute_url }}">{{ wiki.title }}</a><br><br>
     {% empty %}
         <p>No posted articles yet.</p>
     {% endfor %}</div>
@@ -141,14 +138,12 @@
     <div class="content">
     <h1>Blog Article</h1>
      <div class="subcontent">
-    {% for category, article in other_articles.items %} 
-        <strong>{{ category.name }}</strong>
-        {% for article in article %}
-            <p><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></p>
-            {% endfor %}
+    {% for blog in blog_articles %} 
+        <a href="{{ blog.get_absolute_url }}">{{ blog.title }}</a><br><br>
     {% empty %}
-            <p>No posted blog articles yet.</p>
+        <p>No posted articles yet.</p>
     {% endfor %}</div>
+    </div><br>
     </div><br>
     
     <div class="content">
