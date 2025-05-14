@@ -193,6 +193,15 @@
 <hr class="newhr2">
 <h3 style="margin: 1.5rem;">Comments</h3>
 <div class="comment">
+    {% if user.is_authenticated %}
+    <h3>Leave a reply</h3>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ comment_form }}
+    <br>
+    <button type="submit" value="Submit">Submit</button>
+    </form>
+{% endif %}
 {% for comment in article.blog_comments.all %}
         <h4>{{ comment.author.display_name }}</h4>
         <h5>{{ comment.entry }}</h5>
@@ -204,15 +213,6 @@
     <h5>No comments yet</h5>
     <hr class="newhr2">
     {% endfor %}
-{% if user.is_authenticated %}
-    <h3>Leave a reply</h3>
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ comment_form }}
-    <br>
-    <button type="submit" value="Submit">Submit</button>
-{% endif %}
-</form>
 </div>
 
 
