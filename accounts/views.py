@@ -2,7 +2,7 @@ from django.views.generic.edit import FormView
 from django.urls import reverse_lazy
 from django.contrib.auth.models import User
 from .forms import CustomUserCreationForm
-from user_management.models import Profile\
+from user_management.models import Profile
 
 
 class RegisterView(FormView):
