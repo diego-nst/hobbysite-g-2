@@ -4,6 +4,11 @@ from user_management.models import Profile
 
 
 class ArticleCategory(models.Model):
+    '''
+    Model for blog categories
+
+    categories have names and descriptions, ordered by name
+    '''
     name = models.CharField(max_length=255)
     description = models.TextField()
 
@@ -20,6 +25,11 @@ class ArticleCategory(models.Model):
 
 
 class Article(models.Model):
+    '''
+    Model for blog articles
+
+    has foreign key to profile model and ArticleCategory model
+    '''
     title = models.CharField(max_length=255)
     author = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True, related_name='blog')
     category = models.ForeignKey(ArticleCategory,
@@ -43,6 +53,11 @@ class Article(models.Model):
 
 
 class Comment(models.Model):
+    '''
+    Model for blog comments
+
+    has foreign key to profile that commented and the article
+    '''
     author = models.ForeignKey(Profile, on_delete=models.SET_NULL, null=True, related_name='blog_comments')
     article = models.ForeignKey(Article,
                                 on_delete=models.CASCADE,
@@ -61,6 +76,11 @@ class Comment(models.Model):
 
 
 class ArticleImage(models.Model):
+    '''
+    Model for article images, used for the gallery for blog articles
+
+    has foreign key to article
+    '''
     image = models.ImageField(upload_to='images/', null=True)
     description = models.TextField(max_length=255)
     article = models.ForeignKey(Article,
