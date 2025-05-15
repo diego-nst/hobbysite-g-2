@@ -8,7 +8,6 @@ from django.urls import reverse_lazy
 from django.shortcuts import redirect
 
 
-
 from .models import Article
 
 # Create your views here.
@@ -16,15 +15,17 @@ from .models import Article
 
 class BlogListView(LoginRequiredMixin, ListView):
     '''
-    This view displays the list of blogs.
-    This view is only available to logged in users, will redirect of logged out.
+    List view for the Article Model
+
+    Displays all articles sorted by category
+    Only available if user is logged in
     '''
     model = Article
     template_name = 'blog_list.html'
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        
+
         if self.request.user.is_authenticated:
             category_dict = dict()
             for category in ArticleCategory.objects.all():
@@ -46,11 +47,12 @@ class BlogListView(LoginRequiredMixin, ListView):
         return ctx
 
 
-
 class BlogDetailView(DetailView):
     '''
-    This view displays the contents of a particular blog.
-    Uses the CommentForm and ArticleImageForm
+    Update view for the Blog Article model
+
+    Allows users to update their own articles and
+    change/update all entries
     '''
     model = Article
     template_name = 'blog_detail.html'
@@ -65,7 +67,6 @@ class BlogDetailView(DetailView):
         ctx['comment_form'] = CommentForm
         ctx['image_form'] = ArticleImageForm
         return ctx
-    
 
     def post(self, request, *args, **kwargs):
         comment_form = CommentForm(request.POST)
@@ -85,14 +86,14 @@ class BlogDetailView(DetailView):
             ctx = self.get_context_data(**kwargs)
             comment_form = CommentForm(request.POST)
             image_form = ArticleImageForm(request.POST, request.FILES)
-            return self.render_to_response(ctx) 
-
+            return self.render_to_response(ctx)
 
 
 class BlogCreateView(LoginRequiredMixin, CreateView):
     '''
-    This view displays a page for creating a new blog post.
-    Uses the BlogForm form with CreateView post
+    Create view for the Blog Article model
+
+    Allows users to create new blogs
     '''
     model = Article
     template_name = 'blog_create.html'
@@ -100,7 +101,7 @@ class BlogCreateView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse_lazy('blog:article_list')
-    
+
     def form_valid(self, form):
         form.instance.author = self.request.user.profile
         return super().form_valid(form)

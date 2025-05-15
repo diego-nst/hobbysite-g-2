@@ -86,6 +86,8 @@ button{
     <h1>Welcome to Our Hobbysite!</h1>
     {% if user.is_authenticated %}
         <h2> Hello {{ request.user.profile.display_name }}! </h2>
+    {% else %}
+        <a href="{% url 'login'%}"> <button type="Submit" style='background-color: #F8DEDF; color:#434D20; font-size: 1.5rem; width:fit-content;'>Login</button></a>
     {% endif %}
     <h3>Explore!</h3>
 </div>

@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %} Threads {% endblock %}
+{% block title %} Commissions List {% endblock %}
 
 {% block styles %}
 
@@ -58,14 +58,18 @@
     {% endif %}
     
     <div class="threadslist">
-        {% for commission in commissions %}
-        <br><a href="{{commission.get_absolute_url}}"><span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
-            {{commission.title}} - Created on {{commission.created}}
-        </span>
-        <span style="text-align: left; width:70%;  display: inline-block;">
-            ({{commission.get_status_display}})
-        </span></a><br>
-        {% endfor %}
+        {% if commissions %}
+            {% for commission in commissions %}
+            <br><a href="{{commission.get_absolute_url}}"><span style="text-align: left; width:29%;  display: inline-block; vertical-align: top;">
+                {{commission.title}} - Created on {{commission.created}}
+            </span>
+            <span style="text-align: left; width:70%;  display: inline-block;">
+                ({{commission.get_status_display}})
+            </span></a><br>
+            {% endfor %}
+        {% else %}
+            <p>No Commissions</p>
+        {% endif %}
     </div>
     <hr>
     <iframe style="border-radius:12px" src="https://open.spotify.com/embed/episode/5qqkDY0gge1iPKsRBgRI0j?utm_source=generator&t=484" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>

@@ -12,6 +12,12 @@ from .models import Profile
 from .forms import ProfileForm
 
 def index(request):
+    ''' 
+    List view for homepage
+    
+    Displays 5 most recent articles from all apps 
+    (wiki, blog, commisions, threads, merchstore)
+    '''
     latest_wikis = WikiArticle.objects.all()[:5]
     latest_blogs = BlogArticle.objects.all()[:5]
     latest_commisions = Commission.objects.all()[:5]
@@ -28,6 +34,11 @@ def index(request):
 
 
 class UpdateProfile(UpdateView, LoginRequiredMixin):
+    ''' 
+    Update View for Profile model
+    
+    Only available to logged in users
+    '''
     model = Profile
     form = ProfileForm
     template_name = "user_management/profile.html"
@@ -44,6 +55,12 @@ class UpdateProfile(UpdateView, LoginRequiredMixin):
         return context
 
 class DashboardView(TemplateView, LoginRequiredMixin):
+    ''' 
+    Template view for dashboard
+    
+    This view displays the recent articles or entries of the user for all apps
+    Only available to logged in users
+    '''
     template_name = "user_management/dashboard.html"
 
     def get_context_data(self, **kwargs):

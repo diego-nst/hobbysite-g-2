@@ -7,54 +7,67 @@
 {% block content %}
 
 <style>
-
-    h5{
+    h5 {
         font-family: Nunito Sans;
-        font-size:0.75rem; 
-        font-weight: 500; 
-        color:#4C2E05;
-        }
-    
-    h1, h2, h3, h4{
-        color:#434D20
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: #4C2E05;
     }
-    
-    .headcontent{
-        background-color:#434D20;
-        padding:1rem 1.5rem 1rem;
-        margin-bottom: 20px;  
-    }
-    .headcontent p, h1, h2, h3, h4, h5{
-        color:#FFFFE8;
-    }
-    .content{
-        margin: 0rem 3rem 2rem;   
-        padding: 1rem;
-        background-color:#F8DEDF;
-        border-radius: 1rem;
-        box-shadow: 4px 4px 5px #9FA881;
-    }
-    .content p{
+
+    h1,
+    h2,
+    h3,
+    h4 {
         color: #434D20
     }
-    .header_image{
-        margin: 0rem 3rem 2rem;   
+
+    .headcontent {
+        background-color: #434D20;
+        padding: 1rem 1.5rem 1rem;
+        margin-bottom: 20px;
+    }
+
+    .headcontent p,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+        color: #FFFFE8;
+    }
+
+    .content {
+        margin: 0rem 3rem 2rem;
         padding: 1rem;
-        background-color:#F8DEDF;
+        background-color: #F8DEDF;
         border-radius: 1rem;
         box-shadow: 4px 4px 5px #9FA881;
     }
 
-    .header_image img{
+    .content p {
+        color: #434D20
+    }
+
+    .header_image {
+        margin: 0rem 3rem 2rem;
+        padding: 1rem;
+        background-color: #F8DEDF;
+        border-radius: 1rem;
+        box-shadow: 4px 4px 5px #9FA881;
+    }
+
+    .header_image img {
         display: block;
         margin: auto;
         max-width: 50%;
-        height:10%;
+        height: 10%;
         border-radius: 1rem;
     }
+
     .gallery {
         display: block;
-        margin: 1rem auto; /* Reduced vertical spacing */
+        margin: 1rem auto;
+        /* Reduced vertical spacing */
         background-color: #F8DEDF;
         border-radius: 1rem;
         box-shadow: 0 6px 12px #9FA881;
@@ -65,7 +78,8 @@
     .gallery h3 {
         text-align: center;
         font-size: 2rem;
-        margin: 0 0 1.5rem 0; /* Removed top margin, kept bottom margin */
+        margin: 0 0 1.5rem 0;
+        /* Removed top margin, kept bottom margin */
         color: #333333;
     }
 
@@ -84,36 +98,45 @@
         object-fit: cover;
         box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
     }
-    
-    .comment p{
-        font-size:0.7rem;
-        color:#434D20;
-    }
-    .comment h4{
+
+    .comment p {
+        font-size: 0.7rem;
         color: #434D20;
     }
-    .comment{
-        background-color:#F8DEDF;
+
+    .comment h4 {
+        color: #434D20;
+    }
+
+    .comment {
+        background-color: #F8DEDF;
         padding: 1rem;
         border-radius: 1rem;
-        margin: 0rem 3rem 2rem;   
+        margin: 0rem 3rem 2rem;
         box-shadow: 4px 4px 5px #9FA881;
     }
-    .other_articles h2, h3{
-        color:#434D20;
+
+    .other_articles h2,
+    h3 {
+        color: #434D20;
     }
-    .category{
-        background-color:#FFFFE8;
+
+    .category {
+        background-color: #FFFFE8;
         border-radius: 1rem;
         width: 20%;
     }
-    .category h2, h5{
+
+    .category h2,
+    h5 {
         text-align: center;
         color: #434D20
     }
-    .similarthreads{
-        margin:1rem 1.5rem 0.3rem;   
+
+    .similarthreads {
+        margin: 1rem 1.5rem 0.3rem;
     }
+
     .author_controls {
         display: flex;
         flex-direction: column;
@@ -128,8 +151,9 @@
         max-width: 500px;
         width: 90%;
     }
+
     .author_controls a button,
-        .image_form input[type="submit"] {
+    .image_form input[type="submit"] {
         padding: 0.6rem 1.2rem;
         font-size: 1rem;
         background-color: #d48b90;
@@ -139,13 +163,13 @@
         cursor: pointer;
         transition: background 0.3s;
     }
-    </style>
+</style>
 
 
 <div class="headcontent">
     <div>
-        <h1>{{ article.title }}</h1> 
-        <div class = "category">
+        <h1>{{ article.title }}</h1>
+        <div class="category">
             <h2> {{ article.category }} </h2>
         </div>
         <h4> Author: {{article.author.display_name}}</h4>
@@ -168,26 +192,26 @@
     <p> Image Gallery: </p>
     <div class="gallery_image">
         {% for image in article.blog_images.all %}
-            <img src="{{ image.image.url }}" alt="Gallery image">
+        <img src="{{ image.image.url }}" alt="Gallery image">
         {% endfor %}
     </div>
 </div>
 
 {% if user.is_authenticated %}
-    {% if user.profile == article.author %}
-        <div class="author_controls">
-            <h3> Author Controls: </h3>
-            <a href="{% url 'blog:article_update' article.pk %}">
-            <button type="button">Edit the Article</button>
-            </a>
-            <h3> Add an image to the gallery: </h3>
-            <form class="image_form" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                {{ image_form }}
-                <input type="submit" value="Submit">
-            </form>
-        </div>
-    {% endif %}
+{% if user.profile == article.author %}
+<div class="author_controls">
+    <h3> Author Controls: </h3>
+    <a href="{% url 'blog:article_update' article.pk %}">
+        <button type="button">Edit the Article</button>
+    </a>
+    <h3> Add an image to the gallery: </h3>
+    <form class="image_form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ image_form }}
+        <input type="submit" value="Submit">
+    </form>
+</div>
+{% endif %}
 {% endif %}
 
 <hr class="newhr2">
@@ -198,17 +222,19 @@
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ comment_form }}
-    <br>
-    <button type="submit" value="Submit">Submit</button>
+        <br>
+        <button type="submit" value="Submit">Submit</button>
     </form>
-{% endif %}
-{% for comment in article.blog_comments.all %}
-        <h4>{{ comment.author.display_name }}</h4>
-        <h5>{{ comment.entry }}</h5>
-        <p>
+    {% endif %}
+    {% for comment in article.blog_comments.all %}
+    <h4>{{ comment.author.display_name }}</h4>
+    <h5>{{ comment.entry }}</h5>
+    <p>
         Created on: {{ comment.created_on }}
         <br>
-            Updated on: {{ comment.updated_on }}</p><br><hr class="newhr2">
+        Updated on: {{ comment.updated_on }}
+    </p><br>
+    <hr class="newhr2">
     {% empty %}
     <h5>No comments yet</h5>
     <hr class="newhr2">
@@ -223,14 +249,16 @@
         <h3>Check out this author's other articles!</h3>
         <ol>
             {% for article in read_more %}
-                <li><a href='{{article.get_absolute_url }}'>{{article.title}}</a></li>
+            <li><a href='{{article.get_absolute_url }}'>{{article.title}}</a></li>
             {% endfor %}
         </ol>
-    
+
     </div>
 </section>
 
 <a href="{% url 'blog:article_list' %}">
-<button type="Submit"><p>Back to Blog List</p></button></a>
-    
+    <button type="Submit">
+        <p>Back to Blog List</p>
+    </button></a>
+
 {% endblock %}

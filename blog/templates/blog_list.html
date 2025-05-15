@@ -12,51 +12,51 @@
     <article>
 
         <aside>
-        <section class = 'list'>
-            {% if user.is_authenticated %}
+            <section class='list'>
+                {% if user.is_authenticated %}
                 <h3>Your Articles:</h3>
                 <ol>
                     {% for article in user_articles %}
                     <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
                     {% endfor %}
                 </ol>
-            {% else %}
+                {% else %}
                 <h3>Your Articles:</h3>
                 <p> Login to view your articles!</p>
-            {% endif %}
-        </section>
+                {% endif %}
+            </section>
         </aside>
-        
+
         <aside>
-        <section class = 'list'>
-            {% if user.is_authenticated %}
+            <section class='list'>
+                {% if user.is_authenticated %}
                 <h3>All Articles:</h3>
-                {% for category, article in other_articles.items %} 
-                    <strong>{{ category.name }}</strong>
-                    <ol>
-                        {% for article in article %}
-                            <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
-                        {% endfor %}
-                    </ol>
+                {% for category, article in other_articles.items %}
+                <strong>{{ category.name }}</strong>
+                <ol>
+                    {% for article in article %}
+                    <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
+                    {% endfor %}
+                </ol>
                 {% endfor %}
-            {% else %}
+                {% else %}
                 <h3>All Articles:</h3>
-                {% for category, article in other_articles.items %} 
-                    <strong>{{ category.name }}</strong>
-                    <ol>
-                        {% for article in article %}
-                            <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
-                        {% endfor %}
-                    </ol>
+                {% for category, article in other_articles.items %}
+                <strong>{{ category.name }}</strong>
+                <ol>
+                    {% for article in article %}
+                    <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
+                    {% endfor %}
+                </ol>
                 {% endfor %}
-            {% endif %}
-        </section>
+                {% endif %}
+            </section>
         </aside>
 
     </article>
 </main>
 
 <aside>
-    <a href="{% url 'blog:article_create' %}"><button> Add a New Blog Post </button></a> 
+    <a href="{% url 'blog:article_create' %}"><button> Add a New Blog Post </button></a>
 </aside>
 {% endblock %}
