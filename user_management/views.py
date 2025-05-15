@@ -12,6 +12,11 @@ from .models import Profile
 from .forms import ProfileForm
 
 def index(request):
+    ''' 
+    Update View for Profile model
+    
+    Only available to logged in users
+    '''
     latest_wikis = WikiArticle.objects.all()[:5]
     latest_blogs = BlogArticle.objects.all()[:5]
     latest_commisions = Commission.objects.all()[:5]
@@ -28,6 +33,12 @@ def index(request):
 
 
 class UpdateProfile(UpdateView, LoginRequiredMixin):
+    ''' 
+    Template view for dashboard
+    
+    This view displays the recent articles or entries of the user for all apps
+    Only available to logged in users
+    '''
     model = Profile
     form = ProfileForm
     template_name = "user_management/profile.html"
