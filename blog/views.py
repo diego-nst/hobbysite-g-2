@@ -15,6 +15,10 @@ from .models import Article
 
 
 class BlogListView(LoginRequiredMixin, ListView):
+    '''
+    This view displays the list of blogs.
+    This view is only available to logged in users, will redirect of logged out.
+    '''
     model = Article
     template_name = 'blog_list.html'
 
@@ -44,6 +48,10 @@ class BlogListView(LoginRequiredMixin, ListView):
 
 
 class BlogDetailView(DetailView):
+    '''
+    This view displays the contents of a particular blog.
+    Uses the CommentForm and ArticleImageForm
+    '''
     model = Article
     template_name = 'blog_detail.html'
 
@@ -82,6 +90,10 @@ class BlogDetailView(DetailView):
 
 
 class BlogCreateView(LoginRequiredMixin, CreateView):
+    '''
+    This view displays a page for creating a new blog post.
+    Uses the BlogForm form with CreateView post
+    '''
     model = Article
     template_name = 'blog_create.html'
     form_class = BlogForm
@@ -95,6 +107,10 @@ class BlogCreateView(LoginRequiredMixin, CreateView):
 
 
 class BlogUpdateView(LoginRequiredMixin, UpdateView):
+    '''
+    This view displays a page for updating a blog post.
+    Uses the BlogForm form with CreateView post
+    '''
     model = Article
     template_name = "blog_update.html"
     form_class = BlogForm
