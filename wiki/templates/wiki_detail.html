@@ -251,12 +251,8 @@ p, h4, h5{
 </div>
 
 <div class="buttons">
-    <form method="POST" action="{% url 'logout' %}">
-    {% csrf_token %}
-    <button type="submit">Logout</button>
-    </form>
     <a href="{% url 'wiki:wiki_list' %}">
-        <button type="Submit">Home</button></a><br>  
+        <button type="Submit">List</button></a><br>  
 </div>
 
 <br>
