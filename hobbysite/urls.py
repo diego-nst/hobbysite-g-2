@@ -28,6 +28,7 @@ urlpatterns = [
     path('commissions/', include('commissions.urls', namespace='commissions')),
     path('', include('user_management.urls', namespace='user_management')),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('', include('accounts.urls', namespace='accounts')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

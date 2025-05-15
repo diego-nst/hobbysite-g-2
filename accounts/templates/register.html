@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %} Log In {% endblock %}
+{% block title %} Registration {% endblock %}
 {% block styles %}
 
 <style>
@@ -35,7 +35,7 @@ input{
 {% block content %}
 <section class="loginpage">
 
-<h2>Log In</h2>
+<h2>Register a New Account</h2>
 <div class="formfields">
 <form method="POST">
     {% csrf_token %}
@@ -44,10 +44,5 @@ input{
     <button type="submit">Login</button>
     </form>
 </div>
-<br>
-    <a href="{% url 'password_reset' %}">Forgot password?</a>
-    <br><a href="{% url 'accounts:register' %}">Create a New Account</a>
-    <br><a href="{% url 'forum:thread_list' %}">Continue without logging in</a>
-     
 </section>
 {% endblock %}
