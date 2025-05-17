@@ -6,6 +6,9 @@ from user_management.models import Profile
 
 
 class RegisterView(FormView):
+    '''
+    Sets up the view that will display the form for the User Registration
+    '''
     template_name = 'register.html'
     form_class = CustomUserCreationForm
 

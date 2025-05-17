@@ -4,6 +4,9 @@ from django.contrib.auth.models import User
 
 
 class CustomUserCreationForm(UserCreationForm):
+    '''
+    This is the form for the User Creation
+    '''
     email = forms.EmailField(required=True)
 
     class Meta:
